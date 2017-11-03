@@ -1,0 +1,67 @@
+package fr.ujm.tse.Scream;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Personnage {
+	int id;
+	String name;
+	String description;
+	String lien_image;
+	ArrayList<String> comics= new ArrayList<String>() ;
+	public Personnage(int id, String name, String description, String lien_image) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.lien_image = lien_image;
+		
+	}
+	public Personnage() {
+		// TODO Auto-generated constructor stub
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getLien_image() {
+		return lien_image;
+	}
+	public void setLien_image(String lien_image) {
+		this.lien_image = lien_image;
+	}
+	public void setComics(String comics) {
+		this.comics.add(comics);
+	}
+	public void getComics() {
+		System.out.println(" Voici les titres des comics où le personnage apparaît: ");
+		for(int i=0; i<comics.size(); i++)
+		{
+			String title = (String)comics.get(i);
+			System.out.println(title);
+		}
+	}
+	public void afficher() {
+		System.out.println("Nom du personnage : " + this.getName());
+		System.out.println("Id : " + this.getId());
+		System.out.println(" Description: " + this.getDescription());
+		System.out.println(" Lien de l'image de profil: " + this.getLien_image());
+	} 
+	public void afficheComics() {
+		this.getComics();
+	}
+}
