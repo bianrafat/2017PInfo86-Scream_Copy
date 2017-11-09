@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Personnage {
-	int id;
-	String name;
-	String description;
-	String lien_image;
-	ArrayList<String> comics= new ArrayList<String>() ;
+	private int id;
+	private String name;
+	private String description;
+	private String lien_image;
+	private ArrayList<String> comics= new ArrayList<String>() ;
 	public Personnage(int id, String name, String description, String lien_image) {
 		super();
 		this.id = id;
@@ -55,6 +55,11 @@ public class Personnage {
 			System.out.println(title);
 		}
 	}
+	
+	public ArrayList<String> getComics2() {
+		return comics;
+	}
+	
 	public void afficher() {
 		System.out.println("Nom du personnage : " + this.getName());
 		System.out.println("Id : " + this.getId());
