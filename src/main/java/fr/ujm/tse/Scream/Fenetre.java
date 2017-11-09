@@ -142,8 +142,8 @@ public class Fenetre  extends JFrame  implements ActionListener {
 		reponsePerso.setText(reponsePerso.getText().concat(" Lien de l'image de profil: " + perso.getLien_image()+ "\n"));
 		reponsePerso.setText(reponsePerso.getText().concat("Comics :  "+"\n"));
 		Parse.titleComics(perso);
-		for(int i=0; i<perso.comics.size();i++) {
-			reponsePerso.setText(reponsePerso.getText().concat((i+1)+") "+(String)perso.comics.get(i)+"\n"));
+		for(int i=0; i<perso.getComics2().size();i++) {
+			reponsePerso.setText(reponsePerso.getText().concat((i+1)+") "+(String)perso.getComics2().get(i)+"\n"));
 		}
 		
 	
