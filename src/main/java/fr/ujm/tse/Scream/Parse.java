@@ -16,7 +16,11 @@ public class Parse {
 	// Creation de champs statiques
 	private static String privateKey ="3f8505dd47a9407315dbda3d3193b8dc7400ab18";
 	private static String publicKey = "194167cb1ebace9fa95d54a33cf61753"; 
-	private static String hash ="MD5";
+	private static String reqNom = "https://gateway.marvel.com:443/v1/public/characters?name=";
+	private static String reqlistComics = "https://gateway.marvel.com:443/v1/public/comics?characters=";
+	private static String apikey = "&apikey=";
+	private static String timestp = "&ts=";
+	private static String hash = "&hash=";
 	private static String donnees ="data";
 	private static String tableau = "results";
 	private static String identifiant = "id";
@@ -26,8 +30,6 @@ public class Parse {
 	private static String jsonobject = "thumbnail";
 	private static String path = "path";
 	private static String extension = "extension";
-	private static String requeteNom = "https://gateway.marvel.com:443/v1/public/characters?name=";
-	private static String listComics = "https://gateway.marvel.com:443/v1/public/comics?characters=";
 	
 	public static Personnage infoPersonnage(String nom) throws IOException, JSONException, NoSuchAlgorithmException {
 		String info;
@@ -36,12 +38,12 @@ public class Parse {
 		String ts=Long.toString(System.currentTimeMillis());
 		
 		//génération du md5:
-		MessageDigest md5hash = MessageDigest.getInstance(hash);
+		MessageDigest md5hash = MessageDigest.getInstance("MD5");
 		md5hash.update(StandardCharsets.UTF_8.encode(ts+privateKey+publicKey));
 		String md5=String.format("%032x", new BigInteger(1, md5hash.digest()));
 		
 		//on envoie la requête http
-		info = HttpConnect.readUrl(requeteNom+nom+"&ts="+ts+"&apikey="+publicKey+"&hash="+md5);
+		info = HttpConnect.readUrl(reqNom+nom+timestp+ts+apikey+publicKey+hash+md5);
 		
 		// la réponse de la reque est un JSON
 		JSONObject obj = new JSONObject(info);
@@ -62,19 +64,26 @@ public class Parse {
 		String info;
 		//génération du timstamp:
 		String ts=Long.toString(System.currentTimeMillis());
+		
 		//génération du md5:
-		MessageDigest md5hash = MessageDigest.getInstance(hash);
+		MessageDigest md5hash = MessageDigest.getInstance("MD5");
 		md5hash.update(StandardCharsets.UTF_8.encode(ts+privateKey+publicKey));
 		String md5=String.format("%032x", new BigInteger(1, md5hash.digest()));
-		info = HttpConnect.readUrl(listComics+pers.getId()+"&ts="+ts+"&apikey="+publicKey+"&hash="+md5);
+		
+		info = HttpConnect.readUrl(reqlistComics+pers.getId()+timestp+ts+apikey+publicKey+hash+md5);
+		
 		JSONObject obj = new JSONObject(info);
 		JSONObject data = obj.getJSONObject(donnees);
+		
 		int size=data.getInt("count");
+		
 		JSONArray results = data.getJSONArray(tableau);
+		
 		for(int i=0; i<size;i++)
 		{
 			pers.setComics(results.getJSONObject(i).getString(titre));
 		}
+		
 		return pers;
 	}
 }
