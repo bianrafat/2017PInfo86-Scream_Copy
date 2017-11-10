@@ -1,4 +1,4 @@
-package fr.ujm.tse.Scream;
+package fr.ujm.tse.Scream.Controller;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
@@ -7,6 +7,8 @@ import java.util.jar.JarException;
 import javax.swing.SwingUtilities;
 
 import org.json.JSONException;
+
+import fr.ujm.tse.Scream.View.Fenetre;
 
 public class Menu {
 	public static void main(String[] args) throws IOException, JSONException, NoSuchAlgorithmException {

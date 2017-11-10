@@ -1,4 +1,4 @@
-package fr.ujm.tse.Scream;
+package fr.ujm.tse.Scream.View;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,6 +20,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import org.json.JSONException;
+
+import fr.ujm.tse.Screram.Model.Parse;
+import fr.ujm.tse.Screram.Model.Personnage;
 
 public class Fenetre  extends JFrame  implements ActionListener {
 	

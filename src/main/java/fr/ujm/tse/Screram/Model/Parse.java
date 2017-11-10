@@ -1,4 +1,4 @@
-package fr.ujm.tse.Scream;
+package fr.ujm.tse.Screram.Model;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import fr.ujm.tse.Scream.Controller.HttpConnect;
 
 //Cette classe sert à parser les données 
 

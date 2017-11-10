@@ -8,6 +8,9 @@ import java.security.NoSuchAlgorithmException;
 import org.json.JSONException;
 import org.junit.Test;
 
+import fr.ujm.tse.Screram.Model.Parse;
+import fr.ujm.tse.Screram.Model.Personnage;
+
 public class Test1 {
 	
 	@Test 

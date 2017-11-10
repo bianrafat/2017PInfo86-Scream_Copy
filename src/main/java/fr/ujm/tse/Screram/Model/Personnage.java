@@ -1,4 +1,4 @@
-package fr.ujm.tse.Scream;
+package fr.ujm.tse.Screram.Model;
 
 import java.util.ArrayList;
 import java.util.List;
