@@ -4,14 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Image;
 import java.io.IOException;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,24 +23,27 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import org.json.JSONException;
 
+import fr.ujm.tse.Scream.Controller.BoutonMenuPersonnage;
+import fr.ujm.tse.Scream.Controller.BoutonRechercherPerso;
+import fr.ujm.tse.Scream.Controller.BoutonRetour;
 import fr.ujm.tse.Screram.Model.Parse;
 import fr.ujm.tse.Screram.Model.Personnage;
 
-public class Fenetre  extends JFrame  implements ActionListener {
+public class Fenetre  extends JFrame {
 	
-	private JButton boutonPersonnage;
-	private JTextField textField = new JTextField();
-
+	private JTextField champPerso = new JTextField();
 	private JTextArea reponsePerso ;
-	private JButton recherche;
-	private JButton retour;
+	private JLabel img=new JLabel() ;
 	
-	
+
+
+
+	public JTextField getChampPerso() {
+		return champPerso;
+	}
 
 	public Fenetre(){
 		super();
- 
-		
 	}
 	
 	public void  run() {
@@ -53,96 +58,106 @@ public class Fenetre  extends JFrame  implements ActionListener {
 	
 		setContentPane(buildContentPane());
 	}
-	private JPanel buildContentPane(){
+	public JPanel buildContentPane(){
+		
 		JPanel panel2 = new JPanel();
-		panel2.setBackground(Color.LIGHT_GRAY);
+		panel2.setBackground(new Color(236, 248, 254));
 		panel2.setLayout(new BoxLayout(panel2,BoxLayout.Y_AXIS));
 		JLabel label = new JLabel("Bienvenue");
+		Font font = new Font("Century Schoolbook",Font.BOLD,24);
+
+		Font fontMenu = new Font("Century Schoolbook",Font.BOLD,15);
+		label.setFont(font);
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel2.add(Box.createRigidArea(new Dimension(0, 20)));
 		panel2.add(label);
-
         panel2.add(Box.createRigidArea(new Dimension(0, 20)));
-
-		
-		boutonPersonnage = new JButton("rechercher un personnage ");
+		JButton boutonPersonnage = new JButton(new BoutonMenuPersonnage("rechercher un personnage ",this));
+		boutonPersonnage.setMaximumSize(new Dimension(300, 50));
+		boutonPersonnage.setMinimumSize(new Dimension(200, 50));
+		boutonPersonnage.setPreferredSize(new Dimension(200, 50));
+		boutonPersonnage.setFont(fontMenu);
 		boutonPersonnage.setAlignmentX(Component.CENTER_ALIGNMENT);
-		boutonPersonnage.addActionListener(this);
 		panel2.add(boutonPersonnage);
 		
-
-		
+		panel2.add(Box.createRigidArea(new Dimension(0, 20)));
+		JButton boutonComics = new JButton("rechercher un Comics ");
+		boutonComics.setMaximumSize(new Dimension(300, 50));
+		boutonComics.setMinimumSize(new Dimension(200, 50));
+		boutonComics.setPreferredSize(new Dimension(200, 50));
+		boutonComics.setFont(fontMenu);
+		boutonComics.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel2.add(boutonComics);
 		return panel2;
 	}
-	private void boutonPerso(){
+	
+	public void boutonPerso(){
+		JPanel panelGeneral = new JPanel();
+		JPanel panelNorth= new JPanel();
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.LIGHT_GRAY);
+		JPanel panelWest = new JPanel();
+		JPanel panelEast = new JPanel();
+		
+		panelEast.setBackground(new Color(236, 248, 254));
+		panelWest.setBackground(new Color(236, 248, 254));
+		panel.setBackground(new Color(236, 248, 254));
+		panelNorth.setBackground(new Color(236, 248, 254));
+		panelGeneral.setBackground(new Color(236, 248, 254));
+		
 		panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
-		JLabel label = new JLabel("Entrer le nom du personnage:");
+		panelGeneral.setLayout(new BorderLayout());
+		panelNorth.setLayout(new FlowLayout());
+		panelWest.setLayout(new FlowLayout());
+		panelEast.setLayout(new FlowLayout());
+		
 		JScrollPane scrollingArea = new JScrollPane(reponsePerso);
 		scrollingArea.getHorizontalScrollBar().setUnitIncrement(10);
-	
-		panel.add(label);
-
 		
-		textField.setMaximumSize(new Dimension(300,30));
-
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        
-		panel.add(textField);
+		JLabel label = new JLabel("Entrer le nom du personnage:");
+		champPerso.setMaximumSize(new Dimension(200,30));
+		champPerso.setMinimumSize(new Dimension(100,30));
+		champPerso.setPreferredSize(new Dimension(200,30));   
 		reponsePerso = new JTextArea("");
 		reponsePerso.setEditable(false);
 		reponsePerso.setLineWrap(true);
 		reponsePerso.setWrapStyleWord(true); 
-		reponsePerso.setBackground(Color.LIGHT_GRAY);
+		reponsePerso.setBackground(new Color(236, 248, 254));
+		panelWest.setMaximumSize(new Dimension(400,400));
+		panelWest.setMinimumSize(new Dimension(250,250));
+		panelWest.setPreferredSize(new Dimension(350,350));
+		JButton recherche = new JButton(new BoutonRechercherPerso("Rechercher",this));
+		JButton retour = new JButton(new BoutonRetour("Retour",this));
+		panelEast.add(Box.createRigidArea(new Dimension(10, 0)));
 		
-		recherche = new JButton("Rechercher");
-		recherche.addActionListener(this);
-		panel.add(recherche);
-		retour = new JButton("Retour");
-		retour.addActionListener(this);
-		panel.add(Box.createRigidArea(new Dimension(0, 5)));
-		panel.add(retour);
-
-		setContentPane(panel);
+		//img.setSize(panelWest.getWidth()/8,panelWest.getHeight()/8);
+	
+		panelWest.add(img);
+		panelNorth.add(label);
+		panelNorth.add(champPerso);
+		panelNorth.add(recherche);
+		panelNorth.add(retour);
 		panel.add(reponsePerso);
+		panelGeneral.add(panelNorth,BorderLayout.NORTH);
+		panelGeneral.add(panel,BorderLayout.CENTER);
+		panelGeneral.add(panelWest,BorderLayout.WEST);
+		panelGeneral.add(panelEast,BorderLayout.EAST);
 		this.add(scrollingArea);
-	  
-		
+		setContentPane(panelGeneral);
 		revalidate();
 	}
 	
-	public void actionPerformed(ActionEvent e) { 
-		Object source = e.getSource();
-		 
-		if(source == boutonPersonnage){
-			boutonPerso();
-		}else if(source == recherche) {
-			String texte = textField.getText();
-			try {
-				affichePerso(texte);
-			} catch (NoSuchAlgorithmException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-		}else if(source== retour) {
-			setContentPane(buildContentPane());
-			revalidate();
-		}
-	}
+	
 	public void affichePerso(String str) throws IOException, JSONException, NoSuchAlgorithmException  { 
 		Personnage perso=Parse.infoPersonnage(str);
 		
 		reponsePerso.setText("Nom du personnage :   "+ perso.getName()+ "\n");
 		reponsePerso.setText(reponsePerso.getText().concat("id :   "+ perso.getId()+"\n"));
 		reponsePerso.setText(reponsePerso.getText().concat("Description :   "+ perso.getDescription()+"\n"));
-		reponsePerso.setText(reponsePerso.getText().concat(" Lien de l'image de profil: " + perso.getLien_image()+ "\n"));
+		ImageIcon icon = new ImageIcon(new URL(perso.getLien_image()));
+		icon = new ImageIcon(icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH));
+		img.setIcon(icon);
+		
+		//reponsePerso.setText(reponsePerso.getText().concat(" Lien de l'image de profil: " + perso.getLien_image()+ "\n"));
 		reponsePerso.setText(reponsePerso.getText().concat("Comics :  "+"\n"));
 		Parse.titleComics(perso);
 		for(int i=0; i<perso.getComics2().size();i++) {
@@ -151,6 +166,8 @@ public class Fenetre  extends JFrame  implements ActionListener {
 		
 	
 	}
+	
+	
 	
 }
 
