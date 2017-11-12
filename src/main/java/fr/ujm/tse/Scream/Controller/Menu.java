@@ -36,7 +36,10 @@ public class Menu {
 		//Permet de prendre en compte ce qui est ecrit sur la console
 		Scanner sc1 = new Scanner(System.in); 
 		String str = sc1.nextLine();
-		Comics comics = Parse.debutTitle(str);
+		Comics comics = Parse.listeComics(str);
+		comics.afficherComics();
+		int i = sc1.nextInt();
+		comics = Parse.infoComics(str, i);
 		comics.afficher();
 		}
 }

@@ -6,8 +6,9 @@ public class Comics {
 	private int id;
 	private String title;
 	private String description;
+	private ArrayList<String> comics = new ArrayList<String>();
 	private ArrayList<String> creators = new ArrayList<String>();
-	//private ArrayList<Comics> tabComics = new ArrayList<Comics>();
+	
 	
 	
 	public Comics(int id, String title, String description) {
@@ -45,6 +46,17 @@ public class Comics {
 		this.description = description;
 	}
 	
+	public void setComics(String comics) {
+		this.comics.add(comics);
+	}
+	public void getComics() {
+		System.out.println("Sur quel comics voulez-vous des informations : ");
+		for(int i=0; i<comics.size(); i++)
+		{
+			String title = (String)comics.get(i);
+			System.out.println(i+1+". "+title);
+		}
+	}
 	
 	public void setCreators(String creators) {
 		this.creators.add(creators);
@@ -59,6 +71,11 @@ public class Comics {
 	}
 
 	//essayer d'utiliser cette methode pour afficher les titre avec descriptions
+	public void afficherComics() {
+		this.getComics();
+		
+	}
+	
 	public void afficher() {
 		System.out.println("Titre : " + this.getTitle());
 		System.out.println("Id : " + this.getId());
