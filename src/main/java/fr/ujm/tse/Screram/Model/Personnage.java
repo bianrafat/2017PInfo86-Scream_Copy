@@ -48,7 +48,7 @@ public class Personnage {
 		this.comics.add(comics);
 	}
 	public void getComics() {
-		System.out.println(" Voici les titres des comics où le personnage apparaît: ");
+		System.out.println(" Voici les titres des comics ou le personnage apparait: ");
 		for(int i=0; i<comics.size(); i++)
 		{
 			String title = (String)comics.get(i);

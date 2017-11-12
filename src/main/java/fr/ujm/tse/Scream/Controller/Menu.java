@@ -9,6 +9,9 @@ import javax.swing.SwingUtilities;
 import org.json.JSONException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
+import fr.ujm.tse.Screram.Model.Comics;
+import fr.ujm.tse.Screram.Model.Parse;
+import fr.ujm.tse.Screram.Model.Personnage;
 
 public class Menu {
 	public static void main(String[] args) throws IOException, JSONException, NoSuchAlgorithmException {
@@ -26,5 +29,14 @@ public class Menu {
 		Personnage perso=Parse.infoPersonnage(str);
 		perso.afficher();
 		Parse.titleComics(perso).afficheComics();*/
+		
+		
+		System.out.println("Entrez un titre de comics (le début ou le titre complet) : ");
+		
+		//Permet de prendre en compte ce qui est ecrit sur la console
+		Scanner sc1 = new Scanner(System.in); 
+		String str = sc1.nextLine();
+		Comics comics = Parse.debutTitle(str);
+		comics.afficher();
 		}
 }
