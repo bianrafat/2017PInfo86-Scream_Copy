@@ -26,8 +26,8 @@ import org.json.JSONException;
 import fr.ujm.tse.Scream.Controller.BoutonMenuPersonnage;
 import fr.ujm.tse.Scream.Controller.BoutonRechercherPerso;
 import fr.ujm.tse.Scream.Controller.BoutonRetour;
-import fr.ujm.tse.Screram.Model.Parse;
-import fr.ujm.tse.Screram.Model.Personnage;
+import fr.ujm.tse.Scream.Model.Parse;
+import fr.ujm.tse.Scream.Model.Personnage;
 
 public class Fenetre  extends JFrame {
 	

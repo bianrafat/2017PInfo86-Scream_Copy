@@ -1,4 +1,4 @@
-package fr.ujm.tse.Screram.Model;
+package fr.ujm.tse.Scream.Model;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;

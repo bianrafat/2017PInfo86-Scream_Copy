@@ -8,10 +8,10 @@ import javax.swing.SwingUtilities;
 
 import org.json.JSONException;
 
+import fr.ujm.tse.Scream.Model.Comics;
+import fr.ujm.tse.Scream.Model.Parse;
+import fr.ujm.tse.Scream.Model.Personnage;
 import fr.ujm.tse.Scream.View.Fenetre;
-import fr.ujm.tse.Screram.Model.Comics;
-import fr.ujm.tse.Screram.Model.Parse;
-import fr.ujm.tse.Screram.Model.Personnage;
 
 public class Menu {
 	public static void main(String[] args) throws IOException, JSONException, NoSuchAlgorithmException {
