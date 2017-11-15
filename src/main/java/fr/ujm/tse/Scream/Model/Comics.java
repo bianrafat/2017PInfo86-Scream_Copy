@@ -58,6 +58,10 @@ public class Comics {
 		}
 	}
 	
+	public ArrayList<String> getComics2() {
+		return comics;
+	}
+	
 	public void setCreators(String creators) {
 		this.creators.add(creators);
 	}
@@ -68,6 +72,9 @@ public class Comics {
 			String creator = (String)creators.get(i);
 			System.out.println(creator);
 		}
+	}
+	public ArrayList<String> getCreators2() {
+		return creators;
 	}
 
 	//essayer d'utiliser cette methode pour afficher les titre avec descriptions

@@ -11,17 +11,21 @@ import org.json.JSONException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
 
-public class BoutonRechercherPerso extends AbstractAction {
+public class BoutonValideComics extends AbstractAction {
+	
 	private Fenetre fenetre;
-	public BoutonRechercherPerso(String texte, Fenetre f){
+	private String titleComics;
+	public BoutonValideComics(String texte, Fenetre f){
 		super(texte);
 		fenetre=f;
+		
 	}
  
 	public void actionPerformed(ActionEvent e) { 
-		String str = fenetre.getChampPerso().getText();
+		titleComics=fenetre.getChampStartComics();
+		int i= Integer.parseInt(fenetre.getChampComicsValide().getText());
 		try {
-			fenetre.affichePerso(str);
+			fenetre.ContentPanelComics(i,titleComics);
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -35,5 +39,5 @@ public class BoutonRechercherPerso extends AbstractAction {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-	} 
+	}
 }

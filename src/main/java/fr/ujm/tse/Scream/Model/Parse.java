@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import fr.ujm.tse.Scream.Controller.HttpConnect;
 
+
 //Cette classe sert à parser les données 
 
 public class Parse {

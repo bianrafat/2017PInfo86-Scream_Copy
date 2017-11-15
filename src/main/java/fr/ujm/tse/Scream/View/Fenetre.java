@@ -21,19 +21,35 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
 import org.json.JSONException;
 
+import fr.ujm.tse.Scream.Controller.BoutonMenuComics;
 import fr.ujm.tse.Scream.Controller.BoutonMenuPersonnage;
+import fr.ujm.tse.Scream.Controller.BoutonRechercherComics;
 import fr.ujm.tse.Scream.Controller.BoutonRechercherPerso;
 import fr.ujm.tse.Scream.Controller.BoutonRetour;
+import fr.ujm.tse.Scream.Controller.BoutonValideComics;
+import fr.ujm.tse.Scream.Model.Comics;
 import fr.ujm.tse.Scream.Model.Parse;
 import fr.ujm.tse.Scream.Model.Personnage;
 
 public class Fenetre  extends JFrame {
 	
 	private JTextField champPerso = new JTextField();
-	private JTextArea reponsePerso ;
+	private JTextField champComics = new JTextField();
+	private JTextField champComicsValide = new JTextField();
+	private JTextPane reponsePerso = new JTextPane();
+	private StyledDocument sDoc = (StyledDocument)reponsePerso.getDocument();
+	private JTextPane reponseComics = new JTextPane();
+	private StyledDocument sDoc1 = (StyledDocument)reponseComics.getDocument();
 	private JLabel img=new JLabel() ;
+	private String champStartComics;
 	
 
 
@@ -81,7 +97,7 @@ public class Fenetre  extends JFrame {
 		panel2.add(boutonPersonnage);
 		
 		panel2.add(Box.createRigidArea(new Dimension(0, 20)));
-		JButton boutonComics = new JButton("rechercher un Comics ");
+		JButton boutonComics = new JButton(new BoutonMenuComics("rechercher un Comics ",this));
 		boutonComics.setMaximumSize(new Dimension(300, 50));
 		boutonComics.setMinimumSize(new Dimension(200, 50));
 		boutonComics.setPreferredSize(new Dimension(200, 50));
@@ -103,6 +119,7 @@ public class Fenetre  extends JFrame {
 		panel.setBackground(new Color(236, 248, 254));
 		panelNorth.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
+		reponsePerso.setBackground(new Color(236, 248, 254));
 		
 		panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
 		panelGeneral.setLayout(new BorderLayout());
@@ -117,15 +134,12 @@ public class Fenetre  extends JFrame {
 		champPerso.setMaximumSize(new Dimension(200,30));
 		champPerso.setMinimumSize(new Dimension(100,30));
 		champPerso.setPreferredSize(new Dimension(200,30));   
-		reponsePerso = new JTextArea("");
-		reponsePerso.setEditable(false);
-		reponsePerso.setLineWrap(true);
-		reponsePerso.setWrapStyleWord(true); 
-		reponsePerso.setBackground(new Color(236, 248, 254));
+		
 		panelWest.setMaximumSize(new Dimension(400,400));
 		panelWest.setMinimumSize(new Dimension(250,250));
 		panelWest.setPreferredSize(new Dimension(350,350));
 		JButton recherche = new JButton(new BoutonRechercherPerso("Rechercher",this));
+		
 		JButton retour = new JButton(new BoutonRetour("Retour",this));
 		panelEast.add(Box.createRigidArea(new Dimension(10, 0)));
 		
@@ -146,28 +160,183 @@ public class Fenetre  extends JFrame {
 		revalidate();
 	}
 	
+	public void boutonComics(){
+		JPanel panelGeneral = new JPanel();
+		JPanel panelNorth= new JPanel();
+		JPanel panel = new JPanel();
+		JPanel panelWest = new JPanel();
+		JPanel panelSouth = new JPanel();
+		
+		panelSouth.setBackground(new Color(236, 248, 254));
+		panelWest.setBackground(new Color(236, 248, 254));
+		panel.setBackground(new Color(236, 248, 254));
+		panelNorth.setBackground(new Color(236, 248, 254));
+		panelGeneral.setBackground(new Color(236, 248, 254));
+		reponseComics.setBackground(new Color(236, 248, 254));
+		
+		panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
+		panelGeneral.setLayout(new BorderLayout());
+		panelNorth.setLayout(new FlowLayout());
+		panelWest.setLayout(new FlowLayout());
+		panelSouth.setLayout(new FlowLayout());
+		
+		JScrollPane scrollingArea = new JScrollPane(reponseComics);
+		scrollingArea.getHorizontalScrollBar().setUnitIncrement(10);
+		
+		JLabel label = new JLabel("Entrez un titre de Comics (le debut ou le titre complet) :");
+		champComics.setMaximumSize(new Dimension(200,30));
+		champComics.setMinimumSize(new Dimension(100,30));
+		champComics.setPreferredSize(new Dimension(200,30));   
+		
+		JButton recherche = new JButton(new BoutonRechercherComics("Rechercher",this));
+		JButton retour = new JButton(new BoutonRetour("Retour",this));
+
+		panelWest.add(Box.createRigidArea(new Dimension(200, 0)));
+		
+		JLabel labelValidate = new JLabel("Entrez le numero de votre Comics :");
+		champComicsValide.setMaximumSize(new Dimension(200,30));
+		champComicsValide.setMinimumSize(new Dimension(100,30));
+		champComicsValide.setPreferredSize(new Dimension(200,30));   
+		
+		JButton valider = new JButton( new BoutonValideComics("Valider",this));
+		
 	
-	public void affichePerso(String str) throws IOException, JSONException, NoSuchAlgorithmException  { 
-		Personnage perso=Parse.infoPersonnage(str);
+		panelNorth.add(label);
+		panelNorth.add(champComics);
+		panelNorth.add(recherche);
+		panelNorth.add(retour);
+		panel.add(reponseComics);
 		
-		reponsePerso.setText("Nom du personnage :   "+ perso.getName()+ "\n");
-		reponsePerso.setText(reponsePerso.getText().concat("id :   "+ perso.getId()+"\n"));
-		reponsePerso.setText(reponsePerso.getText().concat("Description :   "+ perso.getDescription()+"\n"));
-		ImageIcon icon = new ImageIcon(new URL(perso.getLien_image()));
-		icon = new ImageIcon(icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH));
-		img.setIcon(icon);
+		panelSouth.add(labelValidate);
+		panelSouth.add(champComicsValide);
+		panelSouth.add(valider);
 		
-		//reponsePerso.setText(reponsePerso.getText().concat(" Lien de l'image de profil: " + perso.getLien_image()+ "\n"));
-		reponsePerso.setText(reponsePerso.getText().concat("Comics :  "+"\n"));
-		Parse.titleComics(perso);
-		for(int i=0; i<perso.getComics2().size();i++) {
-			reponsePerso.setText(reponsePerso.getText().concat((i+1)+") "+(String)perso.getComics2().get(i)+"\n"));
-		}
-		
-	
+		panelGeneral.add(panelNorth,BorderLayout.NORTH);
+		panelGeneral.add(panel,BorderLayout.CENTER);
+		panelGeneral.add(panelWest,BorderLayout.WEST);
+		panelGeneral.add(panelSouth,BorderLayout.SOUTH);
+		this.add(scrollingArea);
+		setContentPane(panelGeneral);
+		revalidate();
 	}
 	
 	
+	public JTextField getChampComicsValide() {
+		return champComicsValide;
+	}
+
+	public JTextField getChampComics() {
+		return champComics;
+	}
+
+	
+	public void ContentPanelComics(int nb, String title) throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException {
+		Comics comics = Parse.infoComics(title, nb);
+		JTextPane comicsText = new JTextPane();
+		StyledDocument contenu = (StyledDocument)comicsText.getDocument();
+		Style gras=comicsText.addStyle("gras", null);
+		StyleConstants.setBold(gras, true);
+		int pos=0;
+		String str="Titre : ";
+		
+		
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		contenu.insertString(pos, comics.getTitle()+"\n", null);pos+=comics.getTitle().length()+1;
+		str="Description : ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		contenu.insertString(pos, comics.getDescription()+"\n", null);pos+=comics.getDescription().length()+1;
+		str="Createurs : \n ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		for (int i=0; i<comics.getCreators2().size(); i++){
+			contenu.insertString(pos, comics.getCreators2().get(i)+"\n", null);pos+=comics.getCreators2().get(i).length()+1;
+		}
+		
+		JButton retour = new JButton(new BoutonRetour("Retour",this));
+		
+		
+		JPanel panelGeneral = new JPanel();
+		JPanel panel = new JPanel();
+		JPanel panelSouth = new JPanel();
+		
+		panelSouth.setBackground(new Color(236, 248, 254));
+		panel.setBackground(new Color(236, 248, 254));
+		panelGeneral.setBackground(new Color(236, 248, 254));
+		comicsText.setBackground(new Color(236, 248, 254));
+		
+		panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
+		panelGeneral.setLayout(new BorderLayout());
+		panelSouth.setLayout(new FlowLayout());
+		
+		panelSouth.add(retour);
+		panel.add(comicsText);
+		panelGeneral.add(panel,BorderLayout.CENTER);
+		panelGeneral.add(panelSouth,BorderLayout.SOUTH);
+		
+		setContentPane(panelGeneral);
+		revalidate();
+		
+		
+	}
+	
+	
+	public void affichePerso(String str) throws IOException, JSONException, NoSuchAlgorithmException, BadLocationException  { 
+		Personnage perso=Parse.infoPersonnage(str);
+		Parse.titleComics(perso);
+		sDoc.remove(0, sDoc.getLength());
+		String ph ="Nom du personnage :   ";
+		int pos=0;
+		Style defaut = reponsePerso.getStyle("default");
+		Style gras=reponsePerso.addStyle("gras", defaut);
+		StyleConstants.setBold(gras, true);
+	
+		sDoc.insertString(pos, ph,gras);pos+=ph.length();
+		sDoc.insertString(pos, perso.getName()+ "\n",defaut);pos+=perso.getName().length()+1;
+		ph="id :   ";
+		sDoc.insertString(pos, ph,gras);pos+=ph.length();
+		sDoc.insertString(pos, perso.getId()+ "\n",defaut);pos+=(Integer.toString((perso.getId()))).length()+1;
+		ph="Description :   ";
+		sDoc.insertString(pos, ph,gras);pos+=ph.length();
+		sDoc.insertString(pos, perso.getDescription()+ "\n",defaut);pos+=perso.getDescription().length()+1;
+		ph="Comics : \n ";
+		sDoc.insertString(pos, ph,gras);pos+=ph.length();
+		for(int i=0; i<perso.getComics2().size();i++) {
+			ph=(i+1) + " ) ";
+			sDoc.insertString(pos, ph,defaut);pos+=ph.length();
+			sDoc.insertString(pos, perso.getComics2().get(i)+ "\n",defaut);pos+=perso.getComics2().get(i).length()+1;
+		}
+		
+		
+		ImageIcon icon = new ImageIcon(new URL(perso.getLien_image()));
+		icon = new ImageIcon(icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH));
+		img.setIcon(icon);
+	
+		
+	}
+	
+	
+	public void afficheListeComics(String str) throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException { 
+		Comics comics = Parse.listeComics(str);
+		sDoc1.remove(0, sDoc1.getLength());
+		Style defaut = reponseComics.getStyle("default");
+		Style gras=reponseComics.addStyle("gras", defaut);
+		StyleConstants.setBold(gras, true);
+		int pos=0;
+		String ph="Sur quel comics voulez-vous des informations :  \n ";
+		sDoc1.insertString(pos, ph,gras);pos+=ph.length();
+		for(int i=0; i<comics.getComics2().size();i++) {
+			ph=(i+1) + " ) ";
+			sDoc1.insertString(pos, ph,defaut);pos+=ph.length();
+			sDoc1.insertString(pos, comics.getComics2().get(i)+ "\n",defaut);pos+=comics.getComics2().get(i).length()+1;
+		}
+	}
+
+	public void setChampStartComics(String champStartComics) {
+		this.champStartComics = champStartComics;
+	}
+
+	public String getChampStartComics() {
+		return champStartComics;
+	}
 	
 }
 
