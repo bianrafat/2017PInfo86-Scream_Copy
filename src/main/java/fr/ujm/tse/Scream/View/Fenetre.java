@@ -52,6 +52,7 @@ public class Fenetre  extends JFrame {
 	private StyledDocument sDoc = (StyledDocument)reponsePerso.getDocument();
 	private StyledDocument sDoc1 = (StyledDocument)reponseComics.getDocument();
 	private JLabel img=new JLabel() ;
+	private JLabel imgComics=new JLabel() ;
 	private String champStartComics;
 	
 
@@ -281,6 +282,12 @@ public class Fenetre  extends JFrame {
 		Comics comics = Parse.infoComics(title, nb);
 		JEditorPane comicsText = new JTextPane();
 		comicsText.setEditable(false);
+		
+		ImageIcon icon = new ImageIcon(new URL(comics.getLien_image()));
+		icon = new ImageIcon(icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH));
+		imgComics.setIcon(icon);
+		
+		
 		StyledDocument contenu = (StyledDocument)comicsText.getDocument();
 		Style gras=((JTextPane) comicsText).addStyle("gras", null);
 		StyleConstants.setBold(gras, true);
@@ -305,7 +312,9 @@ public class Fenetre  extends JFrame {
 		JPanel panelGeneral = new JPanel();
 		JPanel panel = new JPanel();
 		JPanel panelSouth = new JPanel();
+		JPanel panelWest = new JPanel();
 		
+		panelWest.setBackground(new Color(236, 248, 254));
 		panelSouth.setBackground(new Color(236, 248, 254));
 		panel.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
@@ -314,11 +323,14 @@ public class Fenetre  extends JFrame {
 		panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
 		panelGeneral.setLayout(new BorderLayout());
 		panelSouth.setLayout(new FlowLayout());
+		panelWest.setLayout(new FlowLayout());
 		
+		panelWest.add(imgComics);
 		panelSouth.add(retour);
 		panel.add(comicsText);
 		panelGeneral.add(panel,BorderLayout.CENTER);
 		panelGeneral.add(panelSouth,BorderLayout.SOUTH);
+		panelGeneral.add(panelWest,BorderLayout.WEST);
 		
 		setContentPane(panelGeneral);
 		revalidate();
@@ -335,10 +347,11 @@ public class Fenetre  extends JFrame {
 	 * @throws BadLocationException
 	 */
 	public void affichePerso(String str) throws IOException, JSONException, NoSuchAlgorithmException, BadLocationException  { 
-		/*C'est le morceau du code qui s'affiche sur console mais qui donne l'impression que ça va plus vite (pour rechercher personnage)
-		Personnage perso=InfoPerso.infoPersonnage(str);
+		/*C'est le morceau du code qui s'affiche sur console mais qui donne l'impression que ça va plus vite (pour rechercher personnage)*/
+		/*Personnage perso=InfoPerso.infoPersonnage(str);
 		perso.afficher();
-		InfoComics.titleComics(perso).afficheComics(); */
+		InfoComics.titleComics(perso).afficheComics(); 
+		*/
 		Personnage perso=Parse.infoPersonnage(str);
 		Parse.titleComics(perso); 
 		sDoc.remove(0, sDoc.getLength());
