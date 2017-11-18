@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -62,10 +63,10 @@ public class Fenetre  extends JFrame {
 		super();
 	}
 	
-	public void  run() {
+	public void  run() throws BadLocationException {
 		this.build();//On initialise notre fenêtre
 	}
-	private void build(){
+	private void build() throws BadLocationException{
 		setTitle("Marvel"); //On donne un titre à l'application
 		setSize(800,600); //On donne une taille à notre fenêtre
 		setLocationRelativeTo(null); //On centre la fenêtre sur l'écran
@@ -77,10 +78,11 @@ public class Fenetre  extends JFrame {
 	
 	/**
 	 * construit le menu principal de l'application.
+	 * @throws BadLocationException 
 	 * 
 	 */
 	
-	public JPanel buildContentPane(){
+	public JPanel buildContentPane() throws BadLocationException{
 		
 		JPanel panel2 = new JPanel();
 		panel2.setBackground(new Color(236, 248, 254));
@@ -110,6 +112,17 @@ public class Fenetre  extends JFrame {
 		boutonComics.setFont(fontMenu);
 		boutonComics.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel2.add(boutonComics);
+		
+		
+		// pour le bouton retour 
+		sDoc.remove(0, sDoc.getLength());
+		sDoc1.remove(0, sDoc1.getLength());
+		img.setIcon(new ImageIcon());;
+		champPerso.setText("");
+		champComics.setText("");
+		champComicsValide.setText("");
+		
+		
 		return panel2;
 	}
 	
