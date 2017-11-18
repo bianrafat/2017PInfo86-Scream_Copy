@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.util.Scanner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +39,16 @@ public class Parse {
 	private static String creators = "creators";
 	private static String items = "items";
 	private static String role = "role"; 
+	private static int bool;
 	
+	/**
+	 * 
+	 * @param nom
+	 * @return pers
+	 * @throws IOException
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public static Personnage infoPersonnage(String nom) throws IOException, JSONException, NoSuchAlgorithmException {
 		
 		
@@ -67,6 +77,15 @@ public class Parse {
 		
 		return pers;
 	}
+	
+	/**
+	 * 
+	 * @param pers
+	 * @return pers
+	 * @throws IOException
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public static Personnage titleComics(Personnage pers) throws IOException, JSONException, NoSuchAlgorithmException
 	{
 		//generation du timstamp:
@@ -95,6 +114,15 @@ public class Parse {
 	}
 	
 	// Classe pour retrouver des comics grace a la methode "StartWith"
+	// Même méthode que titleComics mais cette fois pour les Comics et non les personnages
+	/**
+	 * 
+	 * @param title
+	 * @return comics
+	 * @throws IOException
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public static Comics listeComics(String title) throws  IOException, JSONException, NoSuchAlgorithmException
 	{
 		
@@ -123,6 +151,17 @@ public class Parse {
 		return comics;
 	}
 	
+	// Méthode qui permet d'avoir des informations sur un comics choisi par l'utilisateur.
+	// Une liste de titre de Comics lui est proposé, ensuite il fait un choix parmi cette liste.
+	/**
+	 * 
+	 * @param title
+	 * @param num
+	 * @return comics
+	 * @throws IOException
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public static Comics infoComics(String title, int num) throws  IOException, JSONException, NoSuchAlgorithmException
 	{
 		
@@ -141,25 +180,41 @@ public class Parse {
 		JSONObject data = obj.getJSONObject(donnees);
 		JSONArray results = data.getJSONArray(tableau);
 		
-		
+		// création d'un objet Comics
 		Comics comics=new Comics();		
 		
-		comics.setId(results.getJSONObject(num-1).getInt(identifiant));
-		comics.setTitle(results.getJSONObject(num-1).getString(titre));
-		comics.setDescription(results.getJSONObject(num-1).getString(description));
-		
-		
-		int nbCreators=results.getJSONObject(num-1).getJSONObject(creators).getInt("available");
-		for (int j=0; j<nbCreators; j++)
-		{
-			if (nbCreators ==0) {
-				comics.setCreators(" Creators : Aucune information");
+		//Création d'une boucle pour que l'utilisateur choisisse bien entre 1 et 20 (liste de comics)
+		if ( num < 1 || num > 20) {
+			System.out.println("Veuillez entrer un nombre entre 1 et 20 / Please enter a number between 1 and 20.");
+			Scanner sc1 = new Scanner(System.in); 
+			int i = sc1.nextInt();
+			comics = Parse.infoComics(title, i);
+		}
+		else {
+			//Récupération de l'identifiant, du titre et de la description.
+			comics.setId(results.getJSONObject(num-1).getInt(identifiant));
+			comics.setTitle(results.getJSONObject(num-1).getString(titre));
+			
+			// Le problème est ici pour cette comparaison.
+			if ("null".equals(results.getJSONObject(num-1).getString(description))){
+				System.out.println("Aucune description / No description available.");
+			}else {
+				comics.setDescription(results.getJSONObject(num-1).getString(description));
 			}
-			else
+			
+			// Récupération des créateurs 
+			int nbCreators=results.getJSONObject(num-1).getJSONObject(creators).getInt("available");
+			for (int j=0; j<nbCreators; j++)
 			{
-				comics.setCreators(results.getJSONObject(num-1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(role).toUpperCase()+" : "+results.getJSONObject(num-1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(name));
+				if (nbCreators ==0) {
+					comics.setCreators(" Creators : Aucune information");
+				}
+				else
+				{
+					comics.setCreators(results.getJSONObject(num-1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(role).toUpperCase()+" : "+results.getJSONObject(num-1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(name));
+				}
 			}
-		}			
+		}
 		return comics;
 	}
 }
