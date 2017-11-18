@@ -15,11 +15,11 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
@@ -44,9 +44,9 @@ public class Fenetre  extends JFrame {
 	private JTextField champPerso = new JTextField();
 	private JTextField champComics = new JTextField();
 	private JTextField champComicsValide = new JTextField();
-	private JTextPane reponsePerso = new JTextPane();
+	private JEditorPane reponsePerso = new JTextPane();
+	private JEditorPane reponseComics = new JTextPane();
 	private StyledDocument sDoc = (StyledDocument)reponsePerso.getDocument();
-	private JTextPane reponseComics = new JTextPane();
 	private StyledDocument sDoc1 = (StyledDocument)reponseComics.getDocument();
 	private JLabel img=new JLabel() ;
 	private String champStartComics;
@@ -74,6 +74,12 @@ public class Fenetre  extends JFrame {
 	
 		setContentPane(buildContentPane());
 	}
+	
+	/**
+	 * construit le menu principal de l'application.
+	 * 
+	 */
+	
 	public JPanel buildContentPane(){
 		
 		JPanel panel2 = new JPanel();
@@ -107,6 +113,11 @@ public class Fenetre  extends JFrame {
 		return panel2;
 	}
 	
+	/**
+	 * 
+	 * interface affichait quand on clique sur le bouton "Recherche un personnage"
+	 */
+	
 	public void boutonPerso(){
 		JPanel panelGeneral = new JPanel();
 		JPanel panelNorth= new JPanel();
@@ -127,6 +138,7 @@ public class Fenetre  extends JFrame {
 		panelWest.setLayout(new FlowLayout());
 		panelEast.setLayout(new FlowLayout());
 		
+		reponsePerso.setEditable(false);
 		JScrollPane scrollingArea = new JScrollPane(reponsePerso);
 		scrollingArea.getHorizontalScrollBar().setUnitIncrement(10);
 		
@@ -142,8 +154,6 @@ public class Fenetre  extends JFrame {
 		
 		JButton retour = new JButton(new BoutonRetour("Retour",this));
 		panelEast.add(Box.createRigidArea(new Dimension(10, 0)));
-		
-		//img.setSize(panelWest.getWidth()/8,panelWest.getHeight()/8);
 	
 		panelWest.add(img);
 		panelNorth.add(label);
@@ -159,6 +169,10 @@ public class Fenetre  extends JFrame {
 		setContentPane(panelGeneral);
 		revalidate();
 	}
+	
+	/**
+	 * interface lorsqu'on clique sur le bouton " recherche un comic"
+	 */
 	
 	public void boutonComics(){
 		JPanel panelGeneral = new JPanel();
@@ -180,6 +194,7 @@ public class Fenetre  extends JFrame {
 		panelWest.setLayout(new FlowLayout());
 		panelSouth.setLayout(new FlowLayout());
 		
+		reponseComics.setEditable(false);
 		JScrollPane scrollingArea = new JScrollPane(reponseComics);
 		scrollingArea.getHorizontalScrollBar().setUnitIncrement(10);
 		
@@ -220,21 +235,39 @@ public class Fenetre  extends JFrame {
 		revalidate();
 	}
 	
-	
+	/**
+	 * retourne la zone de texte du numéro de comics choisi 
+	 * @return champComicsValide
+	 */
 	public JTextField getChampComicsValide() {
 		return champComicsValide;
 	}
 
+	
+	/**
+	 * retourne la zone de texte du debut du titre d'un comics 
+	 * @return champComics
+	 */
 	public JTextField getChampComics() {
 		return champComics;
 	}
-
+	
+	/**
+	 * interface  pour afficher les informations d'un comics
+	 * @param nb
+	 * @param title
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 * @throws BadLocationException
+	 */
 	
 	public void ContentPanelComics(int nb, String title) throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException {
 		Comics comics = Parse.infoComics(title, nb);
-		JTextPane comicsText = new JTextPane();
+		JEditorPane comicsText = new JTextPane();
+		comicsText.setEditable(false);
 		StyledDocument contenu = (StyledDocument)comicsText.getDocument();
-		Style gras=comicsText.addStyle("gras", null);
+		Style gras=((JTextPane) comicsText).addStyle("gras", null);
 		StyleConstants.setBold(gras, true);
 		int pos=0;
 		String str="Titre : ";
@@ -278,15 +311,23 @@ public class Fenetre  extends JFrame {
 		
 	}
 	
-	
+	/**
+	 *  interface pour afficher les informations d'un personnage
+	 * @param str
+	 * @throws IOException
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 * @throws BadLocationException
+	 */
 	public void affichePerso(String str) throws IOException, JSONException, NoSuchAlgorithmException, BadLocationException  { 
 		Personnage perso=Parse.infoPersonnage(str);
 		Parse.titleComics(perso);
 		sDoc.remove(0, sDoc.getLength());
 		String ph ="Nom du personnage :   ";
 		int pos=0;
-		Style defaut = reponsePerso.getStyle("default");
-		Style gras=reponsePerso.addStyle("gras", defaut);
+		
+		Style defaut = ((JTextPane) reponsePerso).getStyle("default");
+		Style gras=((JTextPane) reponsePerso).addStyle("gras", null);
 		StyleConstants.setBold(gras, true);
 	
 		sDoc.insertString(pos, ph,gras);pos+=ph.length();
@@ -313,12 +354,19 @@ public class Fenetre  extends JFrame {
 		
 	}
 	
-	
+	/**
+	 * interface affiche la liste des commics disponible avec le String str
+	 * @param str
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 * @throws BadLocationException
+	 */
 	public void afficheListeComics(String str) throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException { 
 		Comics comics = Parse.listeComics(str);
 		sDoc1.remove(0, sDoc1.getLength());
-		Style defaut = reponseComics.getStyle("default");
-		Style gras=reponseComics.addStyle("gras", defaut);
+		Style defaut = ((JTextPane) reponseComics).getStyle("default");
+		Style gras=((JTextPane) reponseComics).addStyle("gras", defaut);
 		StyleConstants.setBold(gras, true);
 		int pos=0;
 		String ph="Sur quel comics voulez-vous des informations :  \n ";
@@ -329,6 +377,7 @@ public class Fenetre  extends JFrame {
 			sDoc1.insertString(pos, comics.getComics2().get(i)+ "\n",defaut);pos+=comics.getComics2().get(i).length()+1;
 		}
 	}
+	
 
 	public void setChampStartComics(String champStartComics) {
 		this.champStartComics = champStartComics;
