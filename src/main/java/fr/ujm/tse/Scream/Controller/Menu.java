@@ -30,16 +30,5 @@ public class Menu {
 		perso.afficher();
 		Parse.titleComics(perso).afficheComics();*/
 		
-		
-		System.out.println("Entrez un titre de comics (le début ou le titre complet) : ");
-		
-		//Permet de prendre en compte ce qui est ecrit sur la console
-		Scanner sc1 = new Scanner(System.in); 
-		String str = sc1.nextLine();
-		Comics comics = Parse.listeComics(str);
-		comics.afficherComics();
-		int i = sc1.nextInt();
-		comics = Parse.infoComics(str, i);
-		comics.afficher();
 		}
 }

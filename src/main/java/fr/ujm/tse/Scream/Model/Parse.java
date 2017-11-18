@@ -39,8 +39,8 @@ public class Parse {
 	private static String creators = "creators";
 	private static String items = "items";
 	private static String role = "role"; 
-	private static int bool;
-	
+	private static String ts=Long.toString(System.currentTimeMillis()); //generation du timstamp:
+	private static MessageDigest md5hash;
 	/**
 	 * 
 	 * @param nom
@@ -51,12 +51,8 @@ public class Parse {
 	 */
 	public static Personnage infoPersonnage(String nom) throws IOException, JSONException, NoSuchAlgorithmException {
 		
-		
-		//generation du timstamp:
-		String ts=Long.toString(System.currentTimeMillis());
-		
 		//generation du md5:
-		MessageDigest md5hash = MessageDigest.getInstance("MD5");
+		md5hash = MessageDigest.getInstance("MD5");
 		md5hash.update(StandardCharsets.UTF_8.encode(ts+privateKey+publicKey));
 		String md5=String.format("%032x", new BigInteger(1, md5hash.digest()));
 		
@@ -88,11 +84,8 @@ public class Parse {
 	 */
 	public static Personnage titleComics(Personnage pers) throws IOException, JSONException, NoSuchAlgorithmException
 	{
-		//generation du timstamp:
-		String ts=Long.toString(System.currentTimeMillis());
-		
 		//generation du md5:
-		MessageDigest md5hash = MessageDigest.getInstance("MD5");
+		md5hash = MessageDigest.getInstance("MD5");
 		md5hash.update(StandardCharsets.UTF_8.encode(ts+privateKey+publicKey));
 		String md5=String.format("%032x", new BigInteger(1, md5hash.digest()));
 		
@@ -126,11 +119,8 @@ public class Parse {
 	public static Comics listeComics(String title) throws  IOException, JSONException, NoSuchAlgorithmException
 	{
 		
-		//generation du timstamp:
-		String ts=Long.toString(System.currentTimeMillis());
-		
 		//generation du md5:
-		MessageDigest md5hash = MessageDigest.getInstance("MD5");
+		md5hash = MessageDigest.getInstance("MD5");
 		md5hash.update(StandardCharsets.UTF_8.encode(ts+privateKey+publicKey));
 		String md5=String.format("%032x", new BigInteger(1, md5hash.digest()));
 		
@@ -165,11 +155,8 @@ public class Parse {
 	public static Comics infoComics(String title, int num) throws  IOException, JSONException, NoSuchAlgorithmException
 	{
 		
-		//generation du timstamp:
-		String ts=Long.toString(System.currentTimeMillis());
-		
 		//generation du md5:
-		MessageDigest md5hash = MessageDigest.getInstance("MD5");
+		md5hash = MessageDigest.getInstance("MD5");
 		md5hash.update(StandardCharsets.UTF_8.encode(ts+privateKey+publicKey));
 		String md5=String.format("%032x", new BigInteger(1, md5hash.digest()));
 		
@@ -197,7 +184,6 @@ public class Parse {
 			
 			// Le problème est ici pour cette comparaison.
 			if (results.getJSONObject(num-1).isNull(description)){
-				System.out.println("Aucune description / No description available.");
 				comics.setDescription("Aucune description / No description available.");
 			}else {
 				comics.setDescription(results.getJSONObject(num-1).getString(description));
