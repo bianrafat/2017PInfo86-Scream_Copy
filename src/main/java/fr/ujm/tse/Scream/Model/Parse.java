@@ -137,6 +137,7 @@ public class Parse {
 		for(int i=0; i<size;i++)
 		{
 			comics.setComics(results.getJSONObject(i).getString(titre));
+			comics.setLien_image(results.getJSONObject(i).getJSONObject(thumbnail).getString(path)+"."+results.getJSONObject(i).getJSONObject(thumbnail).getString(extension));
 		}
 		return comics;
 	}
@@ -201,6 +202,8 @@ public class Parse {
 					comics.setCreators(results.getJSONObject(num-1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(role).toUpperCase()+" : "+results.getJSONObject(num-1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(name));
 				}
 			}
+			// pour avoir le lien de l'image du personnage il faut combiner path et extension
+			comics.setLien_image(results.getJSONObject(num-1).getJSONObject(thumbnail).getString(path)+"."+results.getJSONObject(num-1).getJSONObject(thumbnail).getString(extension));
 		}
 		return comics;
 	}

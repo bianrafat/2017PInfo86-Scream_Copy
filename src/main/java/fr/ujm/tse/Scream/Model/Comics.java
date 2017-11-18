@@ -6,6 +6,7 @@ public class Comics {
 	private int id;
 	private String title;
 	private String description;
+	private String lien_image;
 	private ArrayList<String> comics = new ArrayList<String>();
 	private ArrayList<String> creators = new ArrayList<String>();
 	
@@ -22,6 +23,13 @@ public class Comics {
 		
 	}
 
+	public String getLien_image() {
+		return lien_image;
+	}
+	public void setLien_image(String lien_image) {
+		this.lien_image = lien_image;
+	}
+	
 	public int getId() {
 		return id;
 	}
