@@ -196,8 +196,9 @@ public class Parse {
 			comics.setTitle(results.getJSONObject(num-1).getString(titre));
 			
 			// Le problème est ici pour cette comparaison.
-			if ("null".equals(results.getJSONObject(num-1).getString(description))){
+			if (results.getJSONObject(num-1).isNull(description)){
 				System.out.println("Aucune description / No description available.");
+				comics.setDescription("Aucune description / No description available.");
 			}else {
 				comics.setDescription(results.getJSONObject(num-1).getString(description));
 			}
