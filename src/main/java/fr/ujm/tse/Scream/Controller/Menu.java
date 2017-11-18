@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.util.jar.JarException;
 
 import javax.swing.SwingUtilities;
+import javax.swing.text.BadLocationException;
 
 import org.json.JSONException;
 
@@ -19,7 +20,12 @@ public class Menu {
 			public void run(){
 				//On crée une nouvelle instance de notre JDialog
 				Fenetre fenetre = new Fenetre();
-				fenetre.run();
+				try {
+					fenetre.run();
+				} catch (BadLocationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				fenetre.setVisible(true);//On la rend visible
 			}
 		});

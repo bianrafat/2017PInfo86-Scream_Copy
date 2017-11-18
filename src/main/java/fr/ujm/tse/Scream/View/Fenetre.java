@@ -37,6 +37,8 @@ import fr.ujm.tse.Scream.Controller.BoutonRechercherPerso;
 import fr.ujm.tse.Scream.Controller.BoutonRetour;
 import fr.ujm.tse.Scream.Controller.BoutonValideComics;
 import fr.ujm.tse.Scream.Model.Comics;
+import fr.ujm.tse.Scream.Model.InfoComics;
+import fr.ujm.tse.Scream.Model.InfoPerso;
 import fr.ujm.tse.Scream.Model.Parse;
 import fr.ujm.tse.Scream.Model.Personnage;
 
@@ -96,7 +98,7 @@ public class Fenetre  extends JFrame {
 		panel2.add(Box.createRigidArea(new Dimension(0, 20)));
 		panel2.add(label);
         panel2.add(Box.createRigidArea(new Dimension(0, 20)));
-		JButton boutonPersonnage = new JButton(new BoutonMenuPersonnage("rechercher un personnage ",this));
+		JButton boutonPersonnage = new JButton(new BoutonMenuPersonnage("Rechercher un personnage ",this));
 		boutonPersonnage.setMaximumSize(new Dimension(300, 50));
 		boutonPersonnage.setMinimumSize(new Dimension(200, 50));
 		boutonPersonnage.setPreferredSize(new Dimension(200, 50));
@@ -105,7 +107,7 @@ public class Fenetre  extends JFrame {
 		panel2.add(boutonPersonnage);
 		
 		panel2.add(Box.createRigidArea(new Dimension(0, 20)));
-		JButton boutonComics = new JButton(new BoutonMenuComics("rechercher un Comics ",this));
+		JButton boutonComics = new JButton(new BoutonMenuComics("Rechercher un Comics ",this));
 		boutonComics.setMaximumSize(new Dimension(300, 50));
 		boutonComics.setMinimumSize(new Dimension(200, 50));
 		boutonComics.setPreferredSize(new Dimension(200, 50));
@@ -333,8 +335,12 @@ public class Fenetre  extends JFrame {
 	 * @throws BadLocationException
 	 */
 	public void affichePerso(String str) throws IOException, JSONException, NoSuchAlgorithmException, BadLocationException  { 
+		/*C'est le morceau du code qui s'affiche sur console mais qui donne l'impression que ça va plus vite (pour rechercher personnage)
+		Personnage perso=InfoPerso.infoPersonnage(str);
+		perso.afficher();
+		InfoComics.titleComics(perso).afficheComics(); */
 		Personnage perso=Parse.infoPersonnage(str);
-		Parse.titleComics(perso);
+		Parse.titleComics(perso); 
 		sDoc.remove(0, sDoc.getLength());
 		String ph ="Nom du personnage :   ";
 		int pos=0;
@@ -358,7 +364,6 @@ public class Fenetre  extends JFrame {
 			sDoc.insertString(pos, ph,defaut);pos+=ph.length();
 			sDoc.insertString(pos, perso.getComics2().get(i)+ "\n",defaut);pos+=perso.getComics2().get(i).length()+1;
 		}
-		
 		
 		ImageIcon icon = new ImageIcon(new URL(perso.getLien_image()));
 		icon = new ImageIcon(icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH));

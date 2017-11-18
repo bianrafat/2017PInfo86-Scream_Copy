@@ -13,14 +13,15 @@ import fr.ujm.tse.Scream.View.Fenetre;
 
 public class BoutonRechercherPerso extends AbstractAction {
 	private Fenetre fenetre;
+	private String str;
 	public BoutonRechercherPerso(String texte, Fenetre f){
 		super(texte);
 		fenetre=f;
 	}
  
 	public void actionPerformed(ActionEvent e) { 
-		String str = fenetre.getChampPerso().getText();
 		try {
+			str = fenetre.getChampPerso().getText();
 			fenetre.affichePerso(str);
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
