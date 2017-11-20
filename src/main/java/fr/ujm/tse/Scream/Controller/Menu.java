@@ -8,6 +8,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 
 import org.json.JSONException;
+import fr.ujm.tse.Scream.Model.ParseWiki;
 
 import fr.ujm.tse.Scream.Model.Comics;
 import fr.ujm.tse.Scream.Model.Parse;
@@ -29,6 +30,8 @@ public class Menu {
 				fenetre.setVisible(true);//On la rend visible
 			}
 		});
+		Thread t = new Thread(new ParseWiki());
+		t.start();
 		/*System.out.println("Entrez le nom d'un personnage ");
 		Scanner sc1 = new Scanner(System.in);
 		String str = sc1.nextLine();
