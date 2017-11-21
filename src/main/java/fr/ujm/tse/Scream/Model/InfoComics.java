@@ -21,6 +21,7 @@ public class InfoComics {
 	private static String privateKey ="3f8505dd47a9407315dbda3d3193b8dc7400ab18";
 	private static String publicKey = "194167cb1ebace9fa95d54a33cf61753"; 
 	private static String reqlistComics = "https://gateway.marvel.com:443/v1/public/comics?characters=";
+	private static String limit = "&limit=10";
 	private static String apikey = "&apikey=";
 	private static String timestp = "&ts=";
 	private static String hash = "&hash=";
@@ -37,7 +38,7 @@ public class InfoComics {
 		md5hash.update(StandardCharsets.UTF_8.encode(ts+privateKey+publicKey));
 		String md5=String.format("%032x", new BigInteger(1, md5hash.digest()));
 		
-		info = HttpConnect.readUrl(reqlistComics+pers.getId()+timestp+ts+apikey+publicKey+hash+md5);
+		info = HttpConnect.readUrl(reqlistComics+pers.getId()+limit+timestp+ts+apikey+publicKey+hash+md5);
 		
 		JSONObject obj = new JSONObject(info);
 		JSONObject data = obj.getJSONObject(donnees);

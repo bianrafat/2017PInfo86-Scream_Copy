@@ -24,6 +24,7 @@ public class Parse {
 	private static String reqNom = "https://gateway.marvel.com:443/v1/public/characters?name=";
 	private static String reqlistComics = "https://gateway.marvel.com:443/v1/public/comics?characters=";
 	private static String reqTitle = "https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=";
+	private static String limit = "&limit=10";
 	private static String apikey = "&apikey=";
 	private static String timestp = "&ts=";
 	private static String hash = "&hash=";
@@ -89,7 +90,7 @@ public class Parse {
 		md5hash.update(StandardCharsets.UTF_8.encode(ts+privateKey+publicKey));
 		String md5=String.format("%032x", new BigInteger(1, md5hash.digest()));
 		
-		info = HttpConnect.readUrl(reqlistComics+pers.getId()+timestp+ts+apikey+publicKey+hash+md5);
+		info = HttpConnect.readUrl(reqlistComics+pers.getId()+limit+timestp+ts+apikey+publicKey+hash+md5);
 		
 		JSONObject obj = new JSONObject(info);
 		JSONObject data = obj.getJSONObject(donnees);
@@ -125,7 +126,7 @@ public class Parse {
 		String md5=String.format("%032x", new BigInteger(1, md5hash.digest()));
 		
 		//on envoie la requete http
-		info = HttpConnect.readUrl(reqTitle+title+timestp+ts+apikey+publicKey+hash+md5);
+		info = HttpConnect.readUrl(reqTitle+title+limit+timestp+ts+apikey+publicKey+hash+md5);
 		
 		JSONObject obj = new JSONObject(info);
 		JSONObject data = obj.getJSONObject(donnees);
@@ -204,6 +205,7 @@ public class Parse {
 			}
 			// pour avoir le lien de l'image du personnage il faut combiner path et extension
 			comics.setLien_image(results.getJSONObject(num-1).getJSONObject(thumbnail).getString(path)+"."+results.getJSONObject(num-1).getJSONObject(thumbnail).getString(extension));
+			
 		}
 		return comics;
 	}

@@ -215,7 +215,7 @@ public class Fenetre  extends JFrame {
 		JScrollPane scrollingArea = new JScrollPane(reponseComics);
 		scrollingArea.getHorizontalScrollBar().setUnitIncrement(10);
 		
-		JLabel label = new JLabel("Entrez un titre de Comics (le debut ou le titre complet) :");
+		JLabel label = new JLabel("Entrez un titre de Comics (le debut uniquement) :");
 		champComics.setMaximumSize(new Dimension(200,30));
 		champComics.setMinimumSize(new Dimension(100,30));
 		champComics.setPreferredSize(new Dimension(200,30));   
