@@ -1,6 +1,9 @@
 package fr.ujm.tse.Scream.Controller;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
@@ -11,12 +14,12 @@ import org.json.JSONException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
 
-public class BoutonValideComics extends AbstractAction {
+public class BoutonValideComics implements ActionListener , KeyListener{
 	
 	private Fenetre fenetre;
 	private String titleComics;
-	public BoutonValideComics(String texte, Fenetre f){
-		super(texte);
+	public BoutonValideComics(Fenetre f){
+		
 		fenetre=f;
 		
 	}
@@ -39,5 +42,23 @@ public class BoutonValideComics extends AbstractAction {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -166,8 +166,9 @@ public class Fenetre  extends JFrame {
 		panelWest.setMaximumSize(new Dimension(400,400));
 		panelWest.setMinimumSize(new Dimension(250,250));
 		panelWest.setPreferredSize(new Dimension(350,350));
-		JButton recherche = new JButton(new BoutonRechercherPerso("Rechercher",this));
-		
+		JButton recherche = new JButton("Rechercher");
+		champPerso.addActionListener(new BoutonRechercherPerso(this));
+		recherche.addActionListener(new BoutonRechercherPerso(this));
 		JButton retour = new JButton(new BoutonRetour("Retour",this));
 		panelEast.add(Box.createRigidArea(new Dimension(10, 0)));
 	
@@ -218,8 +219,9 @@ public class Fenetre  extends JFrame {
 		champComics.setMaximumSize(new Dimension(200,30));
 		champComics.setMinimumSize(new Dimension(100,30));
 		champComics.setPreferredSize(new Dimension(200,30));   
-		
-		JButton recherche = new JButton(new BoutonRechercherComics("Rechercher",this));
+		champComics.addActionListener(new BoutonRechercherComics(this));
+		JButton recherche = new JButton("Rechercher");
+		recherche.addActionListener(new BoutonRechercherComics(this));
 		JButton retour = new JButton(new BoutonRetour("Retour",this));
 
 		panelWest.add(Box.createRigidArea(new Dimension(200, 0)));
@@ -228,8 +230,9 @@ public class Fenetre  extends JFrame {
 		champComicsValide.setMaximumSize(new Dimension(200,30));
 		champComicsValide.setMinimumSize(new Dimension(100,30));
 		champComicsValide.setPreferredSize(new Dimension(200,30));   
-		
-		JButton valider = new JButton( new BoutonValideComics("Valider",this));
+		champComicsValide.addActionListener(new BoutonValideComics(this));
+		JButton valider = new JButton("Valider");
+		valider.addActionListener(new BoutonValideComics(this));
 		
 	
 		panelNorth.add(label);
