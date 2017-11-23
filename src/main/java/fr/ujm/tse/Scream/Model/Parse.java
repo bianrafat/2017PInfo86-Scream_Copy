@@ -184,7 +184,7 @@ public class Parse {
 			comics.setId(results.getJSONObject(num-1).getInt(identifiant));
 			comics.setTitle(results.getJSONObject(num-1).getString(titre));
 			
-			// Le problème est ici pour cette comparaison.
+			// Récupération de la description si elle existe
 			if (results.getJSONObject(num-1).isNull(description)){
 				comics.setDescription("Aucune description / No description available.");
 			}else {
@@ -193,12 +193,11 @@ public class Parse {
 			
 			// Récupération des créateurs 
 			int nbCreators=results.getJSONObject(num-1).getJSONObject(creators).getInt("available");
-			for (int j=0; j<nbCreators; j++)
-			{
-				if (nbCreators ==0) {
-					comics.setCreators(" Creators : Aucune information");
-				}
-				else
+			if (nbCreators ==0) {
+				comics.setCreators("Aucune information / No information.");
+			}
+			else{
+				for (int j=0; j<nbCreators; j++)
 				{
 					comics.setCreators(results.getJSONObject(num-1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(role).toUpperCase()+" : "+results.getJSONObject(num-1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(name));
 				}
