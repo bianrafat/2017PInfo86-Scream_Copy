@@ -51,7 +51,7 @@ public class Parse {
 	 * @throws NoSuchAlgorithmException
 	 */
 	public static Personnage infoPersonnage(String nom) throws IOException, JSONException, NoSuchAlgorithmException {
-		
+		nom=nom.replace(" ", "%20");
 		//generation du md5:
 		md5hash = MessageDigest.getInstance("MD5");
 		md5hash.update(StandardCharsets.UTF_8.encode(ts+privateKey+publicKey));
