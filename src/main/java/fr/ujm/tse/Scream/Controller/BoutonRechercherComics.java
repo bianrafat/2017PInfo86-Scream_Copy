@@ -24,6 +24,7 @@ public class BoutonRechercherComics implements ActionListener , KeyListener{
 	public void actionPerformed(ActionEvent e) { 
 		String str = fenetre.getChampComics().getText();
 		fenetre.setChampStartComics(str);
+		fenetre.getIntro().setText("<html> Effectuez un double clique sur un comics: <br><br></html>");
 		try {
 			fenetre.afficheListeComics(str);
 		} catch (JSONException e1) {

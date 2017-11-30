@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -59,6 +60,8 @@ public class Fenetre  extends JFrame {
 	private JLabel imgComics=new JLabel() ;
 	private String champStartComics;
 	private JList<Object> listeComics=new JList<Object>();
+	private JLabel intro= new JLabel();
+	JButton biblio = new JButton("Ma Bibliotèque");
 	
 
 
@@ -92,12 +95,25 @@ public class Fenetre  extends JFrame {
 	
 	public JPanel buildContentPane() throws BadLocationException{
 		
+		
+		GridLayout param = new GridLayout(3,2);
+		param.setHgap(70); //Cinq pixels d'espace entre les colonnes (H comme Horizontal)
+		param.setVgap(20); //Cinq pixels d'espace entre les lignes (V comme Vertical) 
+		
 		JPanel panel2 = new JPanel();
 		JPanel panelG = new JPanel(); 
+		JPanel north= new JPanel(); 
+		JPanel center = new JPanel(); 
+		center.setBackground(new Color(236, 248, 254));
+		north.setBackground(new Color(236, 248, 254));
 		panel2.setBackground(new Color(236, 248, 254));
 		panelG.setBackground(new Color(236, 248, 254));
 		panelG.setLayout(new BorderLayout());
-		panel2.setLayout(new BoxLayout(panel2,BoxLayout.Y_AXIS));
+		panel2.setLayout(new BorderLayout());
+		north.setLayout(new FlowLayout());
+		center.setLayout(param);
+		
+		
 		JLabel label = new JLabel("Bienvenue");
 		Font font = new Font("Century Schoolbook",Font.BOLD,24);
 		Font fontMenu = new Font("Century Schoolbook",Font.BOLD,15);
@@ -105,6 +121,11 @@ public class Fenetre  extends JFrame {
 		JLabel background = new JLabel();
 		ImageIcon icon = new ImageIcon(ImageIO.read(new File("src\\main\\resources\\Marvel.png")));
 		background.setIcon(icon);
+		/*JLabel background2 = new JLabel();
+		ImageIcon icon2 = new ImageIcon(ImageIO.read(new File("src\\main\\resources\\title_marvel.png")));
+		background2.setIcon(icon2);
+		panelG.add(background2,BorderLayout.NORTH);*/
+		
 		panelG.add(background, BorderLayout.SOUTH);
 		} catch (IOException e) {
 		// TODO Auto-generated catch block
@@ -114,26 +135,43 @@ public class Fenetre  extends JFrame {
 		
 		label.setFont(font);
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel2.add(Box.createRigidArea(new Dimension(0, 20)));
-		panel2.add(label);
-        panel2.add(Box.createRigidArea(new Dimension(0, 20)));
+		north.add(label);
+        panelG.add(north,BorderLayout.NORTH);
 		JButton boutonPersonnage = new JButton(new BoutonMenuPersonnage("Rechercher un personnage ",this));
-		boutonPersonnage.setMaximumSize(new Dimension(300, 50));
-		boutonPersonnage.setMinimumSize(new Dimension(200, 50));
-		boutonPersonnage.setPreferredSize(new Dimension(200, 50));
+		/*boutonPersonnage.setMaximumSize(new Dimension(300, 50));
+		boutonPersonnage.setMinimumSize(new Dimension(50, 50));
+		boutonPersonnage.setPreferredSize(new Dimension(150, 40));*/
 		boutonPersonnage.setFont(fontMenu);
-		boutonPersonnage.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel2.add(boutonPersonnage);
+		//boutonPersonnage.setAlignmentX(Component.LEFT_ALIGNMENT);
+		center.add(boutonPersonnage);
 		
-		panel2.add(Box.createRigidArea(new Dimension(0, 20)));
+		//panel2.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton boutonComics = new JButton(new BoutonMenuComics("Rechercher un Comics ",this));
-		boutonComics.setMaximumSize(new Dimension(300, 50));
+		/*boutonComics.setMaximumSize(new Dimension(300, 50));
 		boutonComics.setMinimumSize(new Dimension(200, 50));
-		boutonComics.setPreferredSize(new Dimension(200, 50));
+		boutonComics.setPreferredSize(new Dimension(200, 50));*/
 		boutonComics.setFont(fontMenu);
-		boutonComics.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel2.add(boutonComics);
+		//boutonComics.setAlignmentX(Component.CENTER_ALIGNMENT);
+		center.add(boutonComics);
 		
+
+		JButton wikiData = new JButton("Recherche sur wikidata");
+		wikiData.setFont(fontMenu);
+		center.add(wikiData);
+		
+		JButton connexion = new JButton("Connexion");
+		connexion.setFont(fontMenu);
+		center.add(connexion);
+		
+		biblio.setFont(fontMenu);
+		biblio.setVisible(false);
+		center.add(biblio);
+		
+
+		panel2.add(Box.createRigidArea(new Dimension(0, 50)),BorderLayout.NORTH);
+		panel2.add(Box.createRigidArea(new Dimension(20, 0)),BorderLayout.WEST);
+		panel2.add(Box.createRigidArea(new Dimension(20, 0)),BorderLayout.EAST);
+		panel2.add(center,BorderLayout.CENTER);
 		panelG.add(panel2, BorderLayout.CENTER);
 		// pour le bouton retour 
 		sDoc.remove(0, sDoc.getLength());
@@ -141,6 +179,7 @@ public class Fenetre  extends JFrame {
 		champPerso.setText("");
 		champComics.setText("");
 		Object[] listeDefault=new Object[] {""};
+		intro.setText("");
         
 		listeComics.setListData(listeDefault);
 		
@@ -249,7 +288,6 @@ public class Fenetre  extends JFrame {
 		JPanel panel = new JPanel();
 		JPanel panelWest = new JPanel();
 		JPanel panelSouth = new JPanel();
-		JLabel intro = new JLabel("Effectuez un double clique sur un comics: ");
 		panelSouth.setBackground(new Color(236, 248, 254));
 		panelWest.setBackground(new Color(236, 248, 254));
 		panel.setBackground(new Color(236, 248, 254));
@@ -305,8 +343,10 @@ public class Fenetre  extends JFrame {
 		panelNorth.add(champComics);
 		panelNorth.add(recherche);
 		panelNorth.add(retour);
+		
 		panel.add(intro,BorderLayout.NORTH);
 
+		panel.add(Box.createRigidArea(new Dimension(200, 20)),BorderLayout.WEST);
 		panel.add(listeComics,BorderLayout.CENTER);
 	
 		panelGeneral.add(panelNorth,BorderLayout.NORTH);
@@ -319,9 +359,13 @@ public class Fenetre  extends JFrame {
 	}
 	
 	/**
-	 * retourne la zone de texte du numéro de comics choisi 
-	 * @return champComicsValide
+	 *  retourne le texte a afficher apres la recherche de comics
+	 * @return intro
 	 */
+
+	public JLabel getIntro() {
+		return intro;
+	}
 
 	/**
 	 * retourne la zone de texte du debut du titre d'un comics 
