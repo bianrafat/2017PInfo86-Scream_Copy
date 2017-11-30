@@ -17,7 +17,7 @@ import fr.ujm.tse.Scream.View.Fenetre;
 
 public class Menu {
 	public static void main(String[] args) throws IOException, JSONException, NoSuchAlgorithmException {
-		SwingUtilities.invokeLater(new Runnable(){
+		/*SwingUtilities.invokeLater(new Runnable(){
 			public void run(){
 				//On crée une nouvelle instance de notre JDialog
 				Fenetre fenetre = new Fenetre();
@@ -31,13 +31,17 @@ public class Menu {
 			}
 		});
 		Thread t = new Thread(new ParseWiki());
-		t.start();
+		t.start();*/
 		/*System.out.println("Entrez le nom d'un personnage ");
 		Scanner sc1 = new Scanner(System.in);
 		String str = sc1.nextLine();
 		Personnage perso=Parse.infoPersonnage(str);
 		perso.afficher();
 		Parse.titleComics(perso).afficheComics();*/
-		
+		System.out.println("Entrez le titre de Comics");
+		Scanner sc1 = new Scanner(System.in);
+		String str = sc1.nextLine();
+		Comics comics = Parse.listeComics(str);
+		comics.afficherComics();
 		}
 }

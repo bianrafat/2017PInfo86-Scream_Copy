@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import fr.ujm.tse.Scream.Controller.HttpConnect;
 
 
-//Cette classe sert Ã  parser les donnÃ©es 
+//Cette classe sert à  parser les données 
 
 public class Parse {
 	// Creation de champs statiques
@@ -40,8 +40,12 @@ public class Parse {
 	private static String creators = "creators";
 	private static String items = "items";
 	private static String role = "role"; 
+	private static String total = "total";
+	private static String count = "count";
 	private static String ts=Long.toString(System.currentTimeMillis()); //generation du timstamp:
 	private static MessageDigest md5hash;
+	
+	
 	/**
 	 * 
 	 * @param nom
@@ -109,6 +113,7 @@ public class Parse {
 	
 	// Classe pour retrouver des comics grace a la methode "StartWith"
 	// Même méthode que titleComics mais cette fois pour les Comics et non les personnages
+	
 	/**
 	 * 
 	 * @param title
@@ -134,7 +139,8 @@ public class Parse {
 		
 		
 		Comics comics=new Comics();
-		int size = data.getInt("count");		
+		int size = data.getInt(count);
+		comics.setTotal(data.getInt(total));
 		for(int i=0; i<size;i++)
 		{
 			comics.setComics(results.getJSONObject(i).getString(titre));
@@ -145,6 +151,7 @@ public class Parse {
 	
 	// Méthode qui permet d'avoir des informations sur un comics choisi par l'utilisateur.
 	// Une liste de titre de Comics lui est proposé, ensuite il fait un choix parmi cette liste.
+	
 	/**
 	 * 
 	 * @param title
@@ -183,6 +190,7 @@ public class Parse {
 			//Récupération de l'identifiant, du titre et de la description.
 			comics.setId(results.getJSONObject(num-1).getInt(identifiant));
 			comics.setTitle(results.getJSONObject(num-1).getString(titre));
+			
 			
 			// Récupération de la description si elle existe
 			if (results.getJSONObject(num-1).isNull(description)){

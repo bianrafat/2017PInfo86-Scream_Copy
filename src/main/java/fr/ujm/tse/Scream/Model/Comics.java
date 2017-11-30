@@ -6,12 +6,18 @@ public class Comics {
 	private int id;
 	private String title;
 	private String description;
+	private int total;
 	private String lien_image;
 	private ArrayList<String> comics = new ArrayList<String>();
 	private ArrayList<String> creators = new ArrayList<String>();
 	
 	
-	
+	/**
+	 * 
+	 * @param id
+	 * @param title
+	 * @param description
+	 */
 	public Comics(int id, String title, String description) {
 		super();
 		this.setId(id);
@@ -57,7 +63,9 @@ public class Comics {
 	public void setComics(String comics) {
 		this.comics.add(comics);
 	}
+	
 	public void getComics() {
+		System.out.println("Pour cette recherche il y a "+total+" comics disponibles.");
 		System.out.println("Sur quel comics voulez-vous des informations : ");
 		for(int i=0; i<comics.size(); i++)
 		{
@@ -96,6 +104,14 @@ public class Comics {
 		System.out.println("Id : " + this.getId());
 		System.out.println("Description : " + this.getDescription());
 		this.getCreators();
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
 	}
 
 	

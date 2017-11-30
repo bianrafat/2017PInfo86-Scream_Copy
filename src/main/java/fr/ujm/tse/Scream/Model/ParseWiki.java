@@ -83,23 +83,30 @@ public class ParseWiki implements Runnable{
 	private List<String> list_6 = new ArrayList<String>();
 	private List<String> list_7 = new ArrayList<String>();
 	public static final boolean OFFLINE_MODE = false;
+	
+	private static String reqWikidata = "https://www.wikidata.org/w/api.php?action=wbsearchentities&search=";
+	private static String languageformat = "&language=en&format=json";
+	private static String description = "description";
+	private static String search = "search";
+	private static String fr = "fr";
+	private static String en = "en";
 
 
 	public void infoWikipersonnage(String nom) throws IOException, MediaWikiApiErrorException {
-		info = HttpConnect.readUrl("https://www.wikidata.org/w/api.php?action=wbsearchentities&search="+nom+"&language=en&format=json");
+		info = HttpConnect.readUrl(reqWikidata+nom+languageformat);
 		obj = new JSONObject(info);
-		JSONArray results = obj.getJSONArray("search");
+		JSONArray results = obj.getJSONArray(search);
 		for (int i = 0; i < results.length(); i++) {
 			id.add(results.getJSONObject(i).getString("id"));
-			if(results.getJSONObject(i).has("description")){
-				desc.add(results.getJSONObject(i).getString("description"));
+			if(results.getJSONObject(i).has(description)){
+				desc.add(results.getJSONObject(i).getString(description));
 			}
 			else{
 				desc.add("");
 			}
-			System.out.println("choix " + (i + 1) + ":" + desc.get(i));
+			System.out.println("Choix " + (i + 1) + ":" + desc.get(i));
 		}
-		System.out.println("entrez le numéro de description qui correspond au personnage recherché");
+		System.out.println("Entrez le numéro de description qui correspond au personnage recherché");
 		Scanner scan = new Scanner(System.in);
 		try {
 			choix = scan.nextInt();
@@ -109,7 +116,7 @@ public class ParseWiki implements Runnable{
 
 			// If a value was found, write the data:
 			if (itemDocument.getLabels() != null) {
-				String name=itemDocument.getLabels().get("fr").getText();
+				String name=itemDocument.getLabels().get(fr).getText();
 				persoWiki.setName(name);
 			}
 			else{
@@ -117,15 +124,15 @@ public class ParseWiki implements Runnable{
 
 			}
 			if(itemDocument.getDescriptions()!=null){
-				String description=itemDocument.getDescriptions().get("fr").getText();
+				String description=itemDocument.getDescriptions().get(fr).getText();
 				persoWiki.setDescription(description);
 			}
 			else{
 				persoWiki.setDescription("");
 			}
 			if(itemDocument.getAliases()!=null){
-				List<MonolingualTextValue> aliasesFr = itemDocument.getAliases().get("fr");
-				List<MonolingualTextValue> aliasesEn = itemDocument.getAliases().get("en");
+				List<MonolingualTextValue> aliasesFr = itemDocument.getAliases().get(fr);
+				List<MonolingualTextValue> aliasesEn = itemDocument.getAliases().get(en);
 				for(int i=0;i<aliasesFr.size();i++){
 					persoWiki.setNicknames(aliasesFr.get(i).getText());
 				}
@@ -144,11 +151,11 @@ public class ParseWiki implements Runnable{
 				});
 				for(String j:list_1){
 					ItemDocument ITdoc = (ItemDocument) wbdf.getEntityDocument(j);
-					if(ITdoc.getLabels().get("fr") != null){
-						persoWiki.setInstance_of(ITdoc.getLabels().get("fr").getText());
+					if(ITdoc.getLabels().get(fr) != null){
+						persoWiki.setInstance_of(ITdoc.getLabels().get(fr).getText());
 					}
-					else if(ITdoc.getLabels().get("en") != null){
-						persoWiki.setInstance_of(ITdoc.getLabels().get("en").getText());
+					else if(ITdoc.getLabels().get(en) != null){
+						persoWiki.setInstance_of(ITdoc.getLabels().get(en).getText());
 					}
 					else{
 						persoWiki.setInstance_of("");
@@ -166,11 +173,11 @@ public class ParseWiki implements Runnable{
 				list1=stringValue1.getValue().toString().split("/");
 				String a=list1[list1.length-1].split(" ")[0];
 				ItemDocument ITdoc = (ItemDocument) wbdf.getEntityDocument(a);
-				if(ITdoc.getLabels().get("fr") != null){
-					persoWiki.setGender(ITdoc.getLabels().get("fr").getText());
+				if(ITdoc.getLabels().get(fr) != null){
+					persoWiki.setGender(ITdoc.getLabels().get(fr).getText());
 				}
-				else if(ITdoc.getLabels().get("en") != null){
-					persoWiki.setGender(ITdoc.getLabels().get("en").getText());
+				else if(ITdoc.getLabels().get(en) != null){
+					persoWiki.setGender(ITdoc.getLabels().get(en).getText());
 				}
 				else{
 					persoWiki.setGender("");
@@ -185,11 +192,11 @@ public class ParseWiki implements Runnable{
 				list2=stringValue2.getValue().toString().split("/");
 				String a=list2[list2.length-1].split(" ")[0];
 				ItemDocument ITdoc = (ItemDocument) wbdf.getEntityDocument(a);
-				if(ITdoc.getLabels().get("fr") != null){
-					persoWiki.setCountry(ITdoc.getLabels().get("fr").getText());
+				if(ITdoc.getLabels().get(fr) != null){
+					persoWiki.setCountry(ITdoc.getLabels().get(fr).getText());
 				}
-				else if(ITdoc.getLabels().get("en") != null){
-					persoWiki.setCountry(ITdoc.getLabels().get("en").getText());
+				else if(ITdoc.getLabels().get(en) != null){
+					persoWiki.setCountry(ITdoc.getLabels().get(en).getText());
 				}
 				else{
 					persoWiki.setCountry("");
@@ -204,11 +211,11 @@ public class ParseWiki implements Runnable{
 				list3=stringValue3.getValue().toString().split("/");
 				String a=list3[list3.length-1].split(" ")[0];
 				ItemDocument ITdoc = (ItemDocument) wbdf.getEntityDocument(a);
-				if(ITdoc.getLabels().get("fr") != null){
-					persoWiki.setFather(ITdoc.getLabels().get("fr").getText());
+				if(ITdoc.getLabels().get(fr) != null){
+					persoWiki.setFather(ITdoc.getLabels().get(fr).getText());
 				}
-				else if(ITdoc.getLabels().get("en") != null){
-					persoWiki.setFather(ITdoc.getLabels().get("en").getText());
+				else if(ITdoc.getLabels().get(en) != null){
+					persoWiki.setFather(ITdoc.getLabels().get(en).getText());
 				}
 				else{
 					persoWiki.setFather("");
@@ -227,11 +234,11 @@ public class ParseWiki implements Runnable{
 				});
 				String a=list_2.get(0);
 				ItemDocument ITdoc = (ItemDocument) wbdf.getEntityDocument(a);
-				if(ITdoc.getLabels().get("fr") != null){
-					persoWiki.setMother(ITdoc.getLabels().get("fr").getText());
+				if(ITdoc.getLabels().get(fr) != null){
+					persoWiki.setMother(ITdoc.getLabels().get(fr).getText());
 				}
-				else if(ITdoc.getLabels().get("en") != null){
-					persoWiki.setMother(ITdoc.getLabels().get("en").getText());
+				else if(ITdoc.getLabels().get(en) != null){
+					persoWiki.setMother(ITdoc.getLabels().get(en).getText());
 				}
 				else{
 					persoWiki.setMother("");	
@@ -246,11 +253,11 @@ public class ParseWiki implements Runnable{
 				list5=stringValue5.getValue().toString().split("/");
 				String a=list5[list5.length-1].split(" ")[0];
 				ItemDocument ITdoc = (ItemDocument) wbdf.getEntityDocument(a);
-				if(ITdoc.getLabels().get("fr") != null){
-					persoWiki.setStepparent(ITdoc.getLabels().get("fr").getText());
+				if(ITdoc.getLabels().get(fr) != null){
+					persoWiki.setStepparent(ITdoc.getLabels().get(fr).getText());
 				}
-				else if(ITdoc.getLabels().get("en") != null){
-					persoWiki.setStepparent(ITdoc.getLabels().get("en").getText());
+				else if(ITdoc.getLabels().get(en) != null){
+					persoWiki.setStepparent(ITdoc.getLabels().get(en).getText());
 				}
 				else{
 					persoWiki.setStepparent("");
@@ -269,11 +276,11 @@ public class ParseWiki implements Runnable{
 				});
 				for(String j:list_3){
 					ItemDocument ITdoc = (ItemDocument) wbdf.getEntityDocument(j);
-					if(ITdoc.getLabels().get("fr") != null){
-						persoWiki.setSiblings(ITdoc.getLabels().get("fr").getText());
+					if(ITdoc.getLabels().get(fr) != null){
+						persoWiki.setSiblings(ITdoc.getLabels().get(fr).getText());
 					}
-					else if(ITdoc.getLabels().get("en") != null){
-						persoWiki.setSiblings(ITdoc.getLabels().get("en").getText());
+					else if(ITdoc.getLabels().get(en) != null){
+						persoWiki.setSiblings(ITdoc.getLabels().get(en).getText());
 					}
 					else{
 						persoWiki.setSiblings("");	
@@ -302,11 +309,11 @@ public class ParseWiki implements Runnable{
 				});
 				for(String j:list_4){
 					ItemDocument ITdoc = (ItemDocument) wbdf.getEntityDocument(j);
-					if(ITdoc.getLabels().get("fr") != null){
-						persoWiki.setMember_of(ITdoc.getLabels().get("fr").getText());
+					if(ITdoc.getLabels().get(fr) != null){
+						persoWiki.setMember_of(ITdoc.getLabels().get(fr).getText());
 					}
-					else if(ITdoc.getLabels().get("en") != null){
-						persoWiki.setMember_of(ITdoc.getLabels().get("en").getText());
+					else if(ITdoc.getLabels().get(en) != null){
+						persoWiki.setMember_of(ITdoc.getLabels().get(en).getText());
 					}
 					else{
 						persoWiki.setMember_of("");
@@ -327,11 +334,11 @@ public class ParseWiki implements Runnable{
 				});
 				for(String j:list_5){
 					ItemDocument ITdoc = (ItemDocument) wbdf.getEntityDocument(j);
-					if(ITdoc.getLabels().get("fr") != null){
-						persoWiki.setCreators(ITdoc.getLabels().get("fr").getText());
+					if(ITdoc.getLabels().get(fr) != null){
+						persoWiki.setCreators(ITdoc.getLabels().get(fr).getText());
 					}
-					else if(ITdoc.getLabels().get("en") != null){
-						persoWiki.setCreators(ITdoc.getLabels().get("en").getText());
+					else if(ITdoc.getLabels().get(en) != null){
+						persoWiki.setCreators(ITdoc.getLabels().get(en).getText());
 					}
 					else{
 						persoWiki.setCreators("");
@@ -353,11 +360,11 @@ public class ParseWiki implements Runnable{
 				});
 				for(String j:list_6){
 					ItemDocument ITdoc = (ItemDocument) wbdf.getEntityDocument(j);
-					if(ITdoc.getLabels().get("fr") != null){
-						persoWiki.setPerformers(ITdoc.getLabels().get("fr").getText());
+					if(ITdoc.getLabels().get(fr) != null){
+						persoWiki.setPerformers(ITdoc.getLabels().get(fr).getText());
 					}
-					else if(ITdoc.getLabels().get("en") != null){
-						persoWiki.setPerformers(ITdoc.getLabels().get("en").getText());
+					else if(ITdoc.getLabels().get(en) != null){
+						persoWiki.setPerformers(ITdoc.getLabels().get(en).getText());
 					}
 					else{
 						persoWiki.setPerformers("");
@@ -376,11 +383,11 @@ public class ParseWiki implements Runnable{
 				});
 				for(String j:list_7){
 					ItemDocument ITdoc = (ItemDocument) wbdf.getEntityDocument(j);
-					if(ITdoc.getLabels().get("fr") != null){
-						persoWiki.setsuperhumain_ability(ITdoc.getLabels().get("fr").getText());
+					if(ITdoc.getLabels().get(fr) != null){
+						persoWiki.setsuperhumain_ability(ITdoc.getLabels().get(fr).getText());
 					}
-					else if(ITdoc.getLabels().get("en") != null){
-						persoWiki.setsuperhumain_ability(ITdoc.getLabels().get("en").getText());
+					else if(ITdoc.getLabels().get(en) != null){
+						persoWiki.setsuperhumain_ability(ITdoc.getLabels().get(en).getText());
 					}
 					else{
 						persoWiki.setsuperhumain_ability("");
@@ -410,7 +417,7 @@ public class ParseWiki implements Runnable{
 
 
 		} catch (InputMismatchException e) {
-			System.out.println("entrez un chiffre entre 1 et" + results.length());
+			System.out.println("Entrez un chiffre entre 1 et" + results.length());
 		}
 
 	}
@@ -418,7 +425,7 @@ public class ParseWiki implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		System.out.println("entrez le nom d'un personnage");
+		System.out.println("Entrez le nom d'un personnage");
 		Scanner sc1 = new Scanner(System.in);
 		String str = sc1.nextLine();
 		try {
