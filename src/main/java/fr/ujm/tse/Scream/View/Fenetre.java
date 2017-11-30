@@ -7,18 +7,26 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -35,7 +43,6 @@ import fr.ujm.tse.Scream.Controller.BoutonMenuPersonnage;
 import fr.ujm.tse.Scream.Controller.BoutonRechercherComics;
 import fr.ujm.tse.Scream.Controller.BoutonRechercherPerso;
 import fr.ujm.tse.Scream.Controller.BoutonRetour;
-import fr.ujm.tse.Scream.Controller.BoutonValideComics;
 import fr.ujm.tse.Scream.Model.Comics;
 import fr.ujm.tse.Scream.Model.InfoComics;
 import fr.ujm.tse.Scream.Model.InfoPerso;
@@ -46,14 +53,12 @@ public class Fenetre  extends JFrame {
 	
 	private JTextField champPerso = new JTextField();
 	private JTextField champComics = new JTextField();
-	private JTextField champComicsValide = new JTextField();
 	private JEditorPane reponsePerso = new JTextPane();
-	private JEditorPane reponseComics = new JTextPane();
 	private StyledDocument sDoc = (StyledDocument)reponsePerso.getDocument();
-	private StyledDocument sDoc1 = (StyledDocument)reponseComics.getDocument();
 	private JLabel img=new JLabel() ;
 	private JLabel imgComics=new JLabel() ;
 	private String champStartComics;
+	private JList<Object> listeComics=new JList<Object>();
 	
 
 
@@ -88,12 +93,25 @@ public class Fenetre  extends JFrame {
 	public JPanel buildContentPane() throws BadLocationException{
 		
 		JPanel panel2 = new JPanel();
+		JPanel panelG = new JPanel(); 
 		panel2.setBackground(new Color(236, 248, 254));
+		panelG.setBackground(new Color(236, 248, 254));
+		panelG.setLayout(new BorderLayout());
 		panel2.setLayout(new BoxLayout(panel2,BoxLayout.Y_AXIS));
 		JLabel label = new JLabel("Bienvenue");
 		Font font = new Font("Century Schoolbook",Font.BOLD,24);
-
 		Font fontMenu = new Font("Century Schoolbook",Font.BOLD,15);
+		try {
+		JLabel background = new JLabel();
+		ImageIcon icon = new ImageIcon(ImageIO.read(new File("src\\main\\resources\\Marvel.png")));
+		background.setIcon(icon);
+		panelG.add(background, BorderLayout.SOUTH);
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+		
+		
 		label.setFont(font);
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel2.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -116,17 +134,18 @@ public class Fenetre  extends JFrame {
 		boutonComics.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel2.add(boutonComics);
 		
-		
+		panelG.add(panel2, BorderLayout.CENTER);
 		// pour le bouton retour 
 		sDoc.remove(0, sDoc.getLength());
-		sDoc1.remove(0, sDoc1.getLength());
 		img.setIcon(new ImageIcon());;
 		champPerso.setText("");
 		champComics.setText("");
-		champComicsValide.setText("");
+		Object[] listeDefault=new Object[] {""};
+        
+		listeComics.setListData(listeDefault);
 		
 		
-		return panel2;
+		return panelG;
 	}
 	
 	/**
@@ -141,14 +160,16 @@ public class Fenetre  extends JFrame {
 		JPanel panelWest = new JPanel();
 		JPanel panelEast = new JPanel();
 		
-		panelEast.setBackground(new Color(236, 248, 254));
-		panelWest.setBackground(new Color(236, 248, 254));
-		panel.setBackground(new Color(236, 248, 254));
-		panelNorth.setBackground(new Color(236, 248, 254));
-		panelGeneral.setBackground(new Color(236, 248, 254));
-		reponsePerso.setBackground(new Color(236, 248, 254));
 		
-		panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
+		panelEast.setOpaque(false);
+		panelWest.setOpaque(false);
+		panel.setOpaque(false);
+		panelNorth.setOpaque(false);
+		panelGeneral.setBackground(new Color(236, 248, 254));
+		reponsePerso.setOpaque(false);
+		listeComics.setBackground(new Color(236, 248, 254));
+		
+		panel.setLayout(new BorderLayout());
 		panelGeneral.setLayout(new BorderLayout());
 		panelNorth.setLayout(new FlowLayout());
 		panelWest.setLayout(new FlowLayout());
@@ -170,14 +191,45 @@ public class Fenetre  extends JFrame {
 		champPerso.addActionListener(new BoutonRechercherPerso(this));
 		recherche.addActionListener(new BoutonRechercherPerso(this));
 		JButton retour = new JButton(new BoutonRetour("Retour",this));
+		
+		listeComics.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		        JList list = (JList)evt.getSource();
+		        if (evt.getClickCount() == 2) {
+
+		            // Double-click detected
+		            int index = list.locationToIndex(evt.getPoint());
+		            try {
+						ContentPanelComics(listeComics.getSelectedIndex()+1, champPerso.getText());
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NoSuchAlgorithmException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		            
+		        } 
+		    }
+		});
+		
+		
 		panelEast.add(Box.createRigidArea(new Dimension(10, 0)));
-	
 		panelWest.add(img);
 		panelNorth.add(label);
 		panelNorth.add(champPerso);
 		panelNorth.add(recherche);
 		panelNorth.add(retour);
-		panel.add(reponsePerso);
+		
+		panel.add(reponsePerso,BorderLayout.NORTH);
+		panel.add(listeComics,BorderLayout.CENTER);
+		
 		panelGeneral.add(panelNorth,BorderLayout.NORTH);
 		panelGeneral.add(panel,BorderLayout.CENTER);
 		panelGeneral.add(panelWest,BorderLayout.WEST);
@@ -197,23 +249,19 @@ public class Fenetre  extends JFrame {
 		JPanel panel = new JPanel();
 		JPanel panelWest = new JPanel();
 		JPanel panelSouth = new JPanel();
-		
+		JLabel intro = new JLabel("Effectuez un double clique sur un comics: ");
 		panelSouth.setBackground(new Color(236, 248, 254));
 		panelWest.setBackground(new Color(236, 248, 254));
 		panel.setBackground(new Color(236, 248, 254));
 		panelNorth.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
-		reponseComics.setBackground(new Color(236, 248, 254));
+		listeComics.setBackground(new Color(236, 248, 254));
 		
-		panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
+		panel.setLayout(new BorderLayout());
 		panelGeneral.setLayout(new BorderLayout());
 		panelNorth.setLayout(new FlowLayout());
 		panelWest.setLayout(new FlowLayout());
 		panelSouth.setLayout(new FlowLayout());
-		
-		reponseComics.setEditable(false);
-		JScrollPane scrollingArea = new JScrollPane(reponseComics);
-		scrollingArea.getHorizontalScrollBar().setUnitIncrement(10);
 		
 		JLabel label = new JLabel("Entrez un titre de Comics (le debut uniquement) :");
 		champComics.setMaximumSize(new Dimension(200,30));
@@ -223,33 +271,49 @@ public class Fenetre  extends JFrame {
 		JButton recherche = new JButton("Rechercher");
 		recherche.addActionListener(new BoutonRechercherComics(this));
 		JButton retour = new JButton(new BoutonRetour("Retour",this));
+		
+		listeComics.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		        JList list = (JList)evt.getSource();
+		        if (evt.getClickCount() == 2) {
 
-		panelWest.add(Box.createRigidArea(new Dimension(200, 0)));
+		            // Double-click detected
+		            int index = list.locationToIndex(evt.getPoint());
+		            try {
+		            	
+						ContentPanelComics(listeComics.getSelectedIndex()+1, champComics.getText());
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NoSuchAlgorithmException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		            
+		        } 
+		    }
+		});
+		intro.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
-		JLabel labelValidate = new JLabel("Entrez le numero de votre Comics :");
-		champComicsValide.setMaximumSize(new Dimension(200,30));
-		champComicsValide.setMinimumSize(new Dimension(100,30));
-		champComicsValide.setPreferredSize(new Dimension(200,30));   
-		champComicsValide.addActionListener(new BoutonValideComics(this));
-		JButton valider = new JButton("Valider");
-		valider.addActionListener(new BoutonValideComics(this));
-		
-	
 		panelNorth.add(label);
 		panelNorth.add(champComics);
 		panelNorth.add(recherche);
 		panelNorth.add(retour);
-		panel.add(reponseComics);
-		
-		panelSouth.add(labelValidate);
-		panelSouth.add(champComicsValide);
-		panelSouth.add(valider);
-		
+		panel.add(intro,BorderLayout.NORTH);
+
+		panel.add(listeComics,BorderLayout.CENTER);
+	
 		panelGeneral.add(panelNorth,BorderLayout.NORTH);
 		panelGeneral.add(panel,BorderLayout.CENTER);
 		panelGeneral.add(panelWest,BorderLayout.WEST);
 		panelGeneral.add(panelSouth,BorderLayout.SOUTH);
-		this.add(scrollingArea);
+		
 		setContentPane(panelGeneral);
 		revalidate();
 	}
@@ -258,11 +322,7 @@ public class Fenetre  extends JFrame {
 	 * retourne la zone de texte du numéro de comics choisi 
 	 * @return champComicsValide
 	 */
-	public JTextField getChampComicsValide() {
-		return champComicsValide;
-	}
 
-	
 	/**
 	 * retourne la zone de texte du debut du titre d'un comics 
 	 * @return champComics
@@ -360,11 +420,10 @@ public class Fenetre  extends JFrame {
 		sDoc.remove(0, sDoc.getLength());
 		String ph ="Nom du personnage :   ";
 		int pos=0;
-		
 		Style defaut = ((JTextPane) reponsePerso).getStyle("default");
 		Style gras=((JTextPane) reponsePerso).addStyle("gras", null);
 		StyleConstants.setBold(gras, true);
-	
+		Object[] lcomics = new Object[perso.getComics2().size()];
 		sDoc.insertString(pos, ph,gras);pos+=ph.length();
 		sDoc.insertString(pos, perso.getName()+ "\n",defaut);pos+=perso.getName().length()+1;
 		ph="id :   ";
@@ -376,11 +435,9 @@ public class Fenetre  extends JFrame {
 		ph="Comics : \n ";
 		sDoc.insertString(pos, ph,gras);pos+=ph.length();
 		for(int i=0; i<perso.getComics2().size();i++) {
-			ph=(i+1) + " ) ";
-			sDoc.insertString(pos, ph,defaut);pos+=ph.length();
-			sDoc.insertString(pos, perso.getComics2().get(i)+ "\n",defaut);pos+=perso.getComics2().get(i).length()+1;
+			lcomics[i]=perso.getComics2().get(i);
 		}
-		
+		listeComics.setListData(lcomics);
 		ImageIcon icon = new ImageIcon(new URL(perso.getLien_image()));
 		icon = new ImageIcon(icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH));
 		img.setIcon(icon);
@@ -398,18 +455,12 @@ public class Fenetre  extends JFrame {
 	 */
 	public void afficheListeComics(String str) throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException { 
 		Comics comics = Parse.listeComics(str);
-		sDoc1.remove(0, sDoc1.getLength());
-		Style defaut = ((JTextPane) reponseComics).getStyle("default");
-		Style gras=((JTextPane) reponseComics).addStyle("gras", defaut);
-		StyleConstants.setBold(gras, true);
-		int pos=0;
-		String ph="Sur quel comics voulez-vous des informations :  \n ";
-		sDoc1.insertString(pos, ph,gras);pos+=ph.length();
+		Object[] lcomics = new Object[comics.getComics2().size()];
 		for(int i=0; i<comics.getComics2().size();i++) {
-			ph=(i+1) + " ) ";
-			sDoc1.insertString(pos, ph,defaut);pos+=ph.length();
-			sDoc1.insertString(pos, comics.getComics2().get(i)+ "\n",defaut);pos+=comics.getComics2().get(i).length()+1;
+			lcomics[i]=comics.getComics2().get(i);
 		}
+
+		listeComics.setListData(lcomics);
 	}
 	
 
