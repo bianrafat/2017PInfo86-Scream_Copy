@@ -38,6 +38,16 @@ public class Menu {
 		Personnage perso=Parse.infoPersonnage(str);
 		perso.afficher();
 		Parse.titleComics(perso).afficheComics();*/
+		System.out.println("Entrez le titre de Comics");
+		Scanner sc1 = new Scanner(System.in);
+		String str = sc1.nextLine();
+		Comics comics = Parse.listeComics(str);
+		comics.afficherComics();
+		System.out.println("Veuillez entre un numero de pour avoir des informations sur le comics.");
+		Scanner sc2 = new Scanner(System.in);
+		int nbr = sc2.nextInt();
+		comics = Parse.infoComics(str, nbr);
+		comics.afficher();
 		
 		}
 }

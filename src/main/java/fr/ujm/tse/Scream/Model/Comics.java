@@ -6,12 +6,19 @@ public class Comics {
 	private int id;
 	private String title;
 	private String description;
+	private int total;
 	private String lien_image;
 	private ArrayList<String> comics = new ArrayList<String>();
 	private ArrayList<String> creators = new ArrayList<String>();
+	private ArrayList<String> characters = new ArrayList<String>();
 	
 	
-	
+	/**
+	 * 
+	 * @param id
+	 * @param title
+	 * @param description
+	 */
 	public Comics(int id, String title, String description) {
 		super();
 		this.setId(id);
@@ -57,7 +64,9 @@ public class Comics {
 	public void setComics(String comics) {
 		this.comics.add(comics);
 	}
+	
 	public void getComics() {
+		System.out.println("Pour cette recherche il y a "+total+" comics disponibles.");
 		System.out.println("Sur quel comics voulez-vous des informations : ");
 		for(int i=0; i<comics.size(); i++)
 		{
@@ -81,11 +90,12 @@ public class Comics {
 			System.out.println(creator);
 		}
 	}
+	
 	public ArrayList<String> getCreators2() {
 		return creators;
 	}
 
-	//essayer d'utiliser cette methode pour afficher les titre avec descriptions
+	//essayer d'utiliser cette methode pour afficher les titres avec descriptions
 	public void afficherComics() {
 		this.getComics();
 		
@@ -95,7 +105,35 @@ public class Comics {
 		System.out.println("Titre : " + this.getTitle());
 		System.out.println("Id : " + this.getId());
 		System.out.println("Description : " + this.getDescription());
+		System.out.println("Liste des personnages dans ce comic : ");
+		this.getCharacters();
+		System.out.println("Liste des créateurs du comics : ");
 		this.getCreators();
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	public ArrayList<String> getCharacters2() {
+		return characters;
+	}
+
+	public void setCharacters(String characters) {
+		this.characters.add(characters);
+	}
+	
+	public void getCharacters() {
+		for (int i=0; i<characters.size(); i++)
+		{
+			String character = (String)characters.get(i);
+			System.out.println(character);
+		}
+		
 	}
 
 	

@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import fr.ujm.tse.Scream.Controller.HttpConnect;
 
 
-//Cette classe sert Ã  parser les donnÃ©es 
+//Cette classe sert à  parser les données 
 
 public class Parse {
 	// Creation de champs statiques
@@ -38,10 +38,15 @@ public class Parse {
 	private static String path = "path";
 	private static String extension = "extension";
 	private static String creators = "creators";
+	private static String characters = "characters";
 	private static String items = "items";
 	private static String role = "role"; 
+	private static String total = "total";
+	private static String count = "count";
 	private static String ts=Long.toString(System.currentTimeMillis()); //generation du timstamp:
 	private static MessageDigest md5hash;
+	
+	
 	/**
 	 * 
 	 * @param nom
@@ -109,6 +114,7 @@ public class Parse {
 	
 	// Classe pour retrouver des comics grace a la methode "StartWith"
 	// Même méthode que titleComics mais cette fois pour les Comics et non les personnages
+	
 	/**
 	 * 
 	 * @param title
@@ -134,7 +140,8 @@ public class Parse {
 		
 		
 		Comics comics=new Comics();
-		int size = data.getInt("count");		
+		int size = data.getInt(count);
+		comics.setTotal(data.getInt(total));
 		for(int i=0; i<size;i++)
 		{
 			comics.setComics(results.getJSONObject(i).getString(titre));
@@ -145,6 +152,7 @@ public class Parse {
 	
 	// Méthode qui permet d'avoir des informations sur un comics choisi par l'utilisateur.
 	// Une liste de titre de Comics lui est proposé, ensuite il fait un choix parmi cette liste.
+	
 	/**
 	 * 
 	 * @param title
@@ -184,6 +192,7 @@ public class Parse {
 			comics.setId(results.getJSONObject(num-1).getInt(identifiant));
 			comics.setTitle(results.getJSONObject(num-1).getString(titre));
 			
+			
 			// Récupération de la description si elle existe
 			if (results.getJSONObject(num-1).isNull(description)){
 				comics.setDescription("Aucune description / No description available.");
@@ -202,9 +211,21 @@ public class Parse {
 					comics.setCreators(results.getJSONObject(num-1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(role).toUpperCase()+" : "+results.getJSONObject(num-1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(name));
 				}
 			}
+			
+			// Récupération des personnages
+			int nbCharacters=results.getJSONObject(num-1).getJSONObject(characters).getInt("available");
+			if (nbCharacters ==0) {
+				comics.setCharacters("Aucune information / No information.");
+			}
+			else{
+				for (int j=0; j<nbCharacters; j++)
+				{			
+					comics.setCharacters(results.getJSONObject(num-1).getJSONObject(characters).getJSONArray(items).getJSONObject(j).getString(name));
+				}
+			}
+			
 			// pour avoir le lien de l'image du personnage il faut combiner path et extension
 			comics.setLien_image(results.getJSONObject(num-1).getJSONObject(thumbnail).getString(path)+"."+results.getJSONObject(num-1).getJSONObject(thumbnail).getString(extension));
-			
 		}
 		return comics;
 	}
