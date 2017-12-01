@@ -30,11 +30,11 @@ public class Menu {
 				fenetre.setVisible(true);//On la rend visible
 			}
 		});
-		/*Thread t = new Thread(new ParseWiki());
-		t.start(); */
-		Database d = new Database();
+		Thread t = new Thread(new ParseWiki());
+		t.start(); 
+		/*Database d = new Database();
 		d.databse();
-		/*System.out.println("Entrez le nom d'un personnage ");
+		System.out.println("Entrez le nom d'un personnage ");
 		Scanner sc1 = new Scanner(System.in);
 		String str = sc1.nextLine();
 		Personnage perso=Parse.infoPersonnage(str);

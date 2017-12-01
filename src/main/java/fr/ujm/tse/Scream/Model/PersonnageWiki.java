@@ -8,7 +8,6 @@ public class PersonnageWiki {
 	private String name;
 	private String description;
 	private ArrayList<String> nicknames= new ArrayList<String>();
-	private ArrayList<String> instance_of= new ArrayList<String>();
 	private String gender;
 	private String country;
 	private String father;
@@ -16,14 +15,14 @@ public class PersonnageWiki {
 	private String stepparent;
 	private ArrayList<String> siblings= new ArrayList<String>();
 	private String birth_name;
-	private ArrayList<String> member_of= new ArrayList<String>();
 	private ArrayList<String> creators= new ArrayList<String>();
 	private ArrayList<String> performers= new ArrayList<String>();
 	private ArrayList<String> superhumain_ability= new ArrayList<String>();
+	private String wikidata_page;
 	private String wiki_page;
 	public PersonnageWiki(String name, String description,String gender, String country,
 			String father, String mother, String stepparent, ArrayList<String> siblings, String birth_name,
-			String wiki_page) {
+			String wiki_page,String wikidata_page) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -34,7 +33,14 @@ public class PersonnageWiki {
 		this.stepparent = stepparent;
 		this.siblings = siblings;
 		this.birth_name = birth_name;
+		this.wikidata_page=wikidata_page;
 		this.wiki_page = wiki_page;
+	}
+	public String getWikidata_page() {
+		return wikidata_page;
+	}
+	public void setWikidata_page(String wikidata_page) {
+		this.wikidata_page = wikidata_page;
 	}
 	public PersonnageWiki() {
 	}
@@ -104,17 +110,7 @@ public class PersonnageWiki {
 	public void setNicknames(String nickname) {
 		this.nicknames.add(nickname);
 	}
-	public void getInstance_of() {
-		System.out.println("Instance de:");
-		for(int i=0; i<instance_of.size(); i++)
-		{
-			String instance = (String)instance_of.get(i);
-			System.out.println(instance);
-		}
-	}
-	public void setInstance_of(String instance) {
-		this.instance_of.add(instance);
-	}
+
 	public void getSiblings() {
 		System.out.println("fréres et soeurs:");
 		for(int i=0; i<siblings.size(); i++)
@@ -127,17 +123,7 @@ public class PersonnageWiki {
 		this.siblings.add(sibling);
 	}
 
-	public void getMember_of() {
-		System.out.println("Membre de:");
-		for(int i=0; i<member_of.size(); i++)
-		{
-			String membre = (String)member_of.get(i);
-			System.out.println(membre);
-		}
-	}
-	public void setMember_of(String membre) {
-		this.member_of.add(membre);
-	}
+	
 	public void getCreators() {
 		System.out.println("Auteurs:");
 		for(int i=0; i<creators.size(); i++)
@@ -177,8 +163,7 @@ public class PersonnageWiki {
 		System.out.println("Nom du personnage : " + this.getName());
 		System.out.println(" Description: " + this.getDescription());
 		this.getNicknames();
-		this.getInstance_of();
-		System.out.println("sexe:"+this.getGender());
+				System.out.println("sexe:"+this.getGender());
 		System.out.println("pays:"+this.getCountry());
 		System.out.println("pére:"+this.getFather());
 		System.out.println("mére:"+this.getMother());
@@ -186,9 +171,9 @@ public class PersonnageWiki {
 		this.getSiblings();
 		System.out.println("nom de naissance:"+this.getBirth_name());
 		this.getCreators();
-		this.getMember_of();
 		this.getPerformers();
 		this.getSuperhumain_ability();
+		System.out.println("Pour plus d'information, consultez la page wikidata du personnage:"+this.getWikidata_page());
 		System.out.println("lien de la page wikipedia:"+this.getWiki_page());
 	} 
 
