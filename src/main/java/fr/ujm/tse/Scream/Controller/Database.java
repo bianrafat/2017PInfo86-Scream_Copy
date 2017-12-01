@@ -23,7 +23,7 @@ public class Database {
 	private static String dbName;
 	private static Scanner sc4;
 	
-	public static void main(String[] args) {
+	public static void databse() {
 		System.out.println("Êtes vous déjà inscrit ? (o/n)");
 		sc1 = new Scanner(System.in);
 		do 

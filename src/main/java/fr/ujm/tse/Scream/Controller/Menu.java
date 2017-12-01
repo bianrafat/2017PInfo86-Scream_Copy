@@ -30,14 +30,16 @@ public class Menu {
 				fenetre.setVisible(true);//On la rend visible
 			}
 		});
-		Thread t = new Thread(new ParseWiki());
-		t.start();
+		/*Thread t = new Thread(new ParseWiki());
+		t.start(); */
+		Database d = new Database();
+		d.databse();
 		/*System.out.println("Entrez le nom d'un personnage ");
 		Scanner sc1 = new Scanner(System.in);
 		String str = sc1.nextLine();
 		Personnage perso=Parse.infoPersonnage(str);
 		perso.afficher();
-		Parse.titleComics(perso).afficheComics();*/
+		Parse.titleComics(perso).afficheComics();
 		System.out.println("Entrez le titre de Comics");
 		Scanner sc1 = new Scanner(System.in);
 		String str = sc1.nextLine();
@@ -47,7 +49,7 @@ public class Menu {
 		Scanner sc2 = new Scanner(System.in);
 		int nbr = sc2.nextInt();
 		comics = Parse.infoComics(str, nbr);
-		comics.afficher();
+		comics.afficher(); */
 		
 		}
 }
