@@ -60,6 +60,7 @@ public class Fenetre  extends JFrame {
 	private JLabel imgComics=new JLabel() ;
 	private String champStartComics;
 	private JList<Object> listeComics=new JList<Object>();
+	private JList<Object> listePerso=new JList<Object>();
 	private JLabel intro= new JLabel();
 	JButton biblio = new JButton("Ma Bibliotèque");
 	
@@ -180,7 +181,7 @@ public class Fenetre  extends JFrame {
 		champComics.setText("");
 		Object[] listeDefault=new Object[] {""};
 		intro.setText("");
-        
+        listePerso.setListData(listeDefault);
 		listeComics.setListData(listeDefault);
 		
 		
@@ -412,6 +413,36 @@ public class Fenetre  extends JFrame {
 		for (int i=0; i<comics.getCreators2().size(); i++){
 			contenu.insertString(pos, comics.getCreators2().get(i)+"\n", null);pos+=comics.getCreators2().get(i).length()+1;
 		}
+		str="Personnages Marvel: \n ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		Object[] lperso = new Object[comics.getCharacters2().size()];
+		for (int i=0; i<comics.getCharacters2().size(); i++){
+			lperso[i]=comics.getCharacters2().get(i);
+		}
+		listePerso.setListData(lperso);
+		listePerso.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		        JList list = (JList)evt.getSource();
+		        if (evt.getClickCount() == 2) {
+
+		            // Double-click detected
+		            int index = list.locationToIndex(evt.getPoint());
+		            System.out.println((String)list.getSelectedValue());
+		            try {
+						affichePerso((String)list.getSelectedValue());
+						boutonPerso();
+					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		            
+		        } 
+		    }
+		});
+		
+		
+		
+		
 		
 		JButton retour = new JButton(new BoutonRetour("Retour",this));
 		
@@ -421,20 +452,22 @@ public class Fenetre  extends JFrame {
 		JPanel panelSouth = new JPanel();
 		JPanel panelWest = new JPanel();
 		
+		listePerso.setBackground(new Color(236, 248, 254));
 		panelWest.setBackground(new Color(236, 248, 254));
 		panelSouth.setBackground(new Color(236, 248, 254));
 		panel.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		comicsText.setBackground(new Color(236, 248, 254));
 		
-		panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
+		panel.setLayout(new BorderLayout());
 		panelGeneral.setLayout(new BorderLayout());
 		panelSouth.setLayout(new FlowLayout());
 		panelWest.setLayout(new FlowLayout());
 		
 		panelWest.add(imgComics);
 		panelSouth.add(retour);
-		panel.add(comicsText);
+		panel.add(comicsText,BorderLayout.NORTH);
+		panel.add(listePerso,BorderLayout.CENTER);
 		panelGeneral.add(panel,BorderLayout.CENTER);
 		panelGeneral.add(panelSouth,BorderLayout.SOUTH);
 		panelGeneral.add(panelWest,BorderLayout.WEST);
@@ -478,6 +511,8 @@ public class Fenetre  extends JFrame {
 		sDoc.insertString(pos, perso.getDescription()+ "\n",defaut);pos+=perso.getDescription().length()+1;
 		ph="Comics : \n ";
 		sDoc.insertString(pos, ph,gras);pos+=ph.length();
+		
+		
 		for(int i=0; i<perso.getComics2().size();i++) {
 			lcomics[i]=perso.getComics2().get(i);
 		}
@@ -490,7 +525,7 @@ public class Fenetre  extends JFrame {
 	}
 	
 	/**
-	 * interface affiche la liste des commics disponible avec le String str
+	 * interface affiche la liste des comics disponible avec le String str
 	 * @param str
 	 * @throws JSONException
 	 * @throws NoSuchAlgorithmException
@@ -499,6 +534,8 @@ public class Fenetre  extends JFrame {
 	 */
 	public void afficheListeComics(String str) throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException { 
 		Comics comics = Parse.listeComics(str);
+		
+		intro.setText("<html> Effectuez un double clique sur un comics: <br>Pour cette recherche il y a "+comics.getTotal()+" comics disponibles.<br></html>");
 		Object[] lcomics = new Object[comics.getComics2().size()];
 		for(int i=0; i<comics.getComics2().size();i++) {
 			lcomics[i]=comics.getComics2().get(i);
