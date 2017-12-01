@@ -23,7 +23,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/nicoo/Documents/Télécom Saint-Etienne/Deuxième année/Semestre 7/Projet Info/Java/2017PInfo86-Scream/lib/derby.jar"/>
 	<classpathentry kind="lib" path="lib/derby.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
