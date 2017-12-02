@@ -392,6 +392,10 @@ public class ParseWiki implements Runnable{
 
 	}
 
+	public PersonnageWiki getPersoWiki() {
+		return persoWiki;
+	}
+
 
 
 

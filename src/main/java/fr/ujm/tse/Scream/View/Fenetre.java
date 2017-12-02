@@ -38,22 +38,28 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import org.json.JSONException;
+import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import fr.ujm.tse.Scream.Controller.BoutonMenuComics;
 import fr.ujm.tse.Scream.Controller.BoutonMenuPersonnage;
 import fr.ujm.tse.Scream.Controller.BoutonRechercherComics;
 import fr.ujm.tse.Scream.Controller.BoutonRechercherPerso;
+import fr.ujm.tse.Scream.Controller.BoutonRechercherPersoWiki;
 import fr.ujm.tse.Scream.Controller.BoutonRetour;
+import fr.ujm.tse.Scream.Controller.BoutonWikiData;
 import fr.ujm.tse.Scream.Model.Comics;
 import fr.ujm.tse.Scream.Model.InfoComics;
 import fr.ujm.tse.Scream.Model.InfoPerso;
 import fr.ujm.tse.Scream.Model.Parse;
+import fr.ujm.tse.Scream.Model.ParseWiki;
 import fr.ujm.tse.Scream.Model.Personnage;
+import fr.ujm.tse.Scream.Model.PersonnageWiki;
 
 public class Fenetre  extends JFrame {
 	
 	private JTextField champPerso = new JTextField();
 	private JTextField champComics = new JTextField();
+	private JTextField champWikiP= new JTextField();
 	private JEditorPane reponsePerso = new JTextPane();
 	private StyledDocument sDoc = (StyledDocument)reponsePerso.getDocument();
 	private JLabel img=new JLabel() ;
@@ -61,6 +67,7 @@ public class Fenetre  extends JFrame {
 	private String champStartComics;
 	private JList<Object> listeComics=new JList<Object>();
 	private JList<Object> listePerso=new JList<Object>();
+	private JList<Object> listeWikiP=new JList<Object>();
 	private JLabel intro= new JLabel();
 	JButton biblio = new JButton("Ma Bibliotèque");
 	
@@ -87,7 +94,14 @@ public class Fenetre  extends JFrame {
 	
 		setContentPane(buildContentPane());
 	}
-	
+	/**
+	 *  retourne le champ de la recherche wikidata
+	 * @return champWikiP
+	 */
+	public JTextField getChampWikiP() {
+		return champWikiP;
+	}
+
 	/**
 	 * construit le menu principal de l'application.
 	 * @throws BadLocationException 
@@ -156,7 +170,7 @@ public class Fenetre  extends JFrame {
 		center.add(boutonComics);
 		
 
-		JButton wikiData = new JButton("Recherche sur wikidata");
+		JButton wikiData = new JButton(new BoutonWikiData("Rechercher Wikidata",this));
 		wikiData.setFont(fontMenu);
 		center.add(wikiData);
 		
@@ -240,7 +254,7 @@ public class Fenetre  extends JFrame {
 		            // Double-click detected
 		            int index = list.locationToIndex(evt.getPoint());
 		            try {
-						ContentPanelComics(listeComics.getSelectedIndex()+1, champPerso.getText());
+						ContentPanelComics(listeComics.getSelectedIndex()+1, champStartComics);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -280,8 +294,68 @@ public class Fenetre  extends JFrame {
 	}
 	
 	/**
-	 * interface lorsqu'on clique sur le bouton " recherche un comic"
+	 * interface lorsqu'on clique sur le bouton " recherche Wikidata"
 	 */
+	
+	public void boutonWikidata(){
+		JPanel panelGeneral = new JPanel();
+		JPanel panelNorth= new JPanel();
+		JPanel panel = new JPanel();
+		JPanel panelWest = new JPanel();
+		JPanel panelSouth = new JPanel();
+		panelSouth.setBackground(new Color(236, 248, 254));
+		panelWest.setBackground(new Color(236, 248, 254));
+		panel.setBackground(new Color(236, 248, 254));
+		panelNorth.setBackground(new Color(236, 248, 254));
+		panelGeneral.setBackground(new Color(236, 248, 254));
+		listeWikiP.setBackground(new Color(236, 248, 254));
+		
+		panel.setLayout(new BorderLayout());
+		panelGeneral.setLayout(new BorderLayout());
+		panelNorth.setLayout(new FlowLayout());
+		panelWest.setLayout(new FlowLayout());
+		panelSouth.setLayout(new FlowLayout());
+		
+		JLabel label = new JLabel("Entrez le nom d'un personnage:");
+		champWikiP.setMaximumSize(new Dimension(200,30));
+		champWikiP.setMinimumSize(new Dimension(100,30));
+		champWikiP.setPreferredSize(new Dimension(200,30));   
+		champWikiP.addActionListener(new BoutonRechercherPersoWiki(this));
+		JButton recherche = new JButton("Rechercher");
+		recherche.addActionListener(new BoutonRechercherPersoWiki(this));
+		JButton retour = new JButton(new BoutonRetour("Retour",this));
+		
+		listeWikiP.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent evt) {
+		        JList list = (JList)evt.getSource();
+		        if (evt.getClickCount() == 2) {
+
+		            // Double-click detected
+		            int index = list.locationToIndex(evt.getPoint());
+		        } 
+		    }
+		});
+		intro.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
+		panelNorth.add(label);
+		panelNorth.add(champWikiP);
+		panelNorth.add(recherche);
+		panelNorth.add(retour);
+		
+		panel.add(intro,BorderLayout.NORTH);
+
+		panel.add(Box.createRigidArea(new Dimension(200, 20)),BorderLayout.WEST);
+		panel.add(listeComics,BorderLayout.CENTER);
+	
+		panelGeneral.add(panelNorth,BorderLayout.NORTH);
+		panelGeneral.add(panel,BorderLayout.CENTER);
+		panelGeneral.add(panelWest,BorderLayout.WEST);
+		panelGeneral.add(panelSouth,BorderLayout.SOUTH);
+		
+		setContentPane(panelGeneral);
+		revalidate();
+	}
+	
 	
 	public void boutonComics(){
 		JPanel panelGeneral = new JPanel();
@@ -319,21 +393,12 @@ public class Fenetre  extends JFrame {
 		            // Double-click detected
 		            int index = list.locationToIndex(evt.getPoint());
 		            try {
-		            	
-						ContentPanelComics(listeComics.getSelectedIndex()+1, champComics.getText());
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (NoSuchAlgorithmException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (BadLocationException e) {
+						ContentPanelComics(listeComics.getSelectedIndex()+1, champStartComics);
+					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					
 		            
 		        } 
 		    }
@@ -358,6 +423,8 @@ public class Fenetre  extends JFrame {
 		setContentPane(panelGeneral);
 		revalidate();
 	}
+	
+	
 	
 	/**
 	 *  retourne le texte a afficher apres la recherche de comics
@@ -427,9 +494,9 @@ public class Fenetre  extends JFrame {
 
 		            // Double-click detected
 		            int index = list.locationToIndex(evt.getPoint());
-		            System.out.println((String)list.getSelectedValue());
 		            try {
 						affichePerso((String)list.getSelectedValue());
+						champPerso.setText((String)list.getSelectedValue());
 						boutonPerso();
 					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
 						// TODO Auto-generated catch block
@@ -542,6 +609,25 @@ public class Fenetre  extends JFrame {
 		}
 
 		listeComics.setListData(lcomics);
+	}
+	
+	
+	public void afficheListeWiki(String str) throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException { 
+		ParseWiki wiki = new ParseWiki();
+		try {
+			wiki.infoWikipersonnage(str);
+		} catch (MediaWikiApiErrorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PersonnageWiki wikiP =wiki.getPersoWiki();
+		/*
+		Object[] lcomics = new Object[comics.getComics2().size()];
+		for(int i=0; i<comics.getComics2().size();i++) {
+			lcomics[i]=comics.getComics2().get(i);
+		}
+
+		listeComics.setListData(lcomics);*/
 	}
 	
 
