@@ -1,6 +1,10 @@
 package fr.ujm.tse.Scream.Model;
 import java.util.ArrayList;
-
+/**
+ * Classe décrivant contenant certaines informations disponible sur la base wikidata pour un personnage.
+ * @author Scream
+ *
+ */
 public class PersonnageWiki {
 
 

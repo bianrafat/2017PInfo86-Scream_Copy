@@ -1,6 +1,7 @@
 package fr.ujm.tse.Scream.Model;
 
 import java.io.IOException; 
+
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -61,6 +62,7 @@ public class ParseWiki implements Runnable{
 
 
 	private PersonnageWiki persoWiki = new PersonnageWiki();
+	private ArrayList<SearchWiki> searchwikis = new ArrayList<SearchWiki>(); 
 	private String[] list1 ={};
 	private String[] list2 ={};
 	private String[] list3 ={};
@@ -77,38 +79,61 @@ public class ParseWiki implements Runnable{
 	private List<String> list_6 = new ArrayList<String>();
 	private List<String> list_7 = new ArrayList<String>();
 	public static final boolean OFFLINE_MODE = false;
-	
+
 	private static String reqWikidata = "https://www.wikidata.org/w/api.php?action=wbsearchentities&search=";
 	private static String languageformat = "&language=en&format=json";
 	private static String description = "description";
 	private static String search = "search";
 	private static String fr = "fr";
 	private static String en = "en";
+	
+	/**
+	 * méthode qui permet de faire une recherche par entités, par le nom d'un personnage.
+	 * 
+	 * @param nom
+	 * @return ArrayList<SearchWiki> la méthode retourne une liste de résultats de la recherche par entité
+	 * @throws IOException
+	 * @throws MediaWikiApiErrorException
+	 */
 
+	
 
-	public void infoWikipersonnage(String nom) throws IOException, MediaWikiApiErrorException {
+	public ArrayList<SearchWiki>infoWikipersonnage(String nom) throws IOException, MediaWikiApiErrorException {
 		nom=nom.replace(" ","+");
 		info = HttpConnect.readUrl(reqWikidata+nom+languageformat);
 		obj = new JSONObject(info);
 		JSONArray results = obj.getJSONArray(search);
 		for (int i = 0; i < results.length(); i++) {
-			id.add(results.getJSONObject(i).getString("id"));
+			SearchWiki search1=new SearchWiki();
+			search1.setId(i+1);
+			search1.setIdentifiant(results.getJSONObject(i).getString("id"));
 			if(results.getJSONObject(i).has(description)){
-				desc.add(results.getJSONObject(i).getString(description));
+				search1.setDescription(results.getJSONObject(i).getString(description));
 			}
 			else{
-				desc.add("Non disponible");
+				search1.setDescription("Aucune description");
 			}
-			System.out.println("Choix " + (i + 1) + ":" + desc.get(i));
+			search1.Affiher();
+			searchwikis.add(search1);
+
 		}
-		System.out.println("Entrez le numéro de description qui correspond au personnage recherché");
-		Scanner scan = new Scanner(System.in);
-		try {
-			choix = scan.nextInt();
-			scan.close();
-			EntityDocument entityDoc= wbdf.getEntityDocument(id.get((choix-1)));
+		return searchwikis;
+	}
+	/**
+	 * méthode prenant en paramétre le choix de résultat de la recherche par entité et construit une instance de personnageWiki avec les informations extraite de la base wikidata
+	 * @param choix
+	 * @throws IOException
+	 * @throws MediaWikiApiErrorException
+	 */
+	public void infoWikipersonnagetwo(int choix)throws IOException, MediaWikiApiErrorException {
+		
+		if(choix < 1 || choix > searchwikis.size()){
+			System.out.println("Entrez un chiffre entre 1 et" + searchwikis.size());
+		}
+		else{
+			EntityDocument entityDoc= wbdf.getEntityDocument(searchwikis.get(choix-1).getIdentifiant());
 			ItemDocument itemDocument=(ItemDocument) entityDoc;
-			persoWiki.setWikidata_page("https://www.wikidata.org/wiki/"+id.get((choix-1)));
+			persoWiki.setWikidata_page("https://www.wikidata.org/wiki/"+searchwikis.get(choix-1).getIdentifiant());
 			// If a value was found, write the data:
 			if (itemDocument.getLabels().get(fr) != null) {
 				String name=itemDocument.getLabels().get(fr).getText();
@@ -142,7 +167,7 @@ public class ParseWiki implements Runnable{
 			else{
 				persoWiki.setNicknames("Non disponible");
 			}
-			
+
 			stringValue1 = itemDocument.findStatement(extractPropertyId1);
 			if (stringValue1!= null) {
 				list1=stringValue1.getValue().toString().split("/");
@@ -276,7 +301,7 @@ public class ParseWiki implements Runnable{
 			else{
 				persoWiki.setBirth_name("Non disponible");
 			}
-			
+
 			stringValue9 = itemDocument.findStatementGroup(extractPropertyId9);
 			if (stringValue9!= null) {
 				stringValue9.forEach(i -> {
@@ -364,11 +389,7 @@ public class ParseWiki implements Runnable{
 			else{
 				persoWiki.setWiki_page("Non disponible");
 			}
-
-
-
-		} catch (InputMismatchException e) {
-			System.out.println("Entrez un chiffre entre 1 et" + results.length());
+			persoWiki.afficher();
 		}
 
 	}
@@ -381,7 +402,10 @@ public class ParseWiki implements Runnable{
 		String str = sc1.nextLine();
 		try {
 			infoWikipersonnage(str);
-			persoWiki.afficher();
+			System.out.println("entrer le numéro de la description qui correspond au personnage recherché");
+			Scanner sc2 = new Scanner(System.in);
+			int str2 = sc2.nextInt();
+			infoWikipersonnagetwo(str2);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
