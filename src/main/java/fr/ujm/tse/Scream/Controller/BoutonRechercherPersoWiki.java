@@ -11,6 +11,7 @@ import javax.swing.AbstractAction;
 import javax.swing.text.BadLocationException;
 
 import org.json.JSONException;
+import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
 
@@ -25,7 +26,7 @@ public class BoutonRechercherPersoWiki implements ActionListener , KeyListener{
 		String str = fenetre.getChampWikiP().getText();
 		
 		try {
-			fenetre.afficheListeComics(str);
+			fenetre.afficheListeWiki(str);
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -36,6 +37,9 @@ public class BoutonRechercherPersoWiki implements ActionListener , KeyListener{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (BadLocationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (MediaWikiApiErrorException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}

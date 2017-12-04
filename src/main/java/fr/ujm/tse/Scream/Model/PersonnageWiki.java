@@ -111,6 +111,11 @@ public class PersonnageWiki {
 			System.out.println(surnom);
 		}
 	}
+	
+	public ArrayList<String> getNicknames2() {
+		return nicknames;
+	}
+	
 	public void setNicknames(String nickname) {
 		this.nicknames.add(nickname);
 	}
@@ -122,6 +127,10 @@ public class PersonnageWiki {
 			String sibling = (String)siblings.get(i);
 			System.out.println(sibling);
 		}
+	}
+	
+	public ArrayList<String> getSiblings2() {
+		return siblings;
 	}
 	public void setSiblings(String sibling) {
 		this.siblings.add(sibling);
@@ -136,6 +145,11 @@ public class PersonnageWiki {
 			System.out.println(creator);
 		}
 	}
+	
+	public ArrayList<String> getCreators2() {
+		return creators;
+	}
+	
 	public void setCreators(String creator) {
 		this.creators.add(creator);
 	}
@@ -147,6 +161,11 @@ public class PersonnageWiki {
 			System.out.println(performer);
 		}
 	}
+	
+	public ArrayList<String> getPerformers2() {
+		return performers;
+	}
+	
 	public void setPerformers(String performer) {
 		this.performers.add(performer);
 	}
@@ -159,6 +178,10 @@ public class PersonnageWiki {
 			String pouv = (String)superhumain_ability.get(i);
 			System.out.println(pouv);
 		}
+	}
+	
+	public ArrayList<String> getSuperhumain_ability2() {
+		return superhumain_ability;
 	}
 	public void setsuperhumain_ability(String pouv) {
 		this.superhumain_ability.add(pouv);

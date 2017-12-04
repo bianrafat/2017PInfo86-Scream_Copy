@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -54,6 +55,7 @@ import fr.ujm.tse.Scream.Model.Parse;
 import fr.ujm.tse.Scream.Model.ParseWiki;
 import fr.ujm.tse.Scream.Model.Personnage;
 import fr.ujm.tse.Scream.Model.PersonnageWiki;
+import fr.ujm.tse.Scream.Model.SearchWiki;
 
 public class Fenetre  extends JFrame {
 	
@@ -69,7 +71,8 @@ public class Fenetre  extends JFrame {
 	private JList<Object> listePerso=new JList<Object>();
 	private JList<Object> listeWikiP=new JList<Object>();
 	private JLabel intro= new JLabel();
-	JButton biblio = new JButton("Ma Bibliotèque");
+	private ParseWiki wiki = new ParseWiki();
+	private JButton biblio = new JButton("Ma Bibliotèque");
 	
 
 
@@ -193,10 +196,12 @@ public class Fenetre  extends JFrame {
 		img.setIcon(new ImageIcon());;
 		champPerso.setText("");
 		champComics.setText("");
+		champWikiP.setText("");
 		Object[] listeDefault=new Object[] {""};
 		intro.setText("");
         listePerso.setListData(listeDefault);
 		listeComics.setListData(listeDefault);
+		listeWikiP.setListData(listeDefault);
 		
 		
 		return panelG;
@@ -332,6 +337,12 @@ public class Fenetre  extends JFrame {
 
 		            // Double-click detected
 		            int index = list.locationToIndex(evt.getPoint());
+		            try {
+						ContentPanelWikiP(list.getSelectedIndex());
+					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException | MediaWikiApiErrorException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 		        } 
 		    }
 		});
@@ -345,7 +356,7 @@ public class Fenetre  extends JFrame {
 		panel.add(intro,BorderLayout.NORTH);
 
 		panel.add(Box.createRigidArea(new Dimension(200, 20)),BorderLayout.WEST);
-		panel.add(listeComics,BorderLayout.CENTER);
+		panel.add(listeWikiP,BorderLayout.CENTER);
 	
 		panelGeneral.add(panelNorth,BorderLayout.NORTH);
 		panelGeneral.add(panel,BorderLayout.CENTER);
@@ -545,6 +556,116 @@ public class Fenetre  extends JFrame {
 		
 	}
 	
+	
+	public void ContentPanelWikiP(int i) throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException, MediaWikiApiErrorException {
+		
+		wiki.infoWikipersonnagetwo(i+1);
+		JEditorPane wikiText = new JTextPane();
+		wikiText.setEditable(false);
+		PersonnageWiki perso = wiki.getPersoWiki();
+		
+		StyledDocument contenu = (StyledDocument)wikiText.getDocument();
+		
+		Style gras=((JTextPane) wikiText).addStyle("gras", null);
+		StyleConstants.setBold(gras, true);
+		int pos=0;
+		String str="Name : ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		contenu.insertString(pos, perso.getName()+"\n", null);pos+= perso.getName().length()+1;
+		str="Description : ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		contenu.insertString(pos, perso.getDescription()+"\n", null);pos+=perso.getDescription().length()+1;
+		str="Surnoms: \n ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		for (int i1=0; i1<perso.getNicknames2().size(); i1++){
+			contenu.insertString(pos, perso.getNicknames2().get(i1)+"\n", null);pos+=perso.getNicknames2().get(i1).length()+1;
+		}
+		str="Genre: ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		contenu.insertString(pos, perso.getGender()+"\n", null);pos+=perso.getGender().length()+1;
+		str="Pays: ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		contenu.insertString(pos, perso.getCountry()+"\n", null);pos+=perso.getCountry().length()+1;
+		str="Père: ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		contenu.insertString(pos, perso.getFather()+"\n", null);pos+=perso.getFather().length()+1;
+		str="Mère: ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		contenu.insertString(pos, perso.getMother()+"\n", null);pos+=perso.getMother().length()+1;
+		str="Beau-parent: ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		contenu.insertString(pos, perso.getStepparent()+"\n", null);pos+=perso.getStepparent().length()+1;
+		str="Frères et soeurs: \n";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		for (int i1=0; i1<perso.getSiblings2().size(); i1++){
+			contenu.insertString(pos, perso.getSiblings2().get(i1)+"\n", null);pos+=perso.getSiblings2().get(i1).length()+1;
+		}
+		str="Nom de naissance: ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		contenu.insertString(pos, perso.getBirth_name()+"\n", null);pos+=perso.getBirth_name().length()+1;
+		
+		str="Auteurs: \n";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		for (int i1=0; i1<perso.getCreators2().size(); i1++){
+			contenu.insertString(pos, perso.getCreators2().get(i1)+"\n", null);pos+=perso.getCreators2().get(i1).length()+1;
+		}
+		str="Acteurs ayant interprété ce role: \n";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		for (int i1=0; i1<perso.getPerformers2().size(); i1++){
+			contenu.insertString(pos, perso.getPerformers2().get(i1)+"\n", null);pos+=perso.getPerformers2().get(i1).length()+1;
+		}
+		str="Pouvoir: \n";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		for (int i1=0; i1<perso.getSuperhumain_ability2().size(); i1++){
+			contenu.insertString(pos, perso.getSuperhumain_ability2().get(i1)+"\n", null);pos+=perso.getSuperhumain_ability2().get(i1).length()+1;
+		}
+		
+		str="Pour plus d'information, consultez la page wikidata du personnage: ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		contenu.insertString(pos, perso.getWikidata_page()+"\n", null);pos+=perso.getWikidata_page().length()+1;
+		
+		
+		str="lien de la page wikipedia: ";
+		contenu.insertString(pos, str,gras);pos+=str.length();
+		contenu.insertString(pos, perso.getWiki_page()+"\n", null);pos+=perso.getWiki_page().length()+1;
+		
+		JButton retour = new JButton(new BoutonRetour("Retour",this));
+		
+		
+		
+		
+		JPanel panelGeneral = new JPanel();
+		JPanel panel = new JPanel();
+		JPanel panelSouth = new JPanel();
+		JPanel panelWest = new JPanel();
+		
+		panelWest.setBackground(new Color(236, 248, 254));
+		panelSouth.setBackground(new Color(236, 248, 254));
+		panel.setBackground(new Color(236, 248, 254));
+		panelGeneral.setBackground(new Color(236, 248, 254));
+		wikiText.setBackground(new Color(236, 248, 254));
+		
+		panel.setLayout(new BorderLayout());
+		panelGeneral.setLayout(new BorderLayout());
+		panelSouth.setLayout(new FlowLayout());
+		panelWest.setLayout(new FlowLayout());
+		
+		JScrollPane scrollingArea = new JScrollPane(wikiText);
+		scrollingArea.setPreferredSize(new Dimension(300,300));
+		 setLocationRelativeTo(null);
+		
+		panelSouth.add(retour);
+		panel.add(scrollingArea,BorderLayout.CENTER);
+		panelGeneral.add(panel,BorderLayout.CENTER);
+		panelGeneral.add(panelSouth,BorderLayout.SOUTH);
+		panelGeneral.add(panelWest,BorderLayout.WEST);
+		
+		setContentPane(panelGeneral);
+		revalidate();
+		
+		
+	}
+	
 	/**
 	 *  interface pour afficher les informations d'un personnage
 	 * @param str
@@ -612,22 +733,17 @@ public class Fenetre  extends JFrame {
 	}
 	
 	
-	public void afficheListeWiki(String str) throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException { 
-		ParseWiki wiki = new ParseWiki();
-		try {
-			wiki.infoWikipersonnage(str);
-		} catch (MediaWikiApiErrorException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void afficheListeWiki(String str) throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException, MediaWikiApiErrorException { 
+		
+		ArrayList<SearchWiki> listeDesc=wiki.infoWikipersonnage(str);
+		
+		intro.setText("<html>Effectuez un double clique sur une description correspondante au personnage recherché: <br><br></html>");
+		Object[] lwiki = new Object[listeDesc.size()];
+		for(int i=0; i<listeDesc.size();i++) {
+			lwiki[i]=listeDesc.get(i).getDescription();
 		}
-		PersonnageWiki wikiP =wiki.getPersoWiki();
-		/*
-		Object[] lcomics = new Object[comics.getComics2().size()];
-		for(int i=0; i<comics.getComics2().size();i++) {
-			lcomics[i]=comics.getComics2().get(i);
-		}
-
-		listeComics.setListData(lcomics);*/
+		
+		listeWikiP.setListData(lwiki);
 	}
 	
 
