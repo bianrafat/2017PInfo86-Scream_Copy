@@ -64,7 +64,7 @@ public class Database {
 				
 	}
 
-	private static Boolean createDatabase(String dbName, String userName, String pass) {
+	public static Boolean createDatabase(String dbName, String userName, String pass) {
 		Connection conn = null;
 	    ArrayList<Statement> statements = new ArrayList<Statement>(); // list of Statements, PreparedStatements
 	    PreparedStatement psInsert;
@@ -157,7 +157,7 @@ public class Database {
 		
 	}
 
-	private static Boolean connectDatabase(String dbName, String userName, String pass) {
+	public static Boolean connectDatabase(String dbName, String userName, String pass) {
 		Connection conn = null;
 	    ArrayList<Statement> statements = new ArrayList<Statement>(); // list of Statements, PreparedStatements
 	    PreparedStatement psInsert;

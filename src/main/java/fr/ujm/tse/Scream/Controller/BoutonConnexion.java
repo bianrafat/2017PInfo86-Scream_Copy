@@ -6,18 +6,14 @@ import javax.swing.AbstractAction;
 
 import fr.ujm.tse.Scream.View.Fenetre;
 
-public class BoutonMenuComics extends AbstractAction {
+public class BoutonConnexion extends AbstractAction {
 	private Fenetre fenetre;
-	
-	
-	public BoutonMenuComics(String texte, Fenetre f){
+	public BoutonConnexion(String texte, Fenetre f){
 		super(texte);
 		fenetre=f;
-		
 	}
  
 	public void actionPerformed(ActionEvent e) { 
-		fenetre.boutonComics();
-		
+		fenetre.boutonConnexion();
 	} 
 }
