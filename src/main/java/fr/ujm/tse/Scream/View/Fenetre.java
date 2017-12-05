@@ -87,7 +87,8 @@ public class Fenetre extends JFrame {
 	private ParseWiki wiki = new ParseWiki();
 	private JButton biblio = new JButton("Ma Bibliotèque");
 	private JButton deconnexion = new JButton("Déconnexion");
-
+	private JButton connexion = new JButton("Connexion");
+	
 	
 	public String getNameBiblio() {
 		return nameBiblio;
@@ -134,17 +135,20 @@ public class Fenetre extends JFrame {
 		super();
 	}
 
-	public void run() throws BadLocationException {
+	public void run() throws BadLocationException, IOException {
 		this.build();// On initialise notre fenêtre
 	}
 
-	private void build() throws BadLocationException {
+	private void build() throws BadLocationException, IOException {
 		setTitle("Marvel"); // On donne un titre à l'application
 		setSize(800, 600); // On donne une taille à notre fenêtre
 		setLocationRelativeTo(null); // On centre la fenêtre sur l'écran
 		// setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // On dit à l'application de se fermer lors du clic sur la croix
-
+		ImageIcon icon = new ImageIcon(ImageIO.read(new File("src\\main\\resources\\logo.jpg")));
+		
+	
+		setIconImage(icon.getImage());
 		setContentPane(buildContentPane());
 	}
 
@@ -182,7 +186,7 @@ public class Fenetre extends JFrame {
 		panel2.setLayout(new BorderLayout());
 		north.setLayout(new FlowLayout());
 		center.setLayout(param);
-
+		
 		JLabel label = new JLabel("Bienvenue");
 		Font font = new Font("Century Schoolbook", Font.BOLD, 24);
 		Font fontMenu = new Font("Century Schoolbook", Font.BOLD, 15);
@@ -230,24 +234,31 @@ public class Fenetre extends JFrame {
 		JButton wikiData = new JButton(new BoutonWikiData("Rechercher Wikidata", this));
 		wikiData.setFont(fontMenu);
 		center.add(wikiData);
-
-		JButton connexion = new JButton(new BoutonConnexion("Connexion", this));
+		
 		connexion.setFont(fontMenu);
-		center.add(connexion);
+		
 		deconnexion.setFont(fontMenu);
 		biblio.setFont(fontMenu);
 		if(nameBiblio==null) {
 			biblio.setVisible(false);
 			deconnexion.setVisible(false);
+			connexion.setVisible(true);
+			center.add(connexion);
+			connexion.addActionListener(new BoutonConnexion(this));
 		}else {
 			biblio.setVisible(true);
 			deconnexion.setVisible(true);
+			connexion.setVisible(false);
 			deconnexion.addActionListener(new BoutonDeco(this));
-		}
-		
-		center.add(biblio);
-		center.add(deconnexion);
 
+			center.add(deconnexion);
+			center.add(biblio);
+			
+		}
+
+		
+		
+	
 		panel2.add(Box.createRigidArea(new Dimension(0, 50)), BorderLayout.NORTH);
 		panel2.add(Box.createRigidArea(new Dimension(20, 0)), BorderLayout.WEST);
 		panel2.add(Box.createRigidArea(new Dimension(20, 0)), BorderLayout.EAST);
@@ -268,9 +279,23 @@ public class Fenetre extends JFrame {
 		listePerso.setListData(listeDefault);
 		listeComics.setListData(listeDefault);
 		listeWikiP.setListData(listeDefault);
-
 		return panelG;
 	}
+
+	public JButton getBiblio() {
+		return biblio;
+	}
+
+
+	public void setBiblio(JButton biblio) {
+		this.biblio = biblio;
+	}
+
+
+	public JButton getConnexion() {
+		return connexion;
+	}
+
 
 	/**
 	 * 

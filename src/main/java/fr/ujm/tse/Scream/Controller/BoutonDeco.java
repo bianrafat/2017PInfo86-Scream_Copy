@@ -20,8 +20,9 @@ public class BoutonDeco implements ActionListener {
 		fenetre.setConUser(null);
 		fenetre.setConMdp(null);
 		try {
-			fenetre.buildContentPane();
+			fenetre.setContentPane(fenetre.buildContentPane());
 			fenetre.revalidate();
+			
 		} catch (BadLocationException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

@@ -23,7 +23,7 @@ public class Menu {
 				Fenetre fenetre = new Fenetre();
 				try {
 					fenetre.run();
-				} catch (BadLocationException e) {
+				} catch (BadLocationException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

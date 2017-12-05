@@ -1,17 +1,16 @@
 package fr.ujm.tse.Scream.Controller;
 
 import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
+import java.awt.event.ActionListener;
 
 import fr.ujm.tse.Scream.View.Fenetre;
 
-public class BoutonConnexion extends AbstractAction {
+public class BoutonConnexion implements ActionListener {
 	private Fenetre fenetre;
-	public BoutonConnexion(String texte, Fenetre f){
-		super(texte);
+	public BoutonConnexion(Fenetre f){
 		fenetre=f;
 	}
+	
  
 	public void actionPerformed(ActionEvent e) { 
 		fenetre.boutonConnexion();
