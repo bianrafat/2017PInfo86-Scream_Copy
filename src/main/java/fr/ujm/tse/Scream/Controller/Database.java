@@ -32,10 +32,28 @@ public class Database {
 			 switch (str) 
 			 {
 				case "o":
-				    connectDatabase();
+					System.out.println("Indiquez le nom de votre bibliothèque :");
+					sc4 = new Scanner(System.in);
+					dbName = sc4.nextLine();
+					System.out.println("Veuillez renseigner votre nom d'utilisateur :");
+					sc2 = new Scanner(System.in);
+					userName = sc2.nextLine();
+					System.out.println("Maintenant votre mot de passe :");
+					sc3 = new Scanner(System.in);
+					pass = sc3.nextLine();
+				    connectDatabase(dbName,userName,pass);
 			            break;
 				case "n":
-				    createDatabase();
+					System.out.println("Quel nom souhaitez vous donner à votre bibliothèque ?");
+					sc4 = new Scanner(System.in);
+					dbName = sc4.nextLine();
+					System.out.println("Veuillez renseigner un nom d'utilisateur :");
+					sc2 = new Scanner(System.in);
+					userName = sc2.nextLine();
+					System.out.println("Maintenant un mot de passe :");
+					sc3 = new Scanner(System.in);
+					pass = sc3.nextLine();
+				    createDatabase(dbName,userName,pass);
 			            break;
 				default:
 				    System.out.println("Êtes vous déjà inscrit ? (o/n)");
@@ -46,17 +64,7 @@ public class Database {
 				
 	}
 
-	private static void createDatabase() {
-		System.out.println("Quel nom souhaitez vous donner à votre base de données ?");
-		sc4 = new Scanner(System.in);
-		dbName = sc4.nextLine();
-		System.out.println("Veuillez renseigner un nom d'utilisateur :");
-		sc2 = new Scanner(System.in);
-		userName = sc2.nextLine();
-		System.out.println("Maintenant un mot de passe :");
-		sc3 = new Scanner(System.in);
-		pass = sc3.nextLine();
-		
+	private static Boolean createDatabase(String dbName, String userName, String pass) {
 		Connection conn = null;
 	    ArrayList<Statement> statements = new ArrayList<Statement>(); // list of Statements, PreparedStatements
 	    PreparedStatement psInsert;
@@ -102,6 +110,7 @@ public class Database {
 	                 }
 	             }
 	         }
+	         return true;
 		} 
 	    catch (SQLException sqle)
 	     {
@@ -144,20 +153,11 @@ public class Database {
 	             printSQLException(sqle);
 	         }
 	     }
+		return false;
 		
 	}
 
-	private static void connectDatabase() {
-		System.out.println("Indiquez le nom de votre base de données :");
-		sc4 = new Scanner(System.in);
-		dbName = sc4.nextLine();
-		System.out.println("Veuillez renseigner votre nom d'utilisateur :");
-		sc2 = new Scanner(System.in);
-		userName = sc2.nextLine();
-		System.out.println("Maintenant votre mot de passe :");
-		sc3 = new Scanner(System.in);
-		pass = sc3.nextLine();
-		
+	private static Boolean connectDatabase(String dbName, String userName, String pass) {
 		Connection conn = null;
 	    ArrayList<Statement> statements = new ArrayList<Statement>(); // list of Statements, PreparedStatements
 	    PreparedStatement psInsert;
@@ -200,6 +200,7 @@ public class Database {
 	                 }
 	             }
 	         }
+	         return true;
 		} 
 	    catch (SQLException sqle)
 	     {
@@ -242,6 +243,7 @@ public class Database {
 	             printSQLException(sqle);
 	         }
 	     }
+		return false;
 	}
 	
 
