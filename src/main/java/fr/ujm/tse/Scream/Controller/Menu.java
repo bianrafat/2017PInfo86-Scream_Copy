@@ -19,7 +19,7 @@ import fr.ujm.tse.Scream.View.Fenetre;
 public class Menu {
 	public static void main(String[] args) throws IOException, JSONException, NoSuchAlgorithmException {
 		/*
-		 * SwingUtilities.invokeLater(new Runnable() { public void run() { // On crï¿½e
+		 * SwingUtilities.invokeLater(new Runnable() { public void run() { // On crée
 		 * une nouvelle instance de notre JDialog Fenetre fenetre = new Fenetre(); try {
 		 * fenetre.run(); } catch (BadLocationException e) { // TODO Auto-generated
 		 * catch block e.printStackTrace(); } fenetre.setVisible(true);// On la rend
@@ -42,13 +42,13 @@ public class Menu {
 		while (fin != 'y') {
 			Comics comics = Parse.listeComics(titre, offset);
 			comics.afficherComics();
-			System.out.println("Vous pouvez changer de page (0) ou avoir des informations sur le comics (1) ou arrï¿½ter l'application (2).");
+			System.out.println("Vous pouvez changer de page (0) ou avoir des informations sur le comics (1) ou arrêter l'application (2).");
 			Scanner sc2 = new Scanner(System.in);
 			int choix = sc2.nextInt();
 			switch (choix) {
 			case 0:
 				System.out.println(
-						"Pour changer de page : (-1 : page prï¿½cï¿½dente / 0 : retour au dï¿½but / 1 : page suivante)");
+						"Pour changer de page : (-1 : page précédente / 0 : retour au début / 1 : page suivante)");
 				Scanner sc3 = new Scanner(System.in);
 				int page = sc2.nextInt();
 				switch (page) {
@@ -89,7 +89,7 @@ public class Menu {
 				comics = Parse.infoComics(titre, nbr, num_page);
 				comics.afficher();
 				break;
-				// Pour arrï¿½ter le programme
+				// Pour arrêter le programme
 			case 2:
 				System.out.println("Avez-vous fini de faire vos recherches ? (y/n)");
 				Scanner sc5 = new Scanner(System.in);
