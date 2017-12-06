@@ -25,6 +25,7 @@ public class Parse {
 	private static String reqlistComics = "https://gateway.marvel.com:443/v1/public/comics?characters=";
 	private static String reqTitle = "https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=";
 	private static String limit = "&limit=10";
+	private static String offset = "&offset=";
 	private static String apikey = "&apikey=";
 	private static String timestp = "&ts=";
 	private static String hash = "&hash=";
@@ -123,7 +124,7 @@ public class Parse {
 	 * @throws JSONException
 	 * @throws NoSuchAlgorithmException
 	 */
-	public static Comics listeComics(String title) throws  IOException, JSONException, NoSuchAlgorithmException
+	public static Comics listeComics(String title, int nb_offset) throws  IOException, JSONException, NoSuchAlgorithmException
 	{
 		
 		//generation du md5:
@@ -132,7 +133,7 @@ public class Parse {
 		String md5=String.format("%032x", new BigInteger(1, md5hash.digest()));
 		
 		//on envoie la requete http
-		info = HttpConnect.readUrl(reqTitle+title+limit+timestp+ts+apikey+publicKey+hash+md5);
+		info = HttpConnect.readUrl(reqTitle+title+limit+offset+nb_offset+timestp+ts+apikey+publicKey+hash+md5);
 		
 		JSONObject obj = new JSONObject(info);
 		JSONObject data = obj.getJSONObject(donnees);
@@ -162,7 +163,7 @@ public class Parse {
 	 * @throws JSONException
 	 * @throws NoSuchAlgorithmException
 	 */
-	public static Comics infoComics(String title, int num) throws  IOException, JSONException, NoSuchAlgorithmException
+	public static Comics infoComics(String title, int num, int page) throws  IOException, JSONException, NoSuchAlgorithmException
 	{
 		
 		//generation du md5:
@@ -180,52 +181,52 @@ public class Parse {
 		// création d'un objet Comics
 		Comics comics=new Comics();		
 		
-		//Création d'une boucle pour que l'utilisateur choisisse bien entre 1 et 20 (liste de comics)
-		if ( num < 1 || num > 20) {
-			System.out.println("Veuillez entrer un nombre entre 1 et 20 / Please enter a number between 1 and 20.");
+		//Création d'une boucle pour que l'utilisateur choisisse bien entre 1 et 10  pour chaque page(liste de comics)
+		if ( num + 10*page < 1 + 10*page || num + 10*page > 10 + 10*page) {
+			System.out.println("Veuillez entrer un nombre entre 1 et 10 / Please enter a number between 1 and 10.");
 			Scanner sc1 = new Scanner(System.in); 
 			int i = sc1.nextInt();
-			comics = Parse.infoComics(title, i);
+			comics = Parse.infoComics(title, i, page);
 		}
 		else {
 			//Récupération de l'identifiant, du titre et de la description.
-			comics.setId(results.getJSONObject(num-1).getInt(identifiant));
-			comics.setTitle(results.getJSONObject(num-1).getString(titre));
+			comics.setId(results.getJSONObject(num + 10*page -1).getInt(identifiant));
+			comics.setTitle(results.getJSONObject(num + 10*page -1).getString(titre));
 			
 			
 			// Récupération de la description si elle existe
-			if (results.getJSONObject(num-1).isNull(description)){
+			if (results.getJSONObject(num + 10*page -1).isNull(description)){
 				comics.setDescription("Aucune description / No description available.");
 			}else {
-				comics.setDescription(results.getJSONObject(num-1).getString(description));
+				comics.setDescription(results.getJSONObject(num + 10*page -1).getString(description));
 			}
 			
 			// Récupération des créateurs 
-			int nbCreators=results.getJSONObject(num-1).getJSONObject(creators).getInt("available");
+			int nbCreators=results.getJSONObject(num + 10*page -1).getJSONObject(creators).getInt("available");
 			if (nbCreators ==0) {
 				comics.setCreators("Aucune information / No information.");
 			}
 			else{
 				for (int j=0; j<nbCreators; j++)
 				{
-					comics.setCreators(results.getJSONObject(num-1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(role).toUpperCase()+" : "+results.getJSONObject(num-1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(name));
+					comics.setCreators(results.getJSONObject(num + 10*page -1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(role).toUpperCase()+" : "+results.getJSONObject(num + 10*page -1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(name));
 				}
 			}
 			
 			// Récupération des personnages
-			int nbCharacters=results.getJSONObject(num-1).getJSONObject(characters).getInt("available");
+			int nbCharacters=results.getJSONObject(num + 10*page -1).getJSONObject(characters).getInt("available");
 			if (nbCharacters ==0) {
 				comics.setCharacters("Aucune information / No information.");
 			}
 			else{
 				for (int j=0; j<nbCharacters; j++)
 				{			
-					comics.setCharacters(results.getJSONObject(num-1).getJSONObject(characters).getJSONArray(items).getJSONObject(j).getString(name));
+					comics.setCharacters(results.getJSONObject(num + 10*page -1).getJSONObject(characters).getJSONArray(items).getJSONObject(j).getString(name));
 				}
 			}
 			
 			// pour avoir le lien de l'image du personnage il faut combiner path et extension
-			comics.setLien_image(results.getJSONObject(num-1).getJSONObject(thumbnail).getString(path)+"."+results.getJSONObject(num-1).getJSONObject(thumbnail).getString(extension));
+			comics.setLien_image(results.getJSONObject(num + 10*page -1).getJSONObject(thumbnail).getString(path)+"."+results.getJSONObject(num + 10*page -1).getJSONObject(thumbnail).getString(extension));
 		}
 		return comics;
 	}

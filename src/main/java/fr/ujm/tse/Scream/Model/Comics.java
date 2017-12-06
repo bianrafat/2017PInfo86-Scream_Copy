@@ -95,7 +95,7 @@ public class Comics {
 		return creators;
 	}
 
-	//essayer d'utiliser cette methode pour afficher les titres avec descriptions
+	//cette methode pour affiche les titres des comics
 	public void afficherComics() {
 		this.getComics();
 		
