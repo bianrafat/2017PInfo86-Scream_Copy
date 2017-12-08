@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
 import java.util.Scanner;
 
 import org.json.JSONArray;
@@ -46,6 +45,7 @@ public class Parse {
 	private static String count = "count";
 	private static String ts=Long.toString(System.currentTimeMillis()); //generation du timstamp:
 	private static MessageDigest md5hash;
+	private static Scanner sc1;
 	
 	
 	/**
@@ -184,7 +184,7 @@ public class Parse {
 		//Création d'une boucle pour que l'utilisateur choisisse bien entre 1 et 10  pour chaque page(liste de comics)
 		if ( num + 10*page < 1 + 10*page || num + 10*page > 10 + 10*page) {
 			System.out.println("Veuillez entrer un nombre entre 1 et 10 / Please enter a number between 1 and 10.");
-			Scanner sc1 = new Scanner(System.in); 
+			sc1 = new Scanner(System.in); 
 			int i = sc1.nextInt();
 			comics = Parse.infoComics(title, i, page);
 		}

@@ -1,7 +1,7 @@
 package fr.ujm.tse.Scream.Model;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Personnage {
 	private int id;

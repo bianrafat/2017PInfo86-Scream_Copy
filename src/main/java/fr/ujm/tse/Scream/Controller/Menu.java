@@ -1,30 +1,41 @@
 package fr.ujm.tse.Scream.Controller;
 
 import java.io.IOException;
+
 import java.security.NoSuchAlgorithmException;
-import java.util.Scanner;
-import java.util.jar.JarException;
+//import java.util.Scanner;
+//import java.util.jar.JarException;
 
 import javax.swing.SwingUtilities;
-import javax.swing.text.BadLocationException;
+import javax.swing.text.BadLocationException; 
 
 import org.json.JSONException;
-import fr.ujm.tse.Scream.Model.ParseWiki;
+//import fr.ujm.tse.Scream.Model.ParseWiki;
 
-import fr.ujm.tse.Scream.Model.Comics;
+/*import fr.ujm.tse.Scream.Model.Comics;
 import fr.ujm.tse.Scream.Model.Parse;
-import fr.ujm.tse.Scream.Model.Personnage;
-import fr.ujm.tse.Scream.View.Fenetre;
+import fr.ujm.tse.Scream.Model.Personnage;*/
+import fr.ujm.tse.Scream.View.Fenetre; 
 
 public class Menu {
 	public static void main(String[] args) throws IOException, JSONException, NoSuchAlgorithmException {
-		/*
-		 * SwingUtilities.invokeLater(new Runnable() { public void run() { // On crée
-		 * une nouvelle instance de notre JDialog Fenetre fenetre = new Fenetre(); try {
-		 * fenetre.run(); } catch (BadLocationException e) { // TODO Auto-generated
-		 * catch block e.printStackTrace(); } fenetre.setVisible(true);// On la rend
-		 * visible } }); Thread t = new Thread(new ParseWiki()); t.start();
-		 */
+		
+		 SwingUtilities.invokeLater(new Runnable() { 
+			public void run() {
+				 // On crée une nouvelle instance de notre JDialog 
+				 Fenetre fenetre = new Fenetre(); 
+				 try {
+					 fenetre.run(); 
+				} catch (BadLocationException | IOException e) { 
+					// TODO Auto-generated catch block
+					 e.printStackTrace(); 
+				} 
+				 fenetre.setVisible(true);// On la rend visible 
+				 } 
+		}); 
+		/* Thread t = new Thread(new ParseWiki()); 
+		 t.start();*/
+		 
 		/*
 		 * System.out.println("Entrez le nom d'un personnage "); Scanner sc1 = new
 		 * Scanner(System.in); String str = sc1.nextLine(); Personnage
@@ -32,7 +43,7 @@ public class Menu {
 		 * Parse.titleComics(perso).afficheComics();
 		 */
 
-		System.out.println("Entrez le titre de Comics");
+		/*System.out.println("Entrez le titre de Comics");
 		int offset = 0;
 		int num_page = 0;
 		Scanner sc1 = new Scanner(System.in);
@@ -97,6 +108,6 @@ public class Menu {
 				break;
 			}
 		}
-
+*/
 	}
 }

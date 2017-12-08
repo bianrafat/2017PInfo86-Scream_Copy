@@ -13,7 +13,7 @@ public class SearchWiki {
 		super();
 		this.identifiant = identifiant;
 		this.description = description;
-		this.id=id;
+		
 	}
 	public int getId() {
 		return id;

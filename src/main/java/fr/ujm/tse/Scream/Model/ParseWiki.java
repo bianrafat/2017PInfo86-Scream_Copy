@@ -3,7 +3,6 @@ package fr.ujm.tse.Scream.Model;
 import java.io.IOException; 
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,7 +15,6 @@ import org.wikidata.wdtk.datamodel.interfaces.SiteLink;
 import org.wikidata.wdtk.datamodel.interfaces.Sites;
 import org.wikidata.wdtk.datamodel.interfaces.Statement;
 import org.wikidata.wdtk.datamodel.interfaces.StatementGroup;
-import org.wikidata.wdtk.datamodel.interfaces.StringValue;
 import org.wikidata.wdtk.dumpfiles.DumpProcessingController;
 import org.wikidata.wdtk.wikibaseapi.WikibaseDataFetcher;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
@@ -27,15 +25,13 @@ import fr.ujm.tse.Scream.Controller.Login;
 public class ParseWiki implements Runnable{
 
 
-
+	private static Scanner sc1;
+	private static Scanner sc2;
 	private String info = "";
-	private List<String> id = new ArrayList<String>();
-	private List<String> desc = new ArrayList<String>();
 	private JSONObject obj = new JSONObject();
 	JSONArray results = new JSONArray();
 	int choix = 0;
 	private static WikibaseDataFetcher wbdf = WikibaseDataFetcher.getWikidataDataFetcher();
-	private StatementGroup stringValue=null;
 	private Statement stringValue1=null;
 	private Statement stringValue2=null;
 	private Statement stringValue3=null;
@@ -398,12 +394,12 @@ public class ParseWiki implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		System.out.println("Entrez le nom d'un personnage");
-		Scanner sc1 = new Scanner(System.in);
+		sc1 = new Scanner(System.in);
 		String str = sc1.nextLine();
 		try {
 			infoWikipersonnage(str);
 			System.out.println("entrer le numéro de la description qui correspond au personnage recherché");
-			Scanner sc2 = new Scanner(System.in);
+			sc2 = new Scanner(System.in);
 			int str2 = sc2.nextInt();
 			infoWikipersonnagetwo(str2);
 		} catch (IOException e) {

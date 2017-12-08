@@ -766,7 +766,7 @@ public class Fenetre extends JFrame {
 
 	public void ContentPanelComics(int nb, String title)
 			throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException {
-		Comics comics = Parse.infoComics(title, nb);
+		Comics comics = Parse.infoComics(title, nb,0);
 		JEditorPane comicsText = new JTextPane();
 		comicsText.setEditable(false);
 
@@ -1058,7 +1058,7 @@ public class Fenetre extends JFrame {
 	 */
 	public void afficheListeComics(String str)
 			throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException {
-		Comics comics = Parse.listeComics(str);
+		Comics comics = Parse.listeComics(str,0);
 
 		intro.setText("<html> Effectuez un double clique sur un comics: <br>Pour cette recherche il y a "
 				+ comics.getTotal() + " comics disponibles.<br></html>");
