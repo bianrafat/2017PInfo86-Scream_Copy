@@ -15,5 +15,7 @@ public class BoutonWikiData extends AbstractAction {
  
 	public void actionPerformed(ActionEvent e) { 
 		fenetre.boutonWikidata();
-	} 
+	}
+	
+	
 }

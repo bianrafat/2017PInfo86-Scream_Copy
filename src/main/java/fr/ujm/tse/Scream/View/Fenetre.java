@@ -3,6 +3,7 @@ package fr.ujm.tse.Scream.View;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -43,6 +44,7 @@ import javax.swing.text.StyledDocument;
 import org.json.JSONException;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
+import fr.ujm.tse.Scream.Controller.AccessWebWiki;
 import fr.ujm.tse.Scream.Controller.BoutonConnexion;
 import fr.ujm.tse.Scream.Controller.BoutonDeco;
 import fr.ujm.tse.Scream.Controller.BoutonMenuComics;
@@ -861,6 +863,7 @@ public class Fenetre extends JFrame {
 
 		wiki.infoWikipersonnagetwo(i + 1);
 		JEditorPane wikiText = new JTextPane();
+		wikiText.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
 		wikiText.setEditable(false);
 		PersonnageWiki perso = wiki.getPersoWiki();
 
@@ -869,7 +872,7 @@ public class Fenetre extends JFrame {
 		Style gras = ((JTextPane) wikiText).addStyle("gras", null);
 		StyleConstants.setBold(gras, true);
 		int pos = 0;
-		String str = "Name : ";
+		String str = "Nom : ";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		contenu.insertString(pos, perso.getName() + "\n", null);
@@ -879,7 +882,7 @@ public class Fenetre extends JFrame {
 		pos += str.length();
 		contenu.insertString(pos, perso.getDescription() + "\n", null);
 		pos += perso.getDescription().length() + 1;
-		str = "Surnoms: \n ";
+		str = "Surnom(s): \n ";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		for (int i1 = 0; i1 < perso.getNicknames2().size(); i1++) {
@@ -938,26 +941,35 @@ public class Fenetre extends JFrame {
 			contenu.insertString(pos, perso.getPerformers2().get(i1) + "\n", null);
 			pos += perso.getPerformers2().get(i1).length() + 1;
 		}
-		str = "Pouvoir: \n";
+		str = "Pouvoir(s): \n";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		for (int i1 = 0; i1 < perso.getSuperhumain_ability2().size(); i1++) {
 			contenu.insertString(pos, perso.getSuperhumain_ability2().get(i1) + "\n", null);
 			pos += perso.getSuperhumain_ability2().get(i1).length() + 1;
 		}
-
-		str = "Pour plus d'information, consultez la page wikidata du personnage: ";
-		contenu.insertString(pos, str, gras);
-		pos += str.length();
-		contenu.insertString(pos, perso.getWikidata_page() + "\n", null);
-		pos += perso.getWikidata_page().length() + 1;
-
-		str = "lien de la page wikipedia: ";
-		contenu.insertString(pos, str, gras);
-		pos += str.length();
-		contenu.insertString(pos, perso.getWiki_page() + "\n", null);
-		pos += perso.getWiki_page().length() + 1;
-
+		JLabel website = new JLabel();
+		//website.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
+		//website.setEditable(false);
+		//website.setPreferredSize(new Dimension(20, 20));
+		website.setText("<html> Pour plus d'information, consultez la page wikidata du personnage : <a href=\"\">"+perso.getWikidata_page()+"</a></html>");
+		website.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		AccessWebWiki.goWebsite(website,perso.getWikidata_page());
+		//website.setVisible(true);
+		
+		JLabel website1 = new JLabel();
+		//website.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
+		//website.setEditable(false);
+		//website1.setPreferredSize(new Dimension(20, 20));
+		website1.setText("<html> lien de la page wikipedia: : <a href=\"\">"+perso.getWiki_page()+"</a></html>");
+		website1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		AccessWebWiki.goWebsite(website1,perso.getWiki_page());
+		
+		JPanel websites=new JPanel();
+		websites.add(website);
+		websites.add(website1);
+		websites.setPreferredSize(new Dimension(50, 50));
+		websites.setBackground(new Color(236, 248, 254));
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
 
 		JPanel panelGeneral = new JPanel();
@@ -970,17 +982,17 @@ public class Fenetre extends JFrame {
 		panel.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		wikiText.setBackground(new Color(236, 248, 254));
-
 		panel.setLayout(new BorderLayout());
 		panelGeneral.setLayout(new BorderLayout());
 		panelSouth.setLayout(new FlowLayout());
 		panelWest.setLayout(new FlowLayout());
-
+		websites.setLayout(new FlowLayout());
 		JScrollPane scrollingArea = new JScrollPane(wikiText);
-		scrollingArea.setPreferredSize(new Dimension(300, 300));
+		scrollingArea.setPreferredSize(new Dimension(150, 150));
 		setLocationRelativeTo(null);
 
 		panelSouth.add(retour);
+		panel.add(websites,BorderLayout.PAGE_END);
 		panel.add(scrollingArea, BorderLayout.CENTER);
 		panelGeneral.add(panel, BorderLayout.CENTER);
 		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
