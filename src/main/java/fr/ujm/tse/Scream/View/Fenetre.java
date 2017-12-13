@@ -180,13 +180,16 @@ public class Fenetre extends JFrame {
 		JPanel panelG = new JPanel();
 		JPanel north = new JPanel();
 		JPanel center = new JPanel();
+		JPanel labelP= new JPanel();
 		center.setBackground(new Color(236, 248, 254));
 		north.setBackground(new Color(236, 248, 254));
 		panel2.setBackground(new Color(236, 248, 254));
 		panelG.setBackground(new Color(236, 248, 254));
+		labelP.setBackground(new Color(236, 248, 254));
 		panelG.setLayout(new BorderLayout());
 		panel2.setLayout(new BorderLayout());
-		north.setLayout(new FlowLayout());
+		north.setLayout(new BorderLayout());
+		labelP.setLayout(new FlowLayout());
 		center.setLayout(param);
 		
 		JLabel label = new JLabel("Bienvenue");
@@ -210,7 +213,9 @@ public class Fenetre extends JFrame {
 
 		label.setFont(font);
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
-		north.add(label);
+		labelP.add(label);
+		north.add(Box.createRigidArea(new Dimension(150, 40)), BorderLayout.WEST);
+		north.add(labelP,BorderLayout.CENTER);
 		panelG.add(north, BorderLayout.NORTH);
 		JButton boutonPersonnage = new JButton(new BoutonMenuPersonnage("Rechercher un personnage ", this));
 		/*
@@ -236,7 +241,7 @@ public class Fenetre extends JFrame {
 		JButton wikiData = new JButton(new BoutonWikiData("Rechercher Wikidata", this));
 		wikiData.setFont(fontMenu);
 		center.add(wikiData);
-		
+		connexion.setPreferredSize(new Dimension(150, 40));
 		connexion.setFont(fontMenu);
 		
 		deconnexion.setFont(fontMenu);
@@ -245,7 +250,7 @@ public class Fenetre extends JFrame {
 			biblio.setVisible(false);
 			deconnexion.setVisible(false);
 			connexion.setVisible(true);
-			center.add(connexion);
+			north.add(connexion,BorderLayout.EAST);
 			connexion.addActionListener(new BoutonConnexion(this));
 		}else {
 			biblio.setVisible(true);
@@ -253,12 +258,12 @@ public class Fenetre extends JFrame {
 			connexion.setVisible(false);
 			deconnexion.addActionListener(new BoutonDeco(this));
 
-			center.add(deconnexion);
-			center.add(biblio);
+			north.add(deconnexion,BorderLayout.EAST);
+			
 			
 		}
 
-		
+		center.add(biblio);
 		
 	
 		panel2.add(Box.createRigidArea(new Dimension(0, 50)), BorderLayout.NORTH);
