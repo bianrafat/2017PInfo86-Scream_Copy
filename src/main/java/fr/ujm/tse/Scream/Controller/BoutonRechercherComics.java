@@ -16,6 +16,7 @@ import fr.ujm.tse.Scream.View.Fenetre;
 
 public class BoutonRechercherComics implements ActionListener , KeyListener{
 	private Fenetre fenetre;
+	
 	public BoutonRechercherComics(Fenetre f){
 		
 		fenetre=f;
@@ -24,9 +25,8 @@ public class BoutonRechercherComics implements ActionListener , KeyListener{
 	public void actionPerformed(ActionEvent e) { 
 		String str = fenetre.getChampComics().getText();
 		fenetre.setChampStartComics(str);
-		
 		try {
-			fenetre.afficheListeComics(str);
+			fenetre.afficheListeComics(str,0);
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

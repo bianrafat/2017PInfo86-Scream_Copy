@@ -49,12 +49,14 @@ import fr.ujm.tse.Scream.Controller.BoutonConnexion;
 import fr.ujm.tse.Scream.Controller.BoutonDeco;
 import fr.ujm.tse.Scream.Controller.BoutonMenuComics;
 import fr.ujm.tse.Scream.Controller.BoutonMenuPersonnage;
+import fr.ujm.tse.Scream.Controller.BoutonPrecedent;
 import fr.ujm.tse.Scream.Controller.BoutonRechercherComics;
 import fr.ujm.tse.Scream.Controller.BoutonRechercherPerso;
 import fr.ujm.tse.Scream.Controller.BoutonRechercherPersoWiki;
 import fr.ujm.tse.Scream.Controller.BoutonRepNon;
 import fr.ujm.tse.Scream.Controller.BoutonRepOui;
 import fr.ujm.tse.Scream.Controller.BoutonRetour;
+import fr.ujm.tse.Scream.Controller.BoutonSuivant;
 import fr.ujm.tse.Scream.Controller.BoutonValideId;
 import fr.ujm.tse.Scream.Controller.BoutonValideNewBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonWikiData;
@@ -90,8 +92,21 @@ public class Fenetre extends JFrame {
 	private JButton biblio = new JButton("Ma Bibliotèque");
 	private JButton deconnexion = new JButton("Déconnexion");
 	private JButton connexion = new JButton("Connexion");
+	private JButton plus = new JButton("Suivant");
+	private JButton moins = new JButton("Précédent");
+	private int offset;
+
 	
-	
+	public int getOffset() {
+		return offset;
+	}
+
+
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+
+
 	public String getNameBiblio() {
 		return nameBiblio;
 	}
@@ -274,18 +289,21 @@ public class Fenetre extends JFrame {
 		// pour le bouton retour
 		sDoc.remove(0, sDoc.getLength());
 		img.setIcon(new ImageIcon());
-		;
+		moins.setVisible(false);
+		plus.setVisible(false);
 		champPerso.setText("");
 		champComics.setText("");
 		champWikiP.setText("");
 		champBiblio.setText("");
 		champUser.setText("");
 		champMdp.setText("");
-		Object[] listeDefault = new Object[] { "" };
 		intro.setText("");
+		Object[] listeDefault = new Object[] { "" };
+	
 		listePerso.setListData(listeDefault);
 		listeComics.setListData(listeDefault);
 		listeWikiP.setListData(listeDefault);
+		offset=0;
 		return panelG;
 	}
 
@@ -681,18 +699,21 @@ public class Fenetre extends JFrame {
 		JPanel panel = new JPanel();
 		JPanel panelWest = new JPanel();
 		JPanel panelSouth = new JPanel();
+		JPanel plusmoins = new JPanel();
 		panelSouth.setBackground(new Color(236, 248, 254));
 		panelWest.setBackground(new Color(236, 248, 254));
 		panel.setBackground(new Color(236, 248, 254));
 		panelNorth.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		listeComics.setBackground(new Color(236, 248, 254));
+		plusmoins.setBackground(new Color(236, 248, 254));
 
 		panel.setLayout(new BorderLayout());
 		panelGeneral.setLayout(new BorderLayout());
 		panelNorth.setLayout(new FlowLayout());
 		panelWest.setLayout(new FlowLayout());
 		panelSouth.setLayout(new FlowLayout());
+		plusmoins.setLayout(new FlowLayout());
 
 		JLabel label = new JLabel("Entrez un titre de Comics (le debut uniquement) :");
 		champComics.setMaximumSize(new Dimension(200, 30));
@@ -702,7 +723,7 @@ public class Fenetre extends JFrame {
 		JButton recherche = new JButton("Rechercher");
 		recherche.addActionListener(new BoutonRechercherComics(this));
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
-
+		
 		listeComics.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				JList list = (JList) evt.getSource();
@@ -720,8 +741,14 @@ public class Fenetre extends JFrame {
 				}
 			}
 		});
+		
 		intro.setAlignmentX(Component.LEFT_ALIGNMENT);
-
+		plus.addActionListener(new BoutonSuivant(this));
+		moins.addActionListener(new BoutonPrecedent(this));
+		plusmoins.add(moins);
+		plusmoins.add(plus);
+		plusmoins.setPreferredSize(new Dimension(300,250));
+		
 		panelNorth.add(label);
 		panelNorth.add(champComics);
 		panelNorth.add(recherche);
@@ -731,7 +758,8 @@ public class Fenetre extends JFrame {
 
 		panel.add(Box.createRigidArea(new Dimension(200, 20)), BorderLayout.WEST);
 		panel.add(listeComics, BorderLayout.CENTER);
-
+		panel.add(plusmoins, BorderLayout.SOUTH);
+		
 		panelGeneral.add(panelNorth, BorderLayout.NORTH);
 		panelGeneral.add(panel, BorderLayout.CENTER);
 		panelGeneral.add(panelWest, BorderLayout.WEST);
@@ -741,6 +769,12 @@ public class Fenetre extends JFrame {
 		revalidate();
 	}
 
+
+	public JTextField getChampComics() {
+		return champComics;
+	}
+
+
 	/**
 	 * retourne le texte a afficher apres la recherche de comics
 	 * 
@@ -749,15 +783,6 @@ public class Fenetre extends JFrame {
 
 	public JLabel getIntro() {
 		return intro;
-	}
-
-	/**
-	 * retourne la zone de texte du debut du titre d'un comics
-	 * 
-	 * @return champComics
-	 */
-	public JTextField getChampComics() {
-		return champComics;
 	}
 
 	/**
@@ -773,7 +798,7 @@ public class Fenetre extends JFrame {
 
 	public void ContentPanelComics(int nb, String title)
 			throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException {
-		Comics comics = Parse.infoComics(title, nb,0);
+		Comics comics = Parse.infoComics(title, nb,offset/10);
 		JEditorPane comicsText = new JTextPane();
 		comicsText.setEditable(false);
 
@@ -1073,18 +1098,27 @@ public class Fenetre extends JFrame {
 	 * @throws IOException
 	 * @throws BadLocationException
 	 */
-	public void afficheListeComics(String str)
+	public void afficheListeComics(String str,int nb)
 			throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException {
-		Comics comics = Parse.listeComics(str,0);
-
+		Comics comics = Parse.listeComics(str,nb);
 		intro.setText("<html> Effectuez un double clique sur un comics: <br>Pour cette recherche il y a "
 				+ comics.getTotal() + " comics disponibles.<br></html>");
 		Object[] lcomics = new Object[comics.getComics2().size()];
 		for (int i = 0; i < comics.getComics2().size(); i++) {
 			lcomics[i] = comics.getComics2().get(i);
 		}
-
+		if(offset==0) {
+			moins.setVisible(false);
+		}else {
+			moins.setVisible(true);
+		}
+		plus.setVisible(true);
+		Object[] listeDefault = new Object[] { "" };
+		
+		listeComics.setListData(listeDefault);
 		listeComics.setListData(lcomics);
+		listeComics.repaint();
+		listeComics.revalidate();
 	}
 
 	public void afficheListeWiki(String str) throws JSONException, NoSuchAlgorithmException, IOException,
