@@ -1,16 +1,22 @@
 package fr.ujm.tse.Scream.Controller;
 
 import java.sql.Connection;
-
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/** 
+ * 
+ * @author Scream
+ *
+ */
 public class Database {
 	private static String framework = "embedded";
 	private static String protocol = "jdbc:derby:";
@@ -28,6 +34,7 @@ public class Database {
 	private static PreparedStatement psUpdate;
 	private static Statement s;
 	private static ResultSet rs;
+	
 
 	public static void databse() {
 		System.out.println("Êtes vous déjà inscrit ? (o/n)");
@@ -80,11 +87,33 @@ public class Database {
 			System.out.println("Notez bien vos identifiants : ");
 			System.out.println("Nom d'utililsateur : " + userName);
 			System.out.println("Mot de passe : " + pass);
-
+			
+			
+			
 			// We want to control transactions manually. Autocommit is on by
 			// default in JDBC.
 			conn.setAutoCommit(false);
-			return true;
+			/* Creating a statement object that we can use for running various
+             * SQL statements commands against the database.*/
+            s = conn.createStatement();
+            statements.add(s);
+
+            // We create a table...
+            s.execute("create table library(id int primary key not null,"
+            		+ " titre varchar(100),"
+            		+ " auteur varchar(100),"
+            		+ " année int, état varchar(100),"
+            		+ " bookmark int,"
+            		+ " note int,"
+            		+ " commentaire varchar(500))");
+            
+            
+            /*
+            We commit the transaction. Any changes will be persisted to
+            the database now.
+	         */
+	         conn.commit();
+			 return true;
 		} catch (SQLException sqle) {
 			printSQLException(sqle);
 		} finally {
