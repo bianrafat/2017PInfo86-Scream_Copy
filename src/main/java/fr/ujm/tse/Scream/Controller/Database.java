@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/** 
+/**
  * 
  * @author Scream
  *
@@ -34,7 +34,6 @@ public class Database {
 	private static PreparedStatement psUpdate;
 	private static Statement s;
 	private static ResultSet rs;
-	
 
 	public static void databse() {
 		System.out.println("Êtes vous déjà inscrit ? (o/n)");
@@ -87,33 +86,28 @@ public class Database {
 			System.out.println("Notez bien vos identifiants : ");
 			System.out.println("Nom d'utililsateur : " + userName);
 			System.out.println("Mot de passe : " + pass);
-			
-			
-			
+
 			// We want to control transactions manually. Autocommit is on by
 			// default in JDBC.
 			conn.setAutoCommit(false);
-			/* Creating a statement object that we can use for running various
-             * SQL statements commands against the database.*/
-            s = conn.createStatement();
-            statements.add(s);
+			/*
+			 * Creating a statement object that we can use for running various
+			 * SQL statements commands against the database.
+			 */
+			s = conn.createStatement();
+			statements.add(s);
 
-            // We create a table...
-            s.execute("create table library(id int primary key not null,"
-            		+ " titre varchar(100),"
-            		+ " auteur varchar(100),"
-            		+ " année int, état varchar(100),"
-            		+ " bookmark int,"
-            		+ " note int,"
-            		+ " commentaire varchar(500))");
-            
-            
-            /*
-            We commit the transaction. Any changes will be persisted to
-            the database now.
-	         */
-	         conn.commit();
-			 return true;
+			// We create a table...
+			s.execute("create table library(id int primary key not null," + " titre varchar(100),"
+					+ " auteur varchar(100)," + " année int, etat varchar(100)," + " bookmark int," + " note int,"
+					+ " commentaire varchar(500))");
+			
+			/*
+			 * We commit the transaction. Any changes will be persisted to the
+			 * database now.
+			 */
+			conn.commit();
+			return true;
 		} catch (SQLException sqle) {
 			printSQLException(sqle);
 		} finally {
@@ -208,7 +202,7 @@ public class Database {
 				}
 			} catch (SQLException sqle) {
 				printSQLException(sqle);
-			} 
+			}
 		}
 		return false;
 	}
@@ -241,7 +235,8 @@ public class Database {
 			// To shut down a specific database only, but keep the
 			// engine running (for example for connecting to other
 			// databases), specify a database in the connection URL:
-			//DriverManager.getConnection("jdbc:derby:" + dbName + ";shutdown=true");
+			// DriverManager.getConnection("jdbc:derby:" + dbName +
+			// ";shutdown=true");
 		} catch (SQLException se) {
 			if (((se.getErrorCode() == 50000) && ("XJ015".equals(se.getSQLState())))) {
 				// we got the expected exception
@@ -255,5 +250,500 @@ public class Database {
 				printSQLException(se);
 			}
 		}
+	}
+	
+	public static Boolean selectLigne(int id, String dbName, String userName, String pass)
+	{
+		conn = null;
+		rs = null;
+
+		try {
+			conn = DriverManager
+					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
+
+			// We want to control transactions manually. Autocommit is on by
+			// default in JDBC.
+			conn.setAutoCommit(false);
+			/*
+			 * Creating a statement object that we can use for running various
+			 * SQL statements commands against the database.
+			 */
+			// Commande de SELECT qui affiche une ligne 
+			s = conn.createStatement();
+			statements.add(s);
+			rs = s.executeQuery(
+			        "SELECT * FROM library where id = ?");
+			while(rs.next()){
+				System.out.println(rs.getInt(1)+
+						" "+rs.getString(2)+
+						" "+rs.getString(3)+
+						" "+rs.getInt(4)+
+						" "+rs.getString(5)+
+						" "+rs.getInt(6)+
+						" "+rs.getInt(7)+
+						" "+rs.getString(8));
+			}
+			conn.commit();
+			return true;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// release all open resources to avoid unnecessary memory usage
+
+			// ResultSet
+			try {
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+
+			// Statements and PreparedStatements
+			int i = 0;
+			while (!statements.isEmpty()) {
+				// PreparedStatement extend Statement
+				Statement st = (Statement) statements.remove(i);
+				try {
+					if (st != null) {
+						st.close();
+						st = null;
+					}
+				} catch (SQLException sqle) {
+					printSQLException(sqle);
+				}
+			}
+
+			// Connection
+			try {
+				if (conn != null) {
+					conn.close();
+					conn = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+		}
+		return false;
+		
+	}
+	
+	public static Boolean insert(String dbName, String userName, String pass, int id, String title, String author, int year, String etat, int bookmark, int note, String com)
+	{
+		conn = null;
+		rs = null;
+
+		try {
+			conn = DriverManager
+					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
+
+			// We want to control transactions manually. Autocommit is on by
+			// default in JDBC.
+			conn.setAutoCommit(false);
+			/*
+			 * Creating a statement object that we can use for running various
+			 * SQL statements commands against the database.
+			 */
+			// Commande pour insérer des valeurs
+			psInsert = conn.prepareStatement("insert into library values (?, ?, ?, ?, ?, ?, ?, ?)");
+			statements.add(psInsert);
+
+			psInsert.setInt(1, id);
+			psInsert.setString(2, title);
+			psInsert.setString(3, author);
+			psInsert.setInt(4, year);
+			psInsert.setString(5, etat);
+			psInsert.setInt(6, bookmark);
+			psInsert.setInt(7, note);
+			psInsert.setString(8, com);
+			
+			psInsert.executeUpdate();
+			conn.commit();
+			return true;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// release all open resources to avoid unnecessary memory usage
+
+			// ResultSet
+			try {
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+
+			// Statements and PreparedStatements
+			int i = 0;
+			while (!statements.isEmpty()) {
+				// PreparedStatement extend Statement
+				Statement st = (Statement) statements.remove(i);
+				try {
+					if (st != null) {
+						st.close();
+						st = null;
+					}
+				} catch (SQLException sqle) {
+					printSQLException(sqle);
+				}
+			}
+
+			// Connection
+			try {
+				if (conn != null) {
+					conn.close();
+					conn = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+		}
+		return false;
+		
+	}
+	
+	public static Boolean updateBookmark(String dbName, String userName, String pass, int id, int bookmark)
+	{
+		conn = null;
+		rs = null;
+
+		try {
+			conn = DriverManager
+					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
+
+			// We want to control transactions manually. Autocommit is on by
+			// default in JDBC.
+			conn.setAutoCommit(false);
+			/*
+			 * Creating a statement object that we can use for running various
+			 * SQL statements commands against the database.
+			 */
+
+			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
+			psUpdate.setInt(6, bookmark);
+			psUpdate.executeUpdate(); 
+			conn.commit();
+			return true;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// release all open resources to avoid unnecessary memory usage
+
+			// ResultSet
+			try {
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+
+			// Statements and PreparedStatements
+			int i = 0;
+			while (!statements.isEmpty()) {
+				// PreparedStatement extend Statement
+				Statement st = (Statement) statements.remove(i);
+				try {
+					if (st != null) {
+						st.close();
+						st = null;
+					}
+				} catch (SQLException sqle) {
+					printSQLException(sqle);
+				}
+			}
+
+			// Connection
+			try {
+				if (conn != null) {
+					conn.close();
+					conn = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+		}
+		return false;
+		
+	}
+	
+	public static Boolean updateNote(String dbName, String userName, String pass, int id, int note)
+	{
+		conn = null;
+		rs = null;
+
+		try {
+			conn = DriverManager
+					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
+
+			// We want to control transactions manually. Autocommit is on by
+			// default in JDBC.
+			conn.setAutoCommit(false);
+			/*
+			 * Creating a statement object that we can use for running various
+			 * SQL statements commands against the database.
+			 */
+
+			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
+			psUpdate.setInt(7, note);
+			psUpdate.executeUpdate(); 
+			conn.commit();
+			return true;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// release all open resources to avoid unnecessary memory usage
+
+			// ResultSet
+			try {
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+
+			// Statements and PreparedStatements
+			int i = 0;
+			while (!statements.isEmpty()) {
+				// PreparedStatement extend Statement
+				Statement st = (Statement) statements.remove(i);
+				try {
+					if (st != null) {
+						st.close();
+						st = null;
+					}
+				} catch (SQLException sqle) {
+					printSQLException(sqle);
+				}
+			}
+
+			// Connection
+			try {
+				if (conn != null) {
+					conn.close();
+					conn = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+		}
+		return false;
+		
+	}
+	
+	public static Boolean updateCom(String dbName, String userName, String pass, int id, String com)
+	{
+		conn = null;
+		rs = null;
+
+		try {
+			conn = DriverManager
+					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
+
+			// We want to control transactions manually. Autocommit is on by
+			// default in JDBC.
+			conn.setAutoCommit(false);
+			/*
+			 * Creating a statement object that we can use for running various
+			 * SQL statements commands against the database.
+			 */
+			
+			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
+			psUpdate.setString(8, com);
+			psUpdate.executeUpdate(); 
+			conn.commit();
+			return true;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// release all open resources to avoid unnecessary memory usage
+
+			// ResultSet
+			try {
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+
+			// Statements and PreparedStatements
+			int i = 0;
+			while (!statements.isEmpty()) {
+				// PreparedStatement extend Statement
+				Statement st = (Statement) statements.remove(i);
+				try {
+					if (st != null) {
+						st.close();
+						st = null;
+					}
+				} catch (SQLException sqle) {
+					printSQLException(sqle);
+				}
+			}
+
+			// Connection
+			try {
+				if (conn != null) {
+					conn.close();
+					conn = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+		}
+		return false;
+		
+	}
+	
+	public static Boolean updateEtat(String dbName, String userName, String pass, int id, String etat)
+	{
+		conn = null;
+		rs = null;
+
+		try {
+			conn = DriverManager
+					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
+
+			// We want to control transactions manually. Autocommit is on by
+			// default in JDBC.
+			conn.setAutoCommit(false);
+			/*
+			 * Creating a statement object that we can use for running various
+			 * SQL statements commands against the database.
+			 */
+			
+			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
+			psUpdate.setString(5, etat);
+			psUpdate.executeUpdate(); 
+			conn.commit();
+			return true;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// release all open resources to avoid unnecessary memory usage
+
+			// ResultSet
+			try {
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+
+			// Statements and PreparedStatements
+			int i = 0;
+			while (!statements.isEmpty()) {
+				// PreparedStatement extend Statement
+				Statement st = (Statement) statements.remove(i);
+				try {
+					if (st != null) {
+						st.close();
+						st = null;
+					}
+				} catch (SQLException sqle) {
+					printSQLException(sqle);
+				}
+			}
+
+			// Connection
+			try {
+				if (conn != null) {
+					conn.close();
+					conn = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+		}
+		return false;
+		
+	}
+	
+	public static Boolean deleteLigne(int id, String dbName, String userName, String pass)
+	{
+		conn = null;
+		rs = null;
+
+		try {
+			conn = DriverManager
+					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
+
+			// We want to control transactions manually. Autocommit is on by
+			// default in JDBC.
+			conn.setAutoCommit(false);
+			/*
+			 * Creating a statement object that we can use for running various
+			 * SQL statements commands against the database.
+			 */
+			psUpdate = conn.prepareStatement("delete from library where id=?");
+			psUpdate.executeUpdate(); 
+			conn.commit();
+			return true;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// release all open resources to avoid unnecessary memory usage
+
+			// ResultSet
+			try {
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+
+			// Statements and PreparedStatements
+			int i = 0;
+			while (!statements.isEmpty()) {
+				// PreparedStatement extend Statement
+				Statement st = (Statement) statements.remove(i);
+				try {
+					if (st != null) {
+						st.close();
+						st = null;
+					}
+				} catch (SQLException sqle) {
+					printSQLException(sqle);
+				}
+			}
+
+			// Connection
+			try {
+				if (conn != null) {
+					conn.close();
+					conn = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+		}
+		return false;
+		
 	}
 }
