@@ -25,6 +25,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.Border;
@@ -45,6 +47,7 @@ import org.json.JSONException;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import fr.ujm.tse.Scream.Controller.AccessWebWiki;
+import fr.ujm.tse.Scream.Controller.BoutonBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonConnexion;
 import fr.ujm.tse.Scream.Controller.BoutonDeco;
 import fr.ujm.tse.Scream.Controller.BoutonMenuComics;
@@ -75,7 +78,11 @@ public class Fenetre extends JFrame {
 	private JTextField champWikiP = new JTextField();
 	private JTextField champBiblio= new JTextField();
 	private JTextField champUser= new JTextField();
+	private JTextField champBiblioSearch= new JTextField();
 	private JPasswordField  champMdp= new JPasswordField();
+	 private JTable tableau;
+	 private JComboBox combo = new JComboBox();
+
 	private String nameBiblio=null;
 	private String conUser=null;
 	private String conMdp=null;
@@ -272,7 +279,7 @@ public class Fenetre extends JFrame {
 			deconnexion.setVisible(true);
 			connexion.setVisible(false);
 			deconnexion.addActionListener(new BoutonDeco(this));
-
+			biblio.addActionListener(new BoutonBiblio(this));
 			north.add(deconnexion,BorderLayout.EAST);
 			
 			
@@ -618,6 +625,65 @@ public class Fenetre extends JFrame {
 		panelGeneral.add(panel, BorderLayout.CENTER);
 		panelGeneral.add(panelWest, BorderLayout.WEST);
 		panelGeneral.add(panelEast, BorderLayout.EAST);
+		setContentPane(panelGeneral);
+		revalidate();
+	}
+	/**
+	 * interface lorsqu'on clique sur le bouton "Ma bibliothéque"
+	 */
+	
+	public void boutonBiblio(){
+		JPanel panelGeneral = new JPanel();
+		JPanel panelNorth = new JPanel();
+		//JPanel panel = new JPanel();
+		JPanel panelmiddle = new JPanel();
+		JPanel panelSouth = new JPanel();
+		panelSouth.setBackground(new Color(236, 248, 254));
+		panelmiddle.setBackground(new Color(236, 248, 254));
+		//panel.setBackground(new Color(236, 248, 254));
+		panelNorth.setBackground(new Color(236, 248, 254));
+		panelGeneral.setBackground(new Color(236, 248, 254));
+		
+		//panel.setLayout(new BorderLayout());
+		panelGeneral.setLayout(new BorderLayout());
+		panelNorth.setLayout(new FlowLayout());
+		panelmiddle.setLayout(new FlowLayout());
+		panelSouth.setLayout(new FlowLayout());
+		
+		JLabel label = new JLabel("Recherche par:");;
+		//Indices start at 0, so 1 specifies the search is by titre.
+		combo.setPreferredSize(new Dimension(100, 20));
+		combo.addItem("Auteur");
+		combo.addItem("Titre");
+		combo.addItem("Année de publication");
+		champBiblioSearch.setMaximumSize(new Dimension(200, 30));
+		champBiblioSearch.setMinimumSize(new Dimension(100, 30));
+		champBiblioSearch.setPreferredSize(new Dimension(200, 30));
+		JButton recherche = new JButton("Rechercher");
+		JButton retour = new JButton(new BoutonRetour("Retour", this));
+		panelNorth.add(label);
+		panelNorth.add(combo);
+		panelNorth.add(champBiblioSearch);
+		panelNorth.add(recherche);
+		JButton ajouter = new JButton("Ajouter");
+		JButton supprimer = new JButton("Supprimer");
+		panelmiddle.add(ajouter);
+		panelmiddle.add(supprimer);
+		 Object[][] data = { 
+				 {"Amazing Spider-Man","Stan Lee","commentaire","",new Boolean(true)}
+				 
+		 };
+		 String  title[] = {"Titre", "Auteur", "Commentaire", "Marque page","Lu"};
+		 this.tableau = new JTable(data, title);
+		 panelmiddle.add(new JScrollPane(tableau), BorderLayout.EAST);
+
+		panelSouth.add(retour);
+		
+		panelGeneral.add(panelNorth, BorderLayout.NORTH);
+		panelGeneral.add(panelmiddle, BorderLayout.CENTER);
+		//panelGeneral.add(panelWest, BorderLayout.WEST);
+		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
+
 		setContentPane(panelGeneral);
 		revalidate();
 	}
