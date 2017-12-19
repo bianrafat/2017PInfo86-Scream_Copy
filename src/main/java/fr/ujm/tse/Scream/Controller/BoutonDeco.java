@@ -15,7 +15,7 @@ public class BoutonDeco implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//Database.deconnection();
+		Database.deconnection();
 		// TODO Auto-generated method stub
 		fenetre.setNameBiblio(null);
 		fenetre.setConUser(null);

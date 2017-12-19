@@ -118,44 +118,7 @@ public class Database {
 			return true;
 		} catch (SQLException sqle) {
 			printSQLException(sqle);
-		} finally {
-			// release all open resources to avoid unnecessary memory usage
-
-			// ResultSet
-			try {
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-
-			// Statements and PreparedStatements
-			int i = 0;
-			while (!statements.isEmpty()) {
-				// PreparedStatement extend Statement
-				Statement st = (Statement) statements.remove(i);
-				try {
-					if (st != null) {
-						st.close();
-						st = null;
-					}
-				} catch (SQLException sqle) {
-					printSQLException(sqle);
-				}
-			}
-
-			// Connection
-			try {
-				if (conn != null) {
-					conn.close();
-					conn = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-		}
+		} 
 		return false;
 
 	}
@@ -181,43 +144,6 @@ public class Database {
 			return true;
 		} catch (SQLException sqle) {
 			printSQLException(sqle);
-		} finally {
-			// release all open resources to avoid unnecessary memory usage
-
-			// ResultSet
-			try {
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-
-			// Statements and PreparedStatements
-			int i = 0;
-			while (!statements.isEmpty()) {
-				// PreparedStatement extend Statement
-				Statement st = (Statement) statements.remove(i);
-				try {
-					if (st != null) {
-						st.close();
-						st = null;
-					}
-				} catch (SQLException sqle) {
-					printSQLException(sqle);
-				}
-			}
-
-			// Connection
-			try {
-				if (conn != null) {
-					conn.close();
-					conn = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
 		}
 		return false;
 	}
@@ -248,27 +174,40 @@ public class Database {
 	 */
 	public static void deconnection() {
 		try {
-			// the shutdown=true attribute shuts down Derby
-			DriverManager.getConnection("jdbc:derby:;shutdown=true");
-			// To shut down a specific database only, but keep the
-			// engine running (for example for connecting to other
-			// databases), specify a database in the connection URL:
-			// DriverManager.getConnection("jdbc:derby:" + dbName +
-			// ";shutdown=true");
-		} catch (SQLException se) {
-			if (((se.getErrorCode() == 50000) && ("XJ015".equals(se.getSQLState())))) {
-				// we got the expected exception
-				System.out.println("Derby shut down normally");
-				// Note that for single database shutdown, the expected
-				// SQL state is "08006", and the error code is 45000.
-			} else {
-				// if the error code or SQLState is different, we have
-				// an unexpected exception (shutdown failed)
-				System.err.println("Derby did not shut down normally");
-				printSQLException(se);
+			if (rs != null) {
+				rs.close();
+				rs = null;
+			}
+		} catch (SQLException sqle) {
+			printSQLException(sqle);
+		}
+
+		// Statements and PreparedStatements
+		int i = 0;
+		while (!statements.isEmpty()) {
+			// PreparedStatement extend Statement
+			Statement st = (Statement) statements.remove(i);
+			try {
+				if (st != null) {
+					st.close();
+					st = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
 			}
 		}
+
+		// Connection
+		try {
+			if (conn != null) {
+				conn.close();
+				conn = null;
+			}
+		} catch (SQLException sqle) {
+			printSQLException(sqle);
+		}
 	}
+	
 	
 	/**
 	 * Méthode permettant de trouver toutes les informations concernant un comics
@@ -278,17 +217,8 @@ public class Database {
 	 * @param pass
 	 * @return
 	 */
-	public static Boolean selectByTitle(String title, String dbName, String userName, String pass) {
-		// On initialise la connexion à null
-		conn = null;
-		rs = null;
-		
+	public static Boolean selectByTitle(String title) {
 		try {
-			conn = DriverManager.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
-
-			// We want to control transactions manually. Autocommit is on by
-			// default in JDBC.
-			conn.setAutoCommit(false);
 			/*
 			 * Creating a statement object that we can use for running various
 			 * SQL statements commands against the database.
@@ -314,44 +244,7 @@ public class Database {
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			// release all open resources to avoid unnecessary memory usage
-
-			// ResultSet
-			try {
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-
-			// Statements and PreparedStatements
-			int i = 0;
-			while (!statements.isEmpty()) {
-				// PreparedStatement extend Statement
-				Statement st = (Statement) statements.remove(i);
-				try {
-					if (st != null) {
-						st.close();
-						st = null;
-					}
-				} catch (SQLException sqle) {
-					printSQLException(sqle);
-				}
-			}
-
-			// Connection
-			try {
-				if (conn != null) {
-					conn.close();
-					conn = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-		}
+		} 
 		return false;
 		
 	}
@@ -369,16 +262,8 @@ public class Database {
 	 */
 	public static Boolean selectLigne(int id, String dbName, String userName, String pass)
 	{
-		conn = null;
-		rs = null;
-
 		try {
-			conn = DriverManager
-					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
-
-			// We want to control transactions manually. Autocommit is on by
-			// default in JDBC.
-			conn.setAutoCommit(false);
+		
 			/*
 			 * Creating a statement object that we can use for running various
 			 * SQL statements commands against the database.
@@ -404,44 +289,7 @@ public class Database {
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			// release all open resources to avoid unnecessary memory usage
-
-			// ResultSet
-			try {
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-
-			// Statements and PreparedStatements
-			int i = 0;
-			while (!statements.isEmpty()) {
-				// PreparedStatement extend Statement
-				Statement st = (Statement) statements.remove(i);
-				try {
-					if (st != null) {
-						st.close();
-						st = null;
-					}
-				} catch (SQLException sqle) {
-					printSQLException(sqle);
-				}
-			}
-
-			// Connection
-			try {
-				if (conn != null) {
-					conn.close();
-					conn = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-		}
+		} 
 		return false;
 		}
 	
@@ -453,16 +301,7 @@ public class Database {
 	 * @return
 	 */
 	public static Boolean selectByAuthor(String author, String userNames, String pass) {
-		conn = null;
-		rs = null;
-
 		try {
-			conn = DriverManager
-					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
-
-			// We want to control transactions manually. Autocommit is on by
-			// default in JDBC.
-			conn.setAutoCommit(false);
 			/*
 			 * Creating a statement object that we can use for running various
 			 * SQL statements commands against the database.
@@ -488,43 +327,6 @@ public class Database {
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			// release all open resources to avoid unnecessary memory usage
-
-			// ResultSet
-			try {
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-
-			// Statements and PreparedStatements
-			int i = 0;
-			while (!statements.isEmpty()) {
-				// PreparedStatement extend Statement
-				Statement st = (Statement) statements.remove(i);
-				try {
-					if (st != null) {
-						st.close();
-						st = null;
-					}
-				} catch (SQLException sqle) {
-					printSQLException(sqle);
-				}
-			}
-
-			// Connection
-			try {
-				if (conn != null) {
-					conn.close();
-					conn = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
 		}
 		return false;
 	}
@@ -546,20 +348,7 @@ public class Database {
 	 */
 	public static Boolean insert(String dbName, String userName, String pass, int id, String title, String author, int year, String etat, int bookmark, int note, String com)
 	{
-		conn = null;
-		rs = null;
-
 		try {
-			conn = DriverManager
-					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
-
-			// We want to control transactions manually. Autocommit is on by
-			// default in JDBC.
-			conn.setAutoCommit(false);
-			/*
-			 * Creating a statement object that we can use for running various
-			 * SQL statements commands against the database.
-			 */
 			// Commande pour insérer des valeurs
 			psInsert = conn.prepareStatement("insert into library values (?, ?, ?, ?, ?, ?, ?, ?)");
 			statements.add(psInsert);
@@ -580,44 +369,7 @@ public class Database {
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			// release all open resources to avoid unnecessary memory usage
-
-			// ResultSet
-			try {
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-
-			// Statements and PreparedStatements
-			int i = 0;
-			while (!statements.isEmpty()) {
-				// PreparedStatement extend Statement
-				Statement st = (Statement) statements.remove(i);
-				try {
-					if (st != null) {
-						st.close();
-						st = null;
-					}
-				} catch (SQLException sqle) {
-					printSQLException(sqle);
-				}
-			}
-
-			// Connection
-			try {
-				if (conn != null) {
-					conn.close();
-					conn = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-		}
+		} 
 		return false;
 		
 	}
@@ -633,21 +385,7 @@ public class Database {
 	 */
 	public static Boolean updateBookmark(String dbName, String userName, String pass, int id, int bookmark)
 	{
-		conn = null;
-		rs = null;
-
 		try {
-			conn = DriverManager
-					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
-
-			// We want to control transactions manually. Autocommit is on by
-			// default in JDBC.
-			conn.setAutoCommit(false);
-			/*
-			 * Creating a statement object that we can use for running various
-			 * SQL statements commands against the database.
-			 */
-
 			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
 			psUpdate.setInt(6, bookmark);
 			psUpdate.executeUpdate(); 
@@ -657,44 +395,7 @@ public class Database {
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			// release all open resources to avoid unnecessary memory usage
-
-			// ResultSet
-			try {
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-
-			// Statements and PreparedStatements
-			int i = 0;
-			while (!statements.isEmpty()) {
-				// PreparedStatement extend Statement
-				Statement st = (Statement) statements.remove(i);
-				try {
-					if (st != null) {
-						st.close();
-						st = null;
-					}
-				} catch (SQLException sqle) {
-					printSQLException(sqle);
-				}
-			}
-
-			// Connection
-			try {
-				if (conn != null) {
-					conn.close();
-					conn = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-		}
+		} 
 		return false;
 		
 	}
@@ -710,21 +411,7 @@ public class Database {
 	 */
 	public static Boolean updateNote(String dbName, String userName, String pass, int id, int note)
 	{
-		conn = null;
-		rs = null;
-
 		try {
-			conn = DriverManager
-					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
-
-			// We want to control transactions manually. Autocommit is on by
-			// default in JDBC.
-			conn.setAutoCommit(false);
-			/*
-			 * Creating a statement object that we can use for running various
-			 * SQL statements commands against the database.
-			 */
-
 			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
 			psUpdate.setInt(7, note);
 			psUpdate.executeUpdate(); 
@@ -734,44 +421,7 @@ public class Database {
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			// release all open resources to avoid unnecessary memory usage
-
-			// ResultSet
-			try {
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-
-			// Statements and PreparedStatements
-			int i = 0;
-			while (!statements.isEmpty()) {
-				// PreparedStatement extend Statement
-				Statement st = (Statement) statements.remove(i);
-				try {
-					if (st != null) {
-						st.close();
-						st = null;
-					}
-				} catch (SQLException sqle) {
-					printSQLException(sqle);
-				}
-			}
-
-			// Connection
-			try {
-				if (conn != null) {
-					conn.close();
-					conn = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-		}
+		} 
 		return false;
 		
 	}
@@ -787,21 +437,7 @@ public class Database {
 	 */
 	public static Boolean updateCom(String dbName, String userName, String pass, int id, String com)
 	{
-		conn = null;
-		rs = null;
-
 		try {
-			conn = DriverManager
-					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
-
-			// We want to control transactions manually. Autocommit is on by
-			// default in JDBC.
-			conn.setAutoCommit(false);
-			/*
-			 * Creating a statement object that we can use for running various
-			 * SQL statements commands against the database.
-			 */
-			
 			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
 			psUpdate.setString(8, com);
 			psUpdate.executeUpdate(); 
@@ -811,44 +447,7 @@ public class Database {
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			// release all open resources to avoid unnecessary memory usage
-
-			// ResultSet
-			try {
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-
-			// Statements and PreparedStatements
-			int i = 0;
-			while (!statements.isEmpty()) {
-				// PreparedStatement extend Statement
-				Statement st = (Statement) statements.remove(i);
-				try {
-					if (st != null) {
-						st.close();
-						st = null;
-					}
-				} catch (SQLException sqle) {
-					printSQLException(sqle);
-				}
-			}
-
-			// Connection
-			try {
-				if (conn != null) {
-					conn.close();
-					conn = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-		}
+		} 
 		return false;
 		
 	}
@@ -864,20 +463,7 @@ public class Database {
 	 */
 	public static Boolean updateEtat(String dbName, String userName, String pass, int id, String etat)
 	{
-		conn = null;
-		rs = null;
-
 		try {
-			conn = DriverManager
-					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
-
-			// We want to control transactions manually. Autocommit is on by
-			// default in JDBC.
-			conn.setAutoCommit(false);
-			/*
-			 * Creating a statement object that we can use for running various
-			 * SQL statements commands against the database.
-			 */
 			
 			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
 			psUpdate.setString(5, etat);
@@ -888,44 +474,7 @@ public class Database {
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			// release all open resources to avoid unnecessary memory usage
-
-			// ResultSet
-			try {
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-
-			// Statements and PreparedStatements
-			int i = 0;
-			while (!statements.isEmpty()) {
-				// PreparedStatement extend Statement
-				Statement st = (Statement) statements.remove(i);
-				try {
-					if (st != null) {
-						st.close();
-						st = null;
-					}
-				} catch (SQLException sqle) {
-					printSQLException(sqle);
-				}
-			}
-
-			// Connection
-			try {
-				if (conn != null) {
-					conn.close();
-					conn = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-		}
+		} 
 		return false;
 		
 	}
@@ -940,20 +489,7 @@ public class Database {
 	 */
 	public static Boolean deleteLigne(int id, String dbName, String userName, String pass)
 	{
-		conn = null;
-		rs = null;
-
 		try {
-			conn = DriverManager
-					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
-
-			// We want to control transactions manually. Autocommit is on by
-			// default in JDBC.
-			conn.setAutoCommit(false);
-			/*
-			 * Creating a statement object that we can use for running various
-			 * SQL statements commands against the database.
-			 */
 			psUpdate = conn.prepareStatement("delete from library where id=?");
 			psUpdate.executeUpdate(); 
 			conn.commit();
@@ -962,44 +498,7 @@ public class Database {
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			// release all open resources to avoid unnecessary memory usage
-
-			// ResultSet
-			try {
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-
-			// Statements and PreparedStatements
-			int i = 0;
-			while (!statements.isEmpty()) {
-				// PreparedStatement extend Statement
-				Statement st = (Statement) statements.remove(i);
-				try {
-					if (st != null) {
-						st.close();
-						st = null;
-					}
-				} catch (SQLException sqle) {
-					printSQLException(sqle);
-				}
-			}
-
-			// Connection
-			try {
-				if (conn != null) {
-					conn.close();
-					conn = null;
-				}
-			} catch (SQLException sqle) {
-				printSQLException(sqle);
-			}
-		}
+		} 
 		return false;
 		
 	}
