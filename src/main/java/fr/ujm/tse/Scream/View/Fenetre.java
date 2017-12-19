@@ -47,9 +47,11 @@ import org.json.JSONException;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import fr.ujm.tse.Scream.Controller.AccessWebWiki;
+import fr.ujm.tse.Scream.Controller.BoutonAddComicsBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonConnexion;
 import fr.ujm.tse.Scream.Controller.BoutonDeco;
+import fr.ujm.tse.Scream.Controller.BoutonDeleteComicsBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonMenuComics;
 import fr.ujm.tse.Scream.Controller.BoutonMenuPersonnage;
 import fr.ujm.tse.Scream.Controller.BoutonPrecedent;
@@ -923,11 +925,14 @@ public class Fenetre extends JFrame {
 		});
 
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
-
+		JButton ajouterBiblio = new JButton("Ajouter");
+		JButton supprimerBiblio = new JButton("Supprimer");
+		
 		JPanel panelGeneral = new JPanel();
 		JPanel panel = new JPanel();
 		JPanel panelSouth = new JPanel();
 		JPanel panelWest = new JPanel();
+		JPanel panelbt = new JPanel();
 
 		listePerso.setBackground(new Color(236, 248, 254));
 		panelWest.setBackground(new Color(236, 248, 254));
@@ -935,19 +940,32 @@ public class Fenetre extends JFrame {
 		panel.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		comicsText.setBackground(new Color(236, 248, 254));
-
+		panelbt.setBackground(new Color(236, 248, 254));
+		
 		panel.setLayout(new BorderLayout());
 		panelGeneral.setLayout(new BorderLayout());
 		panelSouth.setLayout(new FlowLayout());
-		panelWest.setLayout(new FlowLayout());
+		panelWest.setLayout(new BorderLayout());
+		panelbt.setLayout(new FlowLayout());
 
-		panelWest.add(imgComics);
+		panelWest.add(imgComics,BorderLayout.NORTH);
+		panelbt.add(supprimerBiblio);
+		panelbt.add(ajouterBiblio);
 		panelSouth.add(retour);
 		panel.add(comicsText, BorderLayout.NORTH);
 		panel.add(listePerso, BorderLayout.CENTER);
 		panelGeneral.add(panel, BorderLayout.CENTER);
 		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
 		panelGeneral.add(panelWest, BorderLayout.WEST);
+		
+		if(conUser==null) {
+			ajouterBiblio.setVisible(false);
+			supprimerBiblio.setVisible(false);
+		}else {
+			ajouterBiblio.addActionListener(new BoutonAddComicsBiblio(this, nameBiblio, conUser, conMdp, comics.getId(),comics.getTitle() , comics.getCreators2().get(0), 0, "En cours", 0, 10, ""));
+			supprimerBiblio.addActionListener(new BoutonDeleteComicsBiblio(this, comics.getId(), nameBiblio, conUser, conMdp));
+			panelWest.add(panelbt,BorderLayout.CENTER);
+		}
 
 		setContentPane(panelGeneral);
 		revalidate();
