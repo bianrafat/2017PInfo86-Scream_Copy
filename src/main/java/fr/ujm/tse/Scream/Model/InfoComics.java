@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import fr.ujm.tse.Scream.Controller.HttpConnect;
 
 
-//Cette classe sert à parser les données 
+ 
 
 public class InfoComics {
 	// Creation de champs statiques
@@ -31,6 +31,15 @@ public class InfoComics {
 	private static String ts=Long.toString(System.currentTimeMillis()); //generation du timstamp:
 	private static MessageDigest md5hash;
 	
+	
+	/**
+	 * Méthode qui permet de retourner les derniers titres d'un personnage donné 
+	 * @param pers
+	 * @return
+	 * @throws IOException
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public static Personnage titleComics(Personnage pers) throws IOException, JSONException, NoSuchAlgorithmException
 	{
 		//generation du md5:

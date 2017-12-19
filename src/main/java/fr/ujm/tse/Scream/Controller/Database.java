@@ -35,6 +35,7 @@ public class Database {
 	private static Statement s;
 	private static ResultSet rs;
 
+
 	public static void databse() {
 		System.out.println("Êtes vous déjà inscrit ? (o/n)");
 		sc1 = new Scanner(System.in);
@@ -74,7 +75,14 @@ public class Database {
 									// redemande)
 
 	}
-
+	
+	/**
+	 * Méthode permettant de créer une base de données
+	 * @param dbName
+	 * @param userName
+	 * @param pass
+	 * @return
+	 */
 	public static Boolean createDatabase(String dbName, String userName, String pass) {
 		conn = null;
 		rs = null;
@@ -152,6 +160,13 @@ public class Database {
 
 	}
 
+	/**
+	 * Méthode permettant de se connecter à la base de données
+	 * @param dbName
+	 * @param userName
+	 * @param pass
+	 * @return
+	 */
 	public static Boolean connectDatabase(String dbName, String userName, String pass) {
 		conn = null;
 		rs = null;
@@ -228,6 +243,9 @@ public class Database {
 		}
 	}
 
+	/**
+	 * Permet de se déconnecter de la bibliothèque
+	 */
 	public static void deconnection() {
 		try {
 			// the shutdown=true attribute shuts down Derby
@@ -252,6 +270,103 @@ public class Database {
 		}
 	}
 	
+	/**
+	 * Méthode permettant de trouver toutes les informations concernant un comics
+	 * @param title
+	 * @param dbName
+	 * @param userName
+	 * @param pass
+	 * @return
+	 */
+	public static Boolean selectByTitle(String title, String dbName, String userName, String pass) {
+		// On initialise la connexion à null
+		conn = null;
+		rs = null;
+		
+		try {
+			conn = DriverManager.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
+
+			// We want to control transactions manually. Autocommit is on by
+			// default in JDBC.
+			conn.setAutoCommit(false);
+			/*
+			 * Creating a statement object that we can use for running various
+			 * SQL statements commands against the database.
+			 */
+			// Commande de SELECT qui affiche une ligne 
+			s = conn.createStatement();
+			statements.add(s);
+			rs = s.executeQuery(
+			        "SELECT * FROM library where title = ?");
+			while(rs.next()){
+				System.out.println(rs.getInt(1)+
+						" "+rs.getString(2)+
+						" "+rs.getString(3)+
+						" "+rs.getInt(4)+
+						" "+rs.getString(5)+
+						" "+rs.getInt(6)+
+						" "+rs.getInt(7)+
+						" "+rs.getString(8));
+			}
+			conn.commit();
+			return true;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// release all open resources to avoid unnecessary memory usage
+
+			// ResultSet
+			try {
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+
+			// Statements and PreparedStatements
+			int i = 0;
+			while (!statements.isEmpty()) {
+				// PreparedStatement extend Statement
+				Statement st = (Statement) statements.remove(i);
+				try {
+					if (st != null) {
+						st.close();
+						st = null;
+					}
+				} catch (SQLException sqle) {
+					printSQLException(sqle);
+				}
+			}
+
+			// Connection
+			try {
+				if (conn != null) {
+					conn.close();
+					conn = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+		}
+		return false;
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Permet de selectionner une ligne
+	 * @param id
+	 * @param dbName
+	 * @param userName
+	 * @param pass
+	 * @return
+	 */
 	public static Boolean selectLigne(int id, String dbName, String userName, String pass)
 	{
 		conn = null;
@@ -328,9 +443,107 @@ public class Database {
 			}
 		}
 		return false;
-		
+		}
+	
+	/**
+	 * Méthode permettant de trouver toutes les informations suivant un auteur donné
+	 * @param author
+	 * @param userNames
+	 * @param pass
+	 * @return
+	 */
+	public static Boolean selectByAuthor(String author, String userNames, String pass) {
+		conn = null;
+		rs = null;
+
+		try {
+			conn = DriverManager
+					.getConnection(protocol + dbName + ";user=" + userName + " ;password=" + pass);
+
+			// We want to control transactions manually. Autocommit is on by
+			// default in JDBC.
+			conn.setAutoCommit(false);
+			/*
+			 * Creating a statement object that we can use for running various
+			 * SQL statements commands against the database.
+			 */
+			// Commande de SELECT qui affiche une ligne 
+			s = conn.createStatement();
+			statements.add(s);
+			rs = s.executeQuery(
+			        "SELECT * FROM library where author = ?");
+			while(rs.next()){
+				System.out.println(rs.getInt(1)+
+						" "+rs.getString(2)+
+						" "+rs.getString(3)+
+						" "+rs.getInt(4)+
+						" "+rs.getString(5)+
+						" "+rs.getInt(6)+
+						" "+rs.getInt(7)+
+						" "+rs.getString(8));
+			}
+			conn.commit();
+			return true;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// release all open resources to avoid unnecessary memory usage
+
+			// ResultSet
+			try {
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+
+			// Statements and PreparedStatements
+			int i = 0;
+			while (!statements.isEmpty()) {
+				// PreparedStatement extend Statement
+				Statement st = (Statement) statements.remove(i);
+				try {
+					if (st != null) {
+						st.close();
+						st = null;
+					}
+				} catch (SQLException sqle) {
+					printSQLException(sqle);
+				}
+			}
+
+			// Connection
+			try {
+				if (conn != null) {
+					conn.close();
+					conn = null;
+				}
+			} catch (SQLException sqle) {
+				printSQLException(sqle);
+			}
+		}
+		return false;
 	}
 	
+	/**
+	 * 
+	 * @param dbName
+	 * @param userName
+	 * @param pass
+	 * @param id
+	 * @param title
+	 * @param author
+	 * @param year
+	 * @param etat
+	 * @param bookmark
+	 * @param note
+	 * @param com
+	 * @return
+	 */
 	public static Boolean insert(String dbName, String userName, String pass, int id, String title, String author, int year, String etat, int bookmark, int note, String com)
 	{
 		conn = null;
@@ -409,6 +622,15 @@ public class Database {
 		
 	}
 	
+	/**
+	 * 
+	 * @param dbName
+	 * @param userName
+	 * @param pass
+	 * @param id
+	 * @param bookmark
+	 * @return
+	 */
 	public static Boolean updateBookmark(String dbName, String userName, String pass, int id, int bookmark)
 	{
 		conn = null;
@@ -477,6 +699,15 @@ public class Database {
 		
 	}
 	
+	/**
+	 * 
+	 * @param dbName
+	 * @param userName
+	 * @param pass
+	 * @param id
+	 * @param note
+	 * @return
+	 */
 	public static Boolean updateNote(String dbName, String userName, String pass, int id, int note)
 	{
 		conn = null;
@@ -545,6 +776,15 @@ public class Database {
 		
 	}
 	
+	/**
+	 * 
+	 * @param dbName
+	 * @param userName
+	 * @param pass
+	 * @param id
+	 * @param com
+	 * @return
+	 */
 	public static Boolean updateCom(String dbName, String userName, String pass, int id, String com)
 	{
 		conn = null;
@@ -613,6 +853,15 @@ public class Database {
 		
 	}
 	
+	/**
+	 * 
+	 * @param dbName
+	 * @param userName
+	 * @param pass
+	 * @param id
+	 * @param etat
+	 * @return
+	 */
 	public static Boolean updateEtat(String dbName, String userName, String pass, int id, String etat)
 	{
 		conn = null;
@@ -681,6 +930,14 @@ public class Database {
 		
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param dbName
+	 * @param userName
+	 * @param pass
+	 * @return
+	 */
 	public static Boolean deleteLigne(int id, String dbName, String userName, String pass)
 	{
 		conn = null;

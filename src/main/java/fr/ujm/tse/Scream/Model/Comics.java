@@ -14,7 +14,7 @@ public class Comics {
 	
 	
 	/**
-	 * 
+	 * Méthode qui permet de parametrer un objet Comics
 	 * @param id
 	 * @param title
 	 * @param description
@@ -101,9 +101,10 @@ public class Comics {
 		
 	}
 	
+	
 	public void afficher() {
 		System.out.println("Titre : " + this.getTitle());
-		System.out.println("Id : " + this.getId());
+		System.out.println("ID : " + this.getId());
 		System.out.println("Description : " + this.getDescription());
 		System.out.println("Liste des personnages dans ce comic : ");
 		this.getCharacters();

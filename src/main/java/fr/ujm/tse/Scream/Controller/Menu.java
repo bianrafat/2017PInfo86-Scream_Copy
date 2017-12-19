@@ -22,7 +22,7 @@ public class Menu {
 		
 		 SwingUtilities.invokeLater(new Runnable() { 
 			public void run() {
-				 // On crée une nouvelle instance de notre JDialog 
+				 // On crï¿½e une nouvelle instance de notre JDialog 
 				 Fenetre fenetre = new Fenetre(); 
 				 try {
 					 fenetre.run(); 
@@ -53,14 +53,13 @@ public class Menu {
 		while (fin != 'y') {
 			Comics comics = Parse.listeComics(titre, offset);
 			comics.afficherComics();
-			System.out.println("Vous pouvez changer de page (0) ou avoir des informations sur le comics (1) ou arrêter l'application (2).");
+			System.out.println("Vous pouvez changer de page (0) ou avoir des informations sur le comics (1) ou arrï¿½ter l'application (2).");
 			Scanner sc2 = new Scanner(System.in);
 			int choix = sc2.nextInt();
 			switch (choix) {
 			case 0:
 				System.out.println(
-						"Pour changer de page : (-1 : page précédente / 0 : retour au début / 1 : page suivante)");
-				Scanner sc3 = new Scanner(System.in);
+						"Pour changer de page : (-1 : page prï¿½cï¿½dente / 0 : retour au dï¿½but / 1 : page suivant				Scanner sc3 = new Scanner(System.in);
 				int page = sc2.nextInt();
 				switch (page) {
 				case -1:
@@ -100,7 +99,7 @@ public class Menu {
 				comics = Parse.infoComics(titre, nbr, num_page);
 				comics.afficher();
 				break;
-				// Pour arrêter le programme
+				// Pour arrï¿½ter le programme
 			case 2:
 				System.out.println("Avez-vous fini de faire vos recherches ? (y/n)");
 				Scanner sc5 = new Scanner(System.in);
