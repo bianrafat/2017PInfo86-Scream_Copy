@@ -258,7 +258,7 @@ public class Fenetre extends JFrame {
 		// boutonComics.setAlignmentX(Component.CENTER_ALIGNMENT);
 		center.add(boutonComics);
 
-		JButton wikiData = new JButton(new BoutonWikiData("Rechercher Wikidata", this));
+		JButton wikiData = new JButton(new BoutonWikiData("Recherches Wikidata", this));
 		wikiData.setFont(fontMenu);
 		center.add(wikiData);
 		connexion.setPreferredSize(new Dimension(150, 40));
@@ -775,7 +775,7 @@ public class Fenetre extends JFrame {
 		panelSouth.setLayout(new FlowLayout());
 		plusmoins.setLayout(new FlowLayout());
 
-		JLabel label = new JLabel("Entrez un titre de Comics (le debut uniquement) :");
+		JLabel label = new JLabel("Entrez un titre de Comics ou le seulement le début:");
 		champComics.setMaximumSize(new Dimension(200, 30));
 		champComics.setMinimumSize(new Dimension(100, 30));
 		champComics.setPreferredSize(new Dimension(200, 30));
@@ -868,25 +868,25 @@ public class Fenetre extends JFrame {
 		Style gras = ((JTextPane) comicsText).addStyle("gras", null);
 		StyleConstants.setBold(gras, true);
 		int pos = 0;
-		String str = "Titre : ";
+		String str = "Titre: ";
 
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		contenu.insertString(pos, comics.getTitle() + "\n", null);
 		pos += comics.getTitle().length() + 1;
-		str = "Description : ";
+		str = "\n" + "Description: ";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		contenu.insertString(pos, comics.getDescription() + "\n", null);
 		pos += comics.getDescription().length() + 1;
-		str = "Createurs : \n ";
+		str = "\n" + "Createurs: \n";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		for (int i = 0; i < comics.getCreators2().size(); i++) {
 			contenu.insertString(pos, comics.getCreators2().get(i) + "\n", null);
 			pos += comics.getCreators2().get(i).length() + 1;
 		}
-		str = "Personnages Marvel: \n ";
+		str = "\n" + "Personnages Marvel: \n";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		Object[] lperso = new Object[comics.getCharacters2().size()];
@@ -977,76 +977,76 @@ public class Fenetre extends JFrame {
 		Style gras = ((JTextPane) wikiText).addStyle("gras", null);
 		StyleConstants.setBold(gras, true);
 		int pos = 0;
-		String str = "Nom : ";
+		String str = "Nom: ";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		contenu.insertString(pos, perso.getName() + "\n", null);
 		pos += perso.getName().length() + 1;
-		str = "Description : ";
+		str = "\n" + "Description: ";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		contenu.insertString(pos, perso.getDescription() + "\n", null);
 		pos += perso.getDescription().length() + 1;
-		str = "Surnom(s): \n ";
+		str = "\n" + "Surnom(s): \n";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		for (int i1 = 0; i1 < perso.getNicknames2().size(); i1++) {
 			contenu.insertString(pos, perso.getNicknames2().get(i1) + "\n", null);
 			pos += perso.getNicknames2().get(i1).length() + 1;
 		}
-		str = "Genre: ";
+		str = "\n" + "Genre: ";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		contenu.insertString(pos, perso.getGender() + "\n", null);
 		pos += perso.getGender().length() + 1;
-		str = "Pays: ";
+		str = "\n" + "Pays: ";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		contenu.insertString(pos, perso.getCountry() + "\n", null);
 		pos += perso.getCountry().length() + 1;
-		str = "Père: ";
+		str = "\n" + "Père: ";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		contenu.insertString(pos, perso.getFather() + "\n", null);
 		pos += perso.getFather().length() + 1;
-		str = "Mère: ";
+		str = "\n" + "Mère: ";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		contenu.insertString(pos, perso.getMother() + "\n", null);
 		pos += perso.getMother().length() + 1;
-		str = "Beau-parent: ";
+		str = "\n" + "Beau-parent: ";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		contenu.insertString(pos, perso.getStepparent() + "\n", null);
 		pos += perso.getStepparent().length() + 1;
-		str = "Frères et soeurs: \n";
+		str = "\n" + "Frères et soeurs: \n";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		for (int i1 = 0; i1 < perso.getSiblings2().size(); i1++) {
 			contenu.insertString(pos, perso.getSiblings2().get(i1) + "\n", null);
 			pos += perso.getSiblings2().get(i1).length() + 1;
 		}
-		str = "Nom de naissance: ";
+		str = "\n" + "Nom de naissance: ";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		contenu.insertString(pos, perso.getBirth_name() + "\n", null);
 		pos += perso.getBirth_name().length() + 1;
 
-		str = "Auteurs: \n";
+		str = "\n" + "Auteurs: \n";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		for (int i1 = 0; i1 < perso.getCreators2().size(); i1++) {
 			contenu.insertString(pos, perso.getCreators2().get(i1) + "\n", null);
 			pos += perso.getCreators2().get(i1).length() + 1;
 		}
-		str = "Acteurs ayant interprété ce role: \n";
+		str = "\n" + "Acteurs ayant interprété ce role: \n";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		for (int i1 = 0; i1 < perso.getPerformers2().size(); i1++) {
 			contenu.insertString(pos, perso.getPerformers2().get(i1) + "\n", null);
 			pos += perso.getPerformers2().get(i1).length() + 1;
 		}
-		str = "Pouvoir(s): \n";
+		str = "\n" + "Pouvoir(s): \n";
 		contenu.insertString(pos, str, gras);
 		pos += str.length();
 		for (int i1 = 0; i1 < perso.getSuperhumain_ability2().size(); i1++) {
@@ -1057,7 +1057,7 @@ public class Fenetre extends JFrame {
 		//website.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
 		//website.setEditable(false);
 		//website.setPreferredSize(new Dimension(20, 20));
-		website.setText("<html> Pour plus d'information, consultez la page wikidata du personnage : <a href=\"\">"+perso.getWikidata_page()+"</a></html>");
+		website.setText("<html>Pour plus d'information, consultez la page wikidata du personnage : <a href=\"\">"+perso.getWikidata_page()+"</a></html>");
 		website.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		AccessWebWiki.goWebsite(website,perso.getWikidata_page());
 		//website.setVisible(true);
@@ -1130,7 +1130,7 @@ public class Fenetre extends JFrame {
 		Personnage perso = Parse.infoPersonnage(str);
 		Parse.titleComics(perso);
 		sDoc.remove(0, sDoc.getLength());
-		String ph = "Nom du personnage :   ";
+		String ph = "Nom du personnage: ";
 		int pos = 0;
 		Style defaut = ((JTextPane) reponsePerso).getStyle("default");
 		Style gras = ((JTextPane) reponsePerso).addStyle("gras", null);
@@ -1140,17 +1140,17 @@ public class Fenetre extends JFrame {
 		pos += ph.length();
 		sDoc.insertString(pos, perso.getName() + "\n", defaut);
 		pos += perso.getName().length() + 1;
-		ph = "\n" + "ID :   ";
+		ph = "\n" + "ID: ";
 		sDoc.insertString(pos, ph, gras);
 		pos += ph.length();
 		sDoc.insertString(pos, perso.getId() + "\n", defaut);
 		pos += (Integer.toString((perso.getId()))).length() + 1;
-		ph = "\n" + "Description :   ";
+		ph = "\n" + "Description: ";
 		sDoc.insertString(pos, ph, gras);
 		pos += ph.length();
 		sDoc.insertString(pos, perso.getDescription() + "\n", defaut);
 		pos += perso.getDescription().length() + 1;
-		ph = "\n" + "Comics : \n ";
+		ph = "\n" + "Comics: \n";
 		sDoc.insertString(pos, ph, gras);
 		pos += ph.length();
 
@@ -1176,8 +1176,8 @@ public class Fenetre extends JFrame {
 	public void afficheListeComics(String str,int nb)
 			throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException {
 		Comics comics = Parse.listeComics(str,nb);
-		intro.setText("<html> Effectuez un double clique sur un comics: <br>Pour cette recherche il y a "
-				+ comics.getTotal() + " comics disponibles.<br></html>");
+		intro.setText("<html>Pour accèder à la page d'un comics, veuillez effectuer un double clique sur le comics choisi.<br><br>Pour cette recherche il y a "
+				+ comics.getTotal() + " comics disponibles.<br><br></html>");
 		Object[] lcomics = new Object[comics.getComics2().size()];
 		for (int i = 0; i < comics.getComics2().size(); i++) {
 			lcomics[i] = comics.getComics2().get(i);
@@ -1202,7 +1202,7 @@ public class Fenetre extends JFrame {
 		ArrayList<SearchWiki> listeDesc = wiki.infoWikipersonnage(str);
 
 		intro.setText(
-				"<html>Effectuez un double clique sur une description correspondante au personnage recherché: <br><br></html>");
+				"<html>Pour accèder aux informations d'un personnage, veuillez effectuer un double clique sur une description correspondante au personnage recherché. <br><br></html>");
 		Object[] lwiki = new Object[listeDesc.size()];
 		for (int i = 0; i < listeDesc.size(); i++) {
 			lwiki[i] = listeDesc.get(i).getDescription();
