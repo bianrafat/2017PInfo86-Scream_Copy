@@ -8,6 +8,10 @@ import javax.swing.text.BadLocationException;
 import fr.ujm.tse.Scream.View.Fenetre;
 
 public class BoutonRetour extends AbstractAction {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Fenetre fenetre;
 	public BoutonRetour(String texte, Fenetre f){
 		super(texte);

@@ -1,15 +1,14 @@
 package fr.ujm.tse.Scream.Controller;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -227,7 +226,7 @@ public class Database {
 			s = conn.createStatement();
 			statements.add(s);
 			rs = s.executeQuery(
-			        "SELECT * FROM library where title = ?");
+			        "SELECT COUNT(*) FROM library where title = ?");
 			while(rs.next()){
 				System.out.println(rs.getInt(1)+
 						" "+rs.getString(2)+
@@ -243,9 +242,12 @@ public class Database {
 		}
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return false;
+			//e.printStackTrace();
+		
 		} 
-		return false;
+		
+	
 		
 	}
 	
@@ -491,6 +493,7 @@ public class Database {
 	{
 		try {
 			psUpdate = conn.prepareStatement("delete from library where id=?");
+			psUpdate.setInt(1, id);
 			psUpdate.executeUpdate(); 
 			conn.commit();
 			return true;
@@ -501,5 +504,38 @@ public class Database {
 		} 
 		return false;
 		
+	}
+	
+
+	public static List<String[]> getlibrary() throws SQLException {
+		List<String[]>data= new ArrayList<String[]>(); 
+		s = conn.createStatement();
+		statements.add(s);
+		
+		rs = s.executeQuery(
+		        "SELECT * FROM library");
+		while(rs.next()){
+			String[] info= {Integer.toString(rs.getInt(1))
+							,rs.getString(2)
+							,rs.getString(3)
+							,Integer.toString(rs.getInt(4))
+							,rs.getString(5)
+							,Integer.toString(rs.getInt(6))
+							,Integer.toString(rs.getInt(7))
+							,rs.getString(8)};
+			data.add(info);
+			
+		}
+		conn.commit();
+		
+		return data;
+	}
+
+	public static String getFramework() {
+		return framework;
+	}
+
+	public static void setFramework(String framework) {
+		Database.framework = framework;
 	}
 }

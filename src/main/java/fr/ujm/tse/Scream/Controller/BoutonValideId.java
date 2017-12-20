@@ -9,6 +9,10 @@ import javax.swing.text.BadLocationException;
 import fr.ujm.tse.Scream.View.Fenetre;
 
 public class BoutonValideId extends AbstractAction {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Fenetre fenetre;
 	private String nameBiblio;
 	private String userName;

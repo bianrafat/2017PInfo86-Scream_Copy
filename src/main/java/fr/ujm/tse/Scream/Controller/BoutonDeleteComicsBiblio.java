@@ -30,6 +30,8 @@ public class BoutonDeleteComicsBiblio implements ActionListener {
 		}else {
 			JOptionPane.showMessageDialog(null," erreur!");
 		}
+		fenetre.revalidate();
+		fenetre.repaint();
 		
 	}
 	

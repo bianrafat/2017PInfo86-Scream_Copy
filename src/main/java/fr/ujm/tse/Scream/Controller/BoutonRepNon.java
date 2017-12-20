@@ -8,6 +8,10 @@ import javax.swing.AbstractAction;
 import fr.ujm.tse.Scream.View.Fenetre;
 
 public class BoutonRepNon extends AbstractAction {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Fenetre fenetre;
 	public BoutonRepNon(String texte, Fenetre f){
 		super(texte);

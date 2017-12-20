@@ -15,14 +15,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ComboBoxModel;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -30,14 +26,12 @@ import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.border.Border;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -65,7 +59,7 @@ import fr.ujm.tse.Scream.Controller.BoutonSuivant;
 import fr.ujm.tse.Scream.Controller.BoutonValideId;
 import fr.ujm.tse.Scream.Controller.BoutonValideNewBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonWikiData;
-import fr.ujm.tse.Scream.Controller.Database;
+import fr.ujm.tse.Scream.Controller.TableModel;
 import fr.ujm.tse.Scream.Model.Comics;
 import fr.ujm.tse.Scream.Model.Parse;
 import fr.ujm.tse.Scream.Model.ParseWiki;
@@ -75,6 +69,10 @@ import fr.ujm.tse.Scream.Model.SearchWiki;
 
 public class Fenetre extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField champPerso = new JTextField();
 	private JTextField champComics = new JTextField();
 	private JTextField champWikiP = new JTextField();
@@ -83,7 +81,7 @@ public class Fenetre extends JFrame {
 	private JTextField champBiblioSearch= new JTextField();
 	private JPasswordField  champMdp= new JPasswordField();
 	 private JTable tableau;
-	 private JComboBox combo = new JComboBox();
+	 private JComboBox<String> combo = new JComboBox<String>();
 
 	private String nameBiblio=null;
 	private String conUser=null;
@@ -171,10 +169,11 @@ public class Fenetre extends JFrame {
 		setLocationRelativeTo(null); // On centre la fenêtre sur l'écran
 		// setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // On dit à l'application de se fermer lors du clic sur la croix
-		ImageIcon icon = new ImageIcon(ImageIO.read(new File("src\\main\\resources\\logo.jpg")));
+		//ImageIcon icon = new ImageIcon(ImageIO.read(new File("src\\main\\resources\\logo.jpg")));
+		//ImageIcon icon = new ImageIcon(ImageIO.read(new File(this.getClass().getResource("/logo.jpg").getFile())));
 		
 	
-		setIconImage(icon.getImage());
+		//setIconImage(icon.getImage());
 		setContentPane(buildContentPane());
 	}
 
@@ -221,13 +220,10 @@ public class Fenetre extends JFrame {
 		Font fontMenu = new Font("Century Schoolbook", Font.BOLD, 15);
 		try {
 			JLabel background = new JLabel();
-			ImageIcon icon = new ImageIcon(ImageIO.read(new File("src\\main\\resources\\Marvel.png")));
+			//ImageIcon icon = new ImageIcon(ImageIO.read(new File("src/main/resources/Marvel.png")));
+			ImageIcon icon = new ImageIcon(ImageIO.read(new File(this.getClass().getResource("/Marvel.png").getFile())));
+			
 			background.setIcon(icon);
-			/*
-			 * JLabel background2 = new JLabel(); ImageIcon icon2 = new
-			 * ImageIcon(ImageIO.read(new File("src\\main\\resources\\title_marvel.png")));
-			 * background2.setIcon(icon2); panelG.add(background2,BorderLayout.NORTH);
-			 */
 
 			panelG.add(background, BorderLayout.SOUTH);
 		} catch (IOException e) {
@@ -376,11 +372,9 @@ public class Fenetre extends JFrame {
 
 		listeComics.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				JList list = (JList) evt.getSource();
 				if (evt.getClickCount() == 2) {
 
 					// Double-click detected
-					int index = list.locationToIndex(evt.getPoint());
 					try {
 						ContentPanelComics(listeComics.getSelectedIndex() + 1, champPerso.getText());
 					} catch (JSONException e) {
@@ -632,21 +626,22 @@ public class Fenetre extends JFrame {
 	}
 	/**
 	 * interface lorsqu'on clique sur le bouton "Ma bibliothéque"
+	 * @throws SQLException 
 	 */
 	
-	public void boutonBiblio(){
+	public void boutonBiblio() throws SQLException{
 		JPanel panelGeneral = new JPanel();
 		JPanel panelNorth = new JPanel();
-		//JPanel panel = new JPanel();
+		JPanel panel = new JPanel();
 		JPanel panelmiddle = new JPanel();
 		JPanel panelSouth = new JPanel();
 		panelSouth.setBackground(new Color(236, 248, 254));
 		panelmiddle.setBackground(new Color(236, 248, 254));
-		//panel.setBackground(new Color(236, 248, 254));
+		panel.setBackground(new Color(236, 248, 254));
 		panelNorth.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		
-		//panel.setLayout(new BorderLayout());
+		panel.setLayout(new BorderLayout());
 		panelGeneral.setLayout(new BorderLayout());
 		panelNorth.setLayout(new FlowLayout());
 		panelmiddle.setLayout(new FlowLayout());
@@ -671,18 +666,16 @@ public class Fenetre extends JFrame {
 		JButton supprimer = new JButton("Supprimer");
 		panelmiddle.add(ajouter);
 		panelmiddle.add(supprimer);
-		 Object[][] data = { 
-				 {"Amazing Spider-Man","Stan Lee","commentaire","",new Boolean(true)}
-				 
-		 };
-		 String  title[] = {"Titre", "Auteur", "Commentaire", "Marque page","Lu"};
-		 this.tableau = new JTable(data, title);
-		 panelmiddle.add(new JScrollPane(tableau), BorderLayout.EAST);
+		
 
-		panelSouth.add(retour);
+		 TableModel tableM=new TableModel();
+		 this.tableau = new JTable(tableM);
+		 panel.add(new JScrollPane(tableau), BorderLayout.CENTER);
+		 panel.add(panelmiddle,BorderLayout.SOUTH);
+		 panelSouth.add(retour);
 		
 		panelGeneral.add(panelNorth, BorderLayout.NORTH);
-		panelGeneral.add(panelmiddle, BorderLayout.CENTER);
+		panelGeneral.add(panel, BorderLayout.CENTER);
 		//panelGeneral.add(panelWest, BorderLayout.WEST);
 		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
 
@@ -725,11 +718,10 @@ public class Fenetre extends JFrame {
 
 		listeWikiP.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				JList list = (JList) evt.getSource();
+				JList<?> list = (JList<?>) evt.getSource();
 				if (evt.getClickCount() == 2) {
 
 					// Double-click detected
-					int index = list.locationToIndex(evt.getPoint());
 					try {
 						ContentPanelWikiP(list.getSelectedIndex());
 					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException
@@ -794,11 +786,9 @@ public class Fenetre extends JFrame {
 		
 		listeComics.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				JList list = (JList) evt.getSource();
 				if (evt.getClickCount() == 2) {
 
 					// Double-click detected
-					int index = list.locationToIndex(evt.getPoint());
 					try {
 						ContentPanelComics(listeComics.getSelectedIndex() + 1, champStartComics);
 					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
@@ -906,11 +896,10 @@ public class Fenetre extends JFrame {
 		listePerso.setListData(lperso);
 		listePerso.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				JList list = (JList) evt.getSource();
+				JList<?> list = (JList<?>) evt.getSource();
 				if (evt.getClickCount() == 2) {
 
 					// Double-click detected
-					int index = list.locationToIndex(evt.getPoint());
 					try {
 						affichePerso((String) list.getSelectedValue());
 						champPerso.setText((String) list.getSelectedValue());
@@ -962,8 +951,10 @@ public class Fenetre extends JFrame {
 			ajouterBiblio.setVisible(false);
 			supprimerBiblio.setVisible(false);
 		}else {
-			ajouterBiblio.addActionListener(new BoutonAddComicsBiblio(this, nameBiblio, conUser, conMdp, comics.getId(),comics.getTitle() , comics.getCreators2().get(0), 0, "En cours", 0, 10, ""));
+			
 			supprimerBiblio.addActionListener(new BoutonDeleteComicsBiblio(this, comics.getId(), nameBiblio, conUser, conMdp));
+			ajouterBiblio.addActionListener(new BoutonAddComicsBiblio(this, nameBiblio, conUser, conMdp, comics.getId(),comics.getTitle() , comics.getCreators2().get(0), 0, "En cours", 0, 10, "pas de commentaire"));
+
 			panelWest.add(panelbt,BorderLayout.CENTER);
 		}
 
