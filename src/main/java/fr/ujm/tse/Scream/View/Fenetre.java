@@ -170,10 +170,10 @@ public class Fenetre extends JFrame {
 		// setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // On dit à l'application de se fermer lors du clic sur la croix
 		//ImageIcon icon = new ImageIcon(ImageIO.read(new File("src\\main\\resources\\logo.jpg")));
-		//ImageIcon icon = new ImageIcon(ImageIO.read(new File(this.getClass().getResource("/logo.jpg").getFile())));
+		ImageIcon icon = new ImageIcon(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("logo.jpg")));
 		
 	
-		//setIconImage(icon.getImage());
+		setIconImage(icon.getImage());
 		setContentPane(buildContentPane());
 	}
 
@@ -221,7 +221,7 @@ public class Fenetre extends JFrame {
 		try {
 			JLabel background = new JLabel();
 			//ImageIcon icon = new ImageIcon(ImageIO.read(new File("src/main/resources/Marvel.png")));
-			ImageIcon icon = new ImageIcon(ImageIO.read(new File(this.getClass().getResource("/Marvel.png").getFile())));
+			ImageIcon icon = new ImageIcon(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("Marvel.png")));
 			
 			background.setIcon(icon);
 
