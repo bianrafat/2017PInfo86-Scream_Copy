@@ -96,7 +96,7 @@ public class Fenetre extends JFrame {
 	private JList<Object> listeWikiP = new JList<Object>();
 	private JLabel intro = new JLabel();
 	private ParseWiki wiki = new ParseWiki();
-	private JButton biblio = new JButton("Ma Bibliotèque");
+	private JButton biblio = new JButton("Ma Bibliothèque");
 	private JButton deconnexion = new JButton("Déconnexion");
 	private JButton connexion = new JButton("Connexion");
 	private JButton plus = new JButton("Suivant");
@@ -237,7 +237,7 @@ public class Fenetre extends JFrame {
 		north.add(Box.createRigidArea(new Dimension(150, 40)), BorderLayout.WEST);
 		north.add(labelP,BorderLayout.CENTER);
 		panelG.add(north, BorderLayout.NORTH);
-		JButton boutonPersonnage = new JButton(new BoutonMenuPersonnage("Rechercher un personnage ", this));
+		JButton boutonPersonnage = new JButton(new BoutonMenuPersonnage("Rechercher un personnage", this));
 		/*
 		 * boutonPersonnage.setMaximumSize(new Dimension(300, 50));
 		 * boutonPersonnage.setMinimumSize(new Dimension(50, 50));
@@ -248,7 +248,7 @@ public class Fenetre extends JFrame {
 		center.add(boutonPersonnage);
 
 		// panel2.add(Box.createRigidArea(new Dimension(0, 20)));
-		JButton boutonComics = new JButton(new BoutonMenuComics("Rechercher un Comics ", this));
+		JButton boutonComics = new JButton(new BoutonMenuComics("Rechercher un Comics", this));
 		/*
 		 * boutonComics.setMaximumSize(new Dimension(300, 50));
 		 * boutonComics.setMinimumSize(new Dimension(200, 50));
@@ -329,7 +329,7 @@ public class Fenetre extends JFrame {
 
 	/**
 	 * 
-	 * interface affichait quand on clique sur le bouton "Recherche un personnage"
+	 * interface affichée quand on clique sur le bouton "Recherche un personnage"
 	 */
 
 	public void boutonPerso() {
@@ -415,7 +415,7 @@ public class Fenetre extends JFrame {
 	}
 
 	/**
-	 * fonction utiliser quand nous cliquons dans le menu principale sur "connexion"
+	 * fonction utilisée quand nous cliquons dans le menu principal sur "connexion"
 	 */
 
 	public void boutonConnexion() {
@@ -476,7 +476,7 @@ public class Fenetre extends JFrame {
 	}
 
 	/**
-	 * fonction quand l'utilisateur veux créer sa nouvelle biblioteque
+	 * fonction quand l'utilisateur veux créer sa nouvelle bibliotheque
 	 */
 	public void boutonRepNon() {
 		JPanel panelGeneral = new JPanel();
@@ -506,7 +506,7 @@ public class Fenetre extends JFrame {
 		panelWest.setLayout(new FlowLayout());
 		panelBouton.setLayout(new FlowLayout());
 
-		JLabel label = new JLabel("Connexion");
+		JLabel label = new JLabel("Création d'une bibliothèque");
 		JLabel labBiblio = new JLabel("Veuillez renseigner un nom à votre bibliothèque:");
 		JLabel labUser = new JLabel("Veuillez renseigner un nom d'utilisateur:");
 		JLabel labMdp = new JLabel("Maintenant un mot de passe:");
