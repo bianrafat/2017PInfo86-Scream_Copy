@@ -1140,17 +1140,17 @@ public class Fenetre extends JFrame {
 		pos += ph.length();
 		sDoc.insertString(pos, perso.getName() + "\n", defaut);
 		pos += perso.getName().length() + 1;
-		ph = "id :   ";
+		ph = "\n" + "ID :   ";
 		sDoc.insertString(pos, ph, gras);
 		pos += ph.length();
 		sDoc.insertString(pos, perso.getId() + "\n", defaut);
 		pos += (Integer.toString((perso.getId()))).length() + 1;
-		ph = "Description :   ";
+		ph = "\n" + "Description :   ";
 		sDoc.insertString(pos, ph, gras);
 		pos += ph.length();
 		sDoc.insertString(pos, perso.getDescription() + "\n", defaut);
 		pos += perso.getDescription().length() + 1;
-		ph = "Comics : \n ";
+		ph = "\n" + "Comics : \n ";
 		sDoc.insertString(pos, ph, gras);
 		pos += ph.length();
 
@@ -1165,7 +1165,7 @@ public class Fenetre extends JFrame {
 	}
 
 	/**
-	 * interface affiche la liste des comics disponible avec le String str
+	 * interface affiche la liste des comics disponibles avec le String str
 	 * 
 	 * @param str
 	 * @throws JSONException
