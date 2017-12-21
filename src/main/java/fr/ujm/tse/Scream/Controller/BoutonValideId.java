@@ -14,7 +14,6 @@ public class BoutonValideId extends AbstractAction {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Fenetre fenetre;
-	private String nameBiblio;
 	private String userName;
 	private String password;
 	
@@ -24,12 +23,11 @@ public class BoutonValideId extends AbstractAction {
 	}
  
 	public void actionPerformed(ActionEvent e) { 
-		nameBiblio=fenetre.getChampBiblio().getText();
 		userName=fenetre.getChampUser().getText();
 		password=fenetre.getChampMdp().getText();
-		if(Database.connectDatabase(nameBiblio,userName,password)) {
-			JOptionPane.showMessageDialog(null, "Connexion à " + nameBiblio+ " réussie");
-			fenetre.setNameBiblio(nameBiblio);
+		if(Database.connectDatabase(userName,userName,password)) {
+			JOptionPane.showMessageDialog(null, "Connexion à " + userName+ " réussie");
+			fenetre.setNameBiblio(userName);
 			fenetre.setConUser(userName);
 			fenetre.setConMdp(password);
 			try {

@@ -78,7 +78,6 @@ public class Fenetre extends JFrame {
 	private JTextField champPerso = new JTextField();
 	private JTextField champComics = new JTextField();
 	private JTextField champWikiP = new JTextField();
-	private JTextField champBiblio= new JTextField();
 	private JTextField champUser= new JTextField();
 	private JTextField champBiblioSearch= new JTextField();
 	private JPasswordField  champMdp= new JPasswordField();
@@ -139,10 +138,6 @@ public class Fenetre extends JFrame {
 
 	public void setConMdp(String conMdp) {
 		this.conMdp = conMdp;
-	}
-
-	public JTextField getChampBiblio() {
-		return champBiblio;
 	}
 
 	public JTextField getChampUser() {
@@ -304,7 +299,6 @@ public class Fenetre extends JFrame {
 		champPerso.setText("");
 		champComics.setText("");
 		champWikiP.setText("");
-		champBiblio.setText("");
 		champUser.setText("");
 		champMdp.setText("");
 		intro.setText("");
@@ -512,15 +506,12 @@ public class Fenetre extends JFrame {
 		panelBouton.setLayout(new FlowLayout());
 
 		JLabel label = new JLabel("Création d'une bibliothèque");
-		JLabel labBiblio = new JLabel("Veuillez renseigner un nom à votre bibliothèque:");
 		JLabel labUser = new JLabel("Veuillez renseigner un nom d'utilisateur:");
 		JLabel labMdp = new JLabel("Maintenant un mot de passe:");
 		label.setFont(font);
-		labBiblio.setFont(fontMenu);
 		labUser.setFont(fontMenu);
 		labMdp.setFont(fontMenu);
 		
-		champBiblio.setPreferredSize(new Dimension(210, 30));
 		champUser.setPreferredSize(new Dimension(210, 30));
 		champMdp.setPreferredSize(new Dimension(210, 30));
 		JButton conf = new JButton(new BoutonValideNewBiblio("Valider",this));
@@ -532,8 +523,6 @@ public class Fenetre extends JFrame {
 		retour.setPreferredSize(new Dimension(130, 40));
 
 		panelNorth.add(label);
-		panelBouton.add(labBiblio);
-		panelBouton.add(champBiblio);
 		panelBouton.add(labUser);
 		panelBouton.add(champUser);
 		panelBouton.add(labMdp);
@@ -588,15 +577,12 @@ public class Fenetre extends JFrame {
 		panelBouton.setLayout(new FlowLayout());
 
 		JLabel label = new JLabel("Connexion");
-		JLabel labBiblio = new JLabel("Entrez le nom de votre bibliothèque:");
 		JLabel labUser = new JLabel("Entrez le nom d'utilisateur:");
 		JLabel labMdp = new JLabel("Entrez votre mot de passe:");
 		label.setFont(font);
-		labBiblio.setFont(fontMenu);
 		labUser.setFont(fontMenu);
 		labMdp.setFont(fontMenu);
 		
-		champBiblio.setPreferredSize(new Dimension(210, 30));
 		champUser.setPreferredSize(new Dimension(210, 30));
 		champMdp.setPreferredSize(new Dimension(210, 30));
 		JButton conf = new JButton(new BoutonValideId("Valider",this));
@@ -608,8 +594,6 @@ public class Fenetre extends JFrame {
 		retour.setPreferredSize(new Dimension(130, 40));
 
 		panelNorth.add(label);
-		panelBouton.add(labBiblio);
-		panelBouton.add(champBiblio);
 		panelBouton.add(labUser);
 		panelBouton.add(champUser);
 		panelBouton.add(labMdp);

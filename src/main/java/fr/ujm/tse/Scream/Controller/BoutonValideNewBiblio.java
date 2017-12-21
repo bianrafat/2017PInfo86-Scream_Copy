@@ -14,7 +14,6 @@ public class BoutonValideNewBiblio extends AbstractAction {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Fenetre fenetre;
-	private String nameBiblio;
 	private String userName;
 	private String password;
 	
@@ -24,12 +23,11 @@ public class BoutonValideNewBiblio extends AbstractAction {
 	}
  
 	public void actionPerformed(ActionEvent e) { 
-		nameBiblio=fenetre.getChampBiblio().getText();
 		userName=fenetre.getChampUser().getText();
 		password=fenetre.getChampMdp().getText();
-		if(Database.createDatabase(nameBiblio, userName, password)) {
-			JOptionPane.showMessageDialog(null, nameBiblio+ " créée avec succès !");
-			fenetre.setNameBiblio(nameBiblio);
+		if(Database.createDatabase(userName, userName, password)) {
+			JOptionPane.showMessageDialog(null, userName+ " créée avec succès !");
+			fenetre.setNameBiblio(userName);
 			fenetre.setConUser(userName);
 			fenetre.setConMdp(password);
 			try {
