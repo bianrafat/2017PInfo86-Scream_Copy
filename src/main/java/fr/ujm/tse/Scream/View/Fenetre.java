@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -56,6 +57,7 @@ import fr.ujm.tse.Scream.Controller.BoutonRepNon;
 import fr.ujm.tse.Scream.Controller.BoutonRepOui;
 import fr.ujm.tse.Scream.Controller.BoutonRetour;
 import fr.ujm.tse.Scream.Controller.BoutonSuivant;
+import fr.ujm.tse.Scream.Controller.BoutonSupprimerBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonValideId;
 import fr.ujm.tse.Scream.Controller.BoutonValideNewBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonWikiData;
@@ -153,6 +155,9 @@ public class Fenetre extends JFrame {
 
 	public JTextField getChampPerso() {
 		return champPerso;
+	}
+	public JTable getTable(){
+		return tableau;
 	}
 
 	public Fenetre() {
@@ -657,19 +662,27 @@ public class Fenetre extends JFrame {
 		champBiblioSearch.setMinimumSize(new Dimension(100, 30));
 		champBiblioSearch.setPreferredSize(new Dimension(200, 30));
 		JButton recherche = new JButton("Rechercher");
+		//champBiblioSearch.addActionListener(new );
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
 		panelNorth.add(label);
 		panelNorth.add(combo);
 		panelNorth.add(champBiblioSearch);
 		panelNorth.add(recherche);
-		JButton ajouter = new JButton("Ajouter");
 		JButton supprimer = new JButton("Supprimer");
-		panelmiddle.add(ajouter);
 		panelmiddle.add(supprimer);
-		
-
-		 TableModel tableM=new TableModel();
+		supprimer.addActionListener(new BoutonSupprimerBiblio(this,nameBiblio, conUser, conMdp));
+		TableModel tableM=new TableModel();
 		 this.tableau = new JTable(tableM);
+		RowPopup pop=new RowPopup(getTable(),this,nameBiblio, conUser, conMdp);
+		getTable().addMouseListener(new MouseAdapter(){
+
+			public void mouseClicked(MouseEvent e){
+
+				if(SwingUtilities.isRightMouseButton(e)){
+					 pop.show(e.getComponent(),e.getX(),e.getY());
+				}
+			}
+		});
 		 panel.add(new JScrollPane(tableau), BorderLayout.CENTER);
 		 panel.add(panelmiddle,BorderLayout.SOUTH);
 		 panelSouth.add(retour);
@@ -681,7 +694,7 @@ public class Fenetre extends JFrame {
 
 		setContentPane(panelGeneral);
 		revalidate();
-	}
+}
 
 	
 	/**
