@@ -258,7 +258,7 @@ public class Fenetre extends JFrame {
 		// boutonComics.setAlignmentX(Component.CENTER_ALIGNMENT);
 		center.add(boutonComics);
 
-		JButton wikiData = new JButton(new BoutonWikiData("Recherches Wikidata", this));
+		JButton wikiData = new JButton(new BoutonWikiData("Recherches avancées", this));
 		wikiData.setFont(fontMenu);
 		center.add(wikiData);
 		connexion.setPreferredSize(new Dimension(150, 40));
