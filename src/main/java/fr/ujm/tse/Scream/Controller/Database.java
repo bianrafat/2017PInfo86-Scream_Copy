@@ -106,7 +106,7 @@ public class Database {
 
 			// We create a table...
 			s.execute("create table library(id int primary key not null," + " titre varchar(100),"
-					+ " auteur varchar(100)," + " année int, etat varchar(100)," + " bookmark int," + " note int,"
+					+ " auteur varchar(100)," + "etat varchar(100)," + " bookmark int," + " note int,"
 					+ " commentaire varchar(500))");
 			
 			/*
@@ -348,21 +348,20 @@ public class Database {
 	 * @param com
 	 * @return
 	 */
-	public static Boolean insert(String dbName, String userName, String pass, int id, String title, String author, int year, String etat, int bookmark, int note, String com)
+	public static Boolean insert(String dbName, String userName, String pass, int id, String title, String author, String etat, int bookmark, int note, String com)
 	{
 		try {
 			// Commande pour insérer des valeurs
-			psInsert = conn.prepareStatement("insert into library values (?, ?, ?, ?, ?, ?, ?, ?)");
+			psInsert = conn.prepareStatement("insert into library values (?, ?, ?, ?, ?, ?, ?)");
 			statements.add(psInsert);
 
 			psInsert.setInt(1, id);
 			psInsert.setString(2, title);
 			psInsert.setString(3, author);
-			psInsert.setInt(4, year);
-			psInsert.setString(5, etat);
-			psInsert.setInt(6, bookmark);
-			psInsert.setInt(7, note);
-			psInsert.setString(8, com);
+			psInsert.setString(4, etat);
+			psInsert.setInt(5, bookmark);
+			psInsert.setInt(6, note);
+			psInsert.setString(7, com);
 			
 			psInsert.executeUpdate();
 			conn.commit();
@@ -389,7 +388,7 @@ public class Database {
 	{
 		try {
 			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
-			psUpdate.setInt(6, bookmark);
+			psUpdate.setInt(5, bookmark);
 			psUpdate.executeUpdate(); 
 			conn.commit();
 			return true;
@@ -415,7 +414,7 @@ public class Database {
 	{
 		try {
 			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
-			psUpdate.setInt(7, note);
+			psUpdate.setInt(6, note);
 			psUpdate.executeUpdate(); 
 			conn.commit();
 			return true;
@@ -440,8 +439,9 @@ public class Database {
 	public static Boolean updateCom(String dbName, String userName, String pass, int id, String com)
 	{
 		try {
-			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
-			psUpdate.setString(8, com);
+			psUpdate = conn.prepareStatement("update library set commentaire=? where id=?");
+			psUpdate.setString(1, com);
+			psUpdate.setInt(2, id);
 			psUpdate.executeUpdate(); 
 			conn.commit();
 			return true;
@@ -468,7 +468,7 @@ public class Database {
 		try {
 			
 			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
-			psUpdate.setString(5, etat);
+			psUpdate.setString(4, etat);
 			psUpdate.executeUpdate(); 
 			conn.commit();
 			return true;
@@ -518,11 +518,10 @@ public class Database {
 			String[] info= {Integer.toString(rs.getInt(1))
 							,rs.getString(2)
 							,rs.getString(3)
-							,Integer.toString(rs.getInt(4))
-							,rs.getString(5)
+							,rs.getString(4)
+							,Integer.toString(rs.getInt(5))
 							,Integer.toString(rs.getInt(6))
-							,Integer.toString(rs.getInt(7))
-							,rs.getString(8)};
+							,rs.getString(7)};
 			data.add(info);
 			
 		}

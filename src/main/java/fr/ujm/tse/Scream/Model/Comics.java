@@ -8,6 +8,7 @@ public class Comics {
 	private String description;
 	private int total;
 	private String lien_image;
+	private String premierCreateur;
 	private ArrayList<String> comics = new ArrayList<String>();
 	private ArrayList<String> creators = new ArrayList<String>();
 	private ArrayList<String> characters = new ArrayList<String>();
@@ -135,6 +136,14 @@ public class Comics {
 			System.out.println(character);
 		}
 		
+	}
+
+	public String getPremierCreateur() {
+		return premierCreateur;
+	}
+
+	public void setPremierCreateur(String premierCreateur) {
+		this.premierCreateur = premierCreateur;
 	}
 
 	

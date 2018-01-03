@@ -2,25 +2,21 @@ package fr.ujm.tse.Scream.Controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
 import fr.ujm.tse.Scream.View.Fenetre;
 
-public class BoutonAddComicsBiblio implements ActionListener {
+public class BoutonAjouterCommentaireBiblio implements ActionListener{
 	private Fenetre fenetre;
 	private String dbName;
 	private String userName;
 	private String pass;
 	private int id;
-	private String title;
-	private String author;
-	private String etat;
-	private int bookmark;
-	private int note;
 	private String com;
 	
-	public BoutonAddComicsBiblio(Fenetre f,String dbName, String userName, String pass, int id, String title, String author, String etat, int bookmark, int note, String com)
+	public BoutonAjouterCommentaireBiblio(Fenetre f,String dbName, String userName, String pass, int id, String com)
 	 {
 		
 		fenetre = f;
@@ -28,11 +24,6 @@ public class BoutonAddComicsBiblio implements ActionListener {
 		this.userName= userName;
 		this.pass=pass;
 		this.id=id;
-		this.title=title;
-		this.author=author;
-		this.etat=etat;
-		this.bookmark=bookmark;
-		this.note=note;
 		this.com=com;
 	}
 
@@ -40,14 +31,20 @@ public class BoutonAddComicsBiblio implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
-		if(Database.insert(dbName, userName,pass, id, title, author, etat, bookmark, note, com)) {
-			JOptionPane.showMessageDialog(null," ajouter avec succès !");
+		if(Database.updateCom(dbName, userName, pass, id, com)) {
+			JOptionPane.showMessageDialog(null," Modifier avec succès !");
 		}else {
 			JOptionPane.showMessageDialog(null," erreur!");
 		}
+		
+		try {
+			fenetre.boutonBiblio();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		fenetre.revalidate();
 		fenetre.repaint();
-		
 	}
 	
 	

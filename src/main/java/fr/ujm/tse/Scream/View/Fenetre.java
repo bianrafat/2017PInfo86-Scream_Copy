@@ -11,7 +11,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -196,24 +195,20 @@ public class Fenetre extends JFrame {
 	public JPanel buildContentPane() throws BadLocationException {
 
 		GridLayout param = new GridLayout(3, 2);
-		param.setHgap(70); // Cinq pixels d'espace entre les colonnes (H comme Horizontal)
-		param.setVgap(20); // Cinq pixels d'espace entre les lignes (V comme Vertical)
+		param.setHgap(70); // nombres de pixels d'espace entre les colonnes (H comme Horizontal)
+		param.setVgap(20); // nombres de pixels d'espace entre les lignes (V comme Vertical)
 
-		JPanel panel2 = new JPanel();
-		JPanel panelG = new JPanel();
-		JPanel north = new JPanel();
-		JPanel center = new JPanel();
-		JPanel labelP= new JPanel();
+		JPanel panel2 = new JPanel(new BorderLayout());
+		JPanel panelG = new JPanel(new BorderLayout());
+		JPanel north = new JPanel(new BorderLayout());
+		JPanel center = new JPanel(param);
+		JPanel labelP= new JPanel(new FlowLayout());
 		center.setBackground(new Color(236, 248, 254));
 		north.setBackground(new Color(236, 248, 254));
 		panel2.setBackground(new Color(236, 248, 254));
 		panelG.setBackground(new Color(236, 248, 254));
 		labelP.setBackground(new Color(236, 248, 254));
-		panelG.setLayout(new BorderLayout());
-		panel2.setLayout(new BorderLayout());
-		north.setLayout(new BorderLayout());
-		labelP.setLayout(new FlowLayout());
-		center.setLayout(param);
+		
 		
 		JLabel label = new JLabel("Bienvenue");
 		Font font = new Font("Century Schoolbook", Font.BOLD, 24);
@@ -641,7 +636,6 @@ public class Fenetre extends JFrame {
 		combo.setPreferredSize(new Dimension(100, 20));
 		combo.addItem("Auteur");
 		combo.addItem("Titre");
-		combo.addItem("Année de publication");
 		champBiblioSearch.setMaximumSize(new Dimension(200, 30));
 		champBiblioSearch.setMinimumSize(new Dimension(100, 30));
 		champBiblioSearch.setPreferredSize(new Dimension(200, 30));
@@ -950,7 +944,7 @@ public class Fenetre extends JFrame {
 		}else {
 			
 			supprimerBiblio.addActionListener(new BoutonDeleteComicsBiblio(this, comics.getId(), nameBiblio, conUser, conMdp));
-			ajouterBiblio.addActionListener(new BoutonAddComicsBiblio(this, nameBiblio, conUser, conMdp, comics.getId(),comics.getTitle() , comics.getCreators2().get(0), 0, "En cours", 0, 10, "pas de commentaire"));
+			ajouterBiblio.addActionListener(new BoutonAddComicsBiblio(this, nameBiblio, conUser, conMdp, comics.getId(),comics.getTitle() , comics.getPremierCreateur(), "En cours", 0, 10, "pas de commentaire"));
 
 			panelWest.add(panelbt,BorderLayout.CENTER);
 		}

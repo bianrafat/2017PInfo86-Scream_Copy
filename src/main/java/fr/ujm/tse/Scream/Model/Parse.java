@@ -205,8 +205,10 @@ public class Parse {
 			int nbCreators=results.getJSONObject(num + 10*page -1).getJSONObject(creators).getInt("available");
 			if (nbCreators ==0) {
 				comics.setCreators("Aucune information / No information.");
+				comics.setPremierCreateur("Aucune information");
 			}
 			else{
+				comics.setPremierCreateur(results.getJSONObject(num + 10*page -1).getJSONObject(creators).getJSONArray(items).getJSONObject(0).getString(name));
 				for (int j=0; j<nbCreators; j++)
 				{
 					comics.setCreators(results.getJSONObject(num + 10*page -1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(role).toUpperCase()+" : "+results.getJSONObject(num + 10*page -1).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(name));

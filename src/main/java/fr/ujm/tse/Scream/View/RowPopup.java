@@ -15,6 +15,8 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 
+import fr.ujm.tse.Scream.Controller.BoutonAjouterCommentaireBiblio;
+
 public class RowPopup extends JPopupMenu{
 	private JTable table;
 	private Fenetre fenetre;
@@ -26,9 +28,9 @@ public class RowPopup extends JPopupMenu{
 	private String dbName;
 	private String userName;
 	private String pass;
-
 	private JButton ajouterCom=new JButton("Ajouter le commentaire");
 	private JTextArea textCom= new JTextArea();
+	
 	public RowPopup(JTable table,Fenetre f,String dbName, String userName, String pass){
 		this.table=table;
 		fenetre = f;
@@ -40,28 +42,31 @@ public class RowPopup extends JPopupMenu{
 		JMenuItem bookmark=new JMenuItem("Ajouter un bookmark");
 		JMenuItem etat=new JMenuItem("Etat");
 		dialog = new JDialog();
-		dialog.setSize(new Dimension(400,400));
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
+		dialog.setSize(new Dimension(210,200));
+		dialog.setLocationRelativeTo(null);
+		JPanel panel = new JPanel(new BorderLayout());
+		JPanel bouton = new JPanel(new FlowLayout());
 		textCom.setPreferredSize(new Dimension(200,100));
-		ajouterCom.setPreferredSize(new Dimension(60,30));
+		ajouterCom.setPreferredSize(new Dimension(200,30));
 		com.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		    	int rowIndex=fenetre.getTable().getSelectedRow();
-				String commentaire =(String)fenetre.getTable().getValueAt(rowIndex, 7);
-		    	textCom.setText(commentaire);
+				String commentaire =(String)fenetre.getTable().getValueAt(rowIndex, 6);
+				textCom.setText(commentaire);
+		    	bouton.add(ajouterCom);
 		    	panel.add(textCom,BorderLayout.NORTH);
-				panel.add(ajouterCom,BorderLayout.CENTER);
+				panel.add(bouton,BorderLayout.CENTER);
 				dialog.setModal(true);
 				dialog.add(panel);
 		        dialog.setVisible(true);
-		    	
+		        ajouterCom.addActionListener(new BoutonAjouterCommentaireBiblio(fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0)),textCom.getText()));
+		    
 		    }
 		});
+			
 		add(com);
 		add(note);
 		add(bookmark);
-		add(new JSeparator()); 
 		add(etat);
 	}	
 

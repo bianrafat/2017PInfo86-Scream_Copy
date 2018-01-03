@@ -14,7 +14,7 @@ public class TableModel extends AbstractTableModel {
 
 	private List<String[]> data = new ArrayList<String[]>();
  
-    String  title[] = {"Id","Titre", "Auteur","Année","Lu" ,"Marque page","Note","Commentaire"};
+    String  title[] = {"Id","Titre", "Auteur","Lu" ,"Marque page","Note","Commentaire"};
  
     public TableModel() throws SQLException {
         super();
@@ -49,8 +49,6 @@ public class TableModel extends AbstractTableModel {
             	return data.get(rowIndex)[5];
             case 6:
             	return data.get(rowIndex)[6];
-            case 7:
-            	return data.get(rowIndex)[7];
             default:
                 return null; //Ne devrait jamais arriver
         }
