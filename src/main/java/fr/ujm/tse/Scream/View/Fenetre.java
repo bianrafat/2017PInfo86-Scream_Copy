@@ -57,6 +57,7 @@ import fr.ujm.tse.Scream.Controller.BoutonRepOui;
 import fr.ujm.tse.Scream.Controller.BoutonRetour;
 import fr.ujm.tse.Scream.Controller.BoutonSuivant;
 import fr.ujm.tse.Scream.Controller.BoutonSupprimerBiblio;
+import fr.ujm.tse.Scream.Controller.BoutonTri;
 import fr.ujm.tse.Scream.Controller.BoutonValideId;
 import fr.ujm.tse.Scream.Controller.BoutonValideNewBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonWikiData;
@@ -80,9 +81,9 @@ public class Fenetre extends JFrame {
 	private JTextField champUser= new JTextField();
 	private JTextField champBiblioSearch= new JTextField();
 	private JPasswordField  champMdp= new JPasswordField();
-	 private JTable tableau;
-	 private JComboBox<String> combo = new JComboBox<String>();
-
+	private JTable tableau;
+	private String[] comboTypes = { "Tout","Auteur", "Titre"};
+	private JComboBox<String> combo = new JComboBox<String>(comboTypes);
 	private String nameBiblio=null;
 	private String conUser=null;
 	private String conMdp=null;
@@ -102,58 +103,7 @@ public class Fenetre extends JFrame {
 	private JButton plus = new JButton("Suivant");
 	private JButton moins = new JButton("Précédent");
 	private int offset;
-
 	
-	public int getOffset() {
-		return offset;
-	}
-
-
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
-
-
-	public String getNameBiblio() {
-		return nameBiblio;
-	}
-
-
-	public void setNameBiblio(String nameBiblio) {
-		this.nameBiblio = nameBiblio;
-	}
-
-	public String getConUser() {
-		return conUser;
-	}
-
-	public void setConUser(String conUser) {
-		this.conUser = conUser;
-	}
-
-	public String getConMdp() {
-		return conMdp;
-	}
-
-	public void setConMdp(String conMdp) {
-		this.conMdp = conMdp;
-	}
-
-	public JTextField getChampUser() {
-		return champUser;
-	}
-
-	public JTextField getChampMdp() {
-		return champMdp;
-	}
-
-	public JTextField getChampPerso() {
-		return champPerso;
-	}
-	public JTable getTable(){
-		return tableau;
-	}
-
 	public Fenetre() {
 		super();
 	}
@@ -174,15 +124,6 @@ public class Fenetre extends JFrame {
 	
 		setIconImage(icon.getImage());
 		setContentPane(buildContentPane());
-	}
-
-	/**
-	 * retourne le champ de la recherche wikidata
-	 * 
-	 * @return champWikiP
-	 */
-	public JTextField getChampWikiP() {
-		return champWikiP;
 	}
 
 	/**
@@ -233,32 +174,16 @@ public class Fenetre extends JFrame {
 		north.add(labelP,BorderLayout.CENTER);
 		panelG.add(north, BorderLayout.NORTH);
 		JButton boutonPersonnage = new JButton(new BoutonMenuPersonnage("Rechercher un personnage", this));
-		/*
-		 * boutonPersonnage.setMaximumSize(new Dimension(300, 50));
-		 * boutonPersonnage.setMinimumSize(new Dimension(50, 50));
-		 * boutonPersonnage.setPreferredSize(new Dimension(150, 40));
-		 */
 		boutonPersonnage.setFont(fontMenu);
-		// boutonPersonnage.setAlignmentX(Component.LEFT_ALIGNMENT);
 		center.add(boutonPersonnage);
-
-		// panel2.add(Box.createRigidArea(new Dimension(0, 20)));
 		JButton boutonComics = new JButton(new BoutonMenuComics("Rechercher un Comics", this));
-		/*
-		 * boutonComics.setMaximumSize(new Dimension(300, 50));
-		 * boutonComics.setMinimumSize(new Dimension(200, 50));
-		 * boutonComics.setPreferredSize(new Dimension(200, 50));
-		 */
 		boutonComics.setFont(fontMenu);
-		// boutonComics.setAlignmentX(Component.CENTER_ALIGNMENT);
 		center.add(boutonComics);
-
 		JButton wikiData = new JButton(new BoutonWikiData("Recherches avancées", this));
 		wikiData.setFont(fontMenu);
 		center.add(wikiData);
 		connexion.setPreferredSize(new Dimension(150, 40));
 		connexion.setFont(fontMenu);
-		
 		deconnexion.setFont(fontMenu);
 		biblio.setFont(fontMenu);
 		if(nameBiblio==null) {
@@ -277,10 +202,7 @@ public class Fenetre extends JFrame {
 			
 			
 		}
-
 		center.add(biblio);
-		
-	
 		panel2.add(Box.createRigidArea(new Dimension(0, 50)), BorderLayout.NORTH);
 		panel2.add(Box.createRigidArea(new Dimension(20, 0)), BorderLayout.WEST);
 		panel2.add(Box.createRigidArea(new Dimension(20, 0)), BorderLayout.EAST);
@@ -298,7 +220,6 @@ public class Fenetre extends JFrame {
 		champMdp.setText("");
 		intro.setText("");
 		Object[] listeDefault = new Object[] { "" };
-	
 		listePerso.setListData(listeDefault);
 		listeComics.setListData(listeDefault);
 		listeWikiP.setListData(listeDefault);
@@ -306,32 +227,18 @@ public class Fenetre extends JFrame {
 		return panelG;
 	}
 
-	public JButton getBiblio() {
-		return biblio;
-	}
-
-
-	public void setBiblio(JButton biblio) {
-		this.biblio = biblio;
-	}
-
-
-	public JButton getConnexion() {
-		return connexion;
-	}
-
-
+	
 	/**
 	 * 
 	 * interface affichée quand on clique sur le bouton "Recherche un personnage"
 	 */
 
 	public void boutonPerso() {
-		JPanel panelGeneral = new JPanel();
-		JPanel panelNorth = new JPanel();
-		JPanel panel = new JPanel();
-		JPanel panelWest = new JPanel();
-		JPanel panelEast = new JPanel();
+		JPanel panelGeneral = new JPanel(new BorderLayout());
+		JPanel panelNorth = new JPanel(new FlowLayout());
+		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panelWest = new JPanel(new FlowLayout());
+		JPanel panelEast = new JPanel(new FlowLayout());
 
 		panelEast.setOpaque(false);
 		panelWest.setOpaque(false);
@@ -340,12 +247,6 @@ public class Fenetre extends JFrame {
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		reponsePerso.setOpaque(false);
 		listeComics.setBackground(new Color(236, 248, 254));
-
-		panel.setLayout(new BorderLayout());
-		panelGeneral.setLayout(new BorderLayout());
-		panelNorth.setLayout(new FlowLayout());
-		panelWest.setLayout(new FlowLayout());
-		panelEast.setLayout(new FlowLayout());
 
 		reponsePerso.setEditable(false);
 		JScrollPane scrollingArea = new JScrollPane(reponsePerso);
@@ -413,13 +314,13 @@ public class Fenetre extends JFrame {
 	 */
 
 	public void boutonConnexion() {
-		JPanel panelGeneral = new JPanel();
-		JPanel panelNorth = new JPanel();
-		JPanel panel = new JPanel();
-		JPanel panelWest = new JPanel();
-		JPanel panelEast = new JPanel();
-		JPanel panelBouton = new JPanel();
-		JPanel panelSouth = new JPanel();
+		JPanel panelGeneral = new JPanel(new BorderLayout());
+		JPanel panelNorth = new JPanel(new FlowLayout());
+		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panelWest = new JPanel(new FlowLayout());
+		JPanel panelEast = new JPanel(new FlowLayout());
+		JPanel panelBouton = new JPanel(new FlowLayout());
+		JPanel panelSouth = new JPanel(new FlowLayout());
 
 		Font font = new Font("Century Schoolbook", Font.BOLD, 24);
 		Font fontMenu = new Font("Century Schoolbook", Font.BOLD, 15);
@@ -431,14 +332,6 @@ public class Fenetre extends JFrame {
 		panel.setOpaque(false);
 		panelNorth.setOpaque(false);
 		panelGeneral.setBackground(new Color(236, 248, 254));
-
-		panelEast.setLayout(new FlowLayout());
-		panelSouth.setLayout(new FlowLayout());
-		panel.setLayout(new BorderLayout());
-		panelGeneral.setLayout(new BorderLayout());
-		panelNorth.setLayout(new FlowLayout());
-		panelWest.setLayout(new FlowLayout());
-		panelBouton.setLayout(new FlowLayout());
 
 		JLabel label = new JLabel("Connexion");
 		JLabel question = new JLabel("Êtes vous déjà inscrit ?");
@@ -473,13 +366,13 @@ public class Fenetre extends JFrame {
 	 * fonction quand l'utilisateur veux créer sa nouvelle bibliotheque
 	 */
 	public void boutonRepNon() {
-		JPanel panelGeneral = new JPanel();
-		JPanel panelNorth = new JPanel();
-		JPanel panel = new JPanel();
-		JPanel panelWest = new JPanel();
-		JPanel panelEast = new JPanel();
-		JPanel panelBouton = new JPanel();
-		JPanel panelSouth = new JPanel();
+		JPanel panelGeneral = new JPanel(new BorderLayout());
+		JPanel panelNorth = new JPanel(new FlowLayout());
+		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panelWest = new JPanel(new FlowLayout());
+		JPanel panelEast = new JPanel(new FlowLayout());
+		JPanel panelBouton = new JPanel(new FlowLayout());
+		JPanel panelSouth = new JPanel(new FlowLayout());
 
 		Font font = new Font("Century Schoolbook", Font.BOLD, 24);
 		Font fontMenu = new Font("Century Schoolbook", Font.BOLD, 12);
@@ -491,14 +384,6 @@ public class Fenetre extends JFrame {
 		panel.setOpaque(false);
 		panelNorth.setOpaque(false);
 		panelGeneral.setBackground(new Color(236, 248, 254));
-
-		panelEast.setLayout(new FlowLayout());
-		panelSouth.setLayout(new FlowLayout());
-		panel.setLayout(new BorderLayout());
-		panelGeneral.setLayout(new BorderLayout());
-		panelNorth.setLayout(new FlowLayout());
-		panelWest.setLayout(new FlowLayout());
-		panelBouton.setLayout(new FlowLayout());
 
 		JLabel label = new JLabel("Création d'une bibliothèque");
 		JLabel labUser = new JLabel("Veuillez renseigner un nom d'utilisateur:");
@@ -544,13 +429,13 @@ public class Fenetre extends JFrame {
 	 * fonction quand l'utilisateur veux accéder à sa biblioteque
 	 */
 	public void boutonRepOui() {
-		JPanel panelGeneral = new JPanel();
-		JPanel panelNorth = new JPanel();
-		JPanel panel = new JPanel();
-		JPanel panelWest = new JPanel();
-		JPanel panelEast = new JPanel();
-		JPanel panelBouton = new JPanel();
-		JPanel panelSouth = new JPanel();
+		JPanel panelGeneral = new JPanel(new BorderLayout());
+		JPanel panelNorth = new JPanel(new FlowLayout());
+		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panelWest = new JPanel(new FlowLayout());
+		JPanel panelEast = new JPanel(new FlowLayout());
+		JPanel panelBouton = new JPanel(new FlowLayout());
+		JPanel panelSouth = new JPanel(new FlowLayout());
 
 		Font font = new Font("Century Schoolbook", Font.BOLD, 24);
 		Font fontMenu = new Font("Century Schoolbook", Font.BOLD, 12);
@@ -562,14 +447,6 @@ public class Fenetre extends JFrame {
 		panel.setOpaque(false);
 		panelNorth.setOpaque(false);
 		panelGeneral.setBackground(new Color(236, 248, 254));
-
-		panelEast.setLayout(new FlowLayout());
-		panelSouth.setLayout(new FlowLayout());
-		panel.setLayout(new BorderLayout());
-		panelGeneral.setLayout(new BorderLayout());
-		panelNorth.setLayout(new FlowLayout());
-		panelWest.setLayout(new FlowLayout());
-		panelBouton.setLayout(new FlowLayout());
 
 		JLabel label = new JLabel("Connexion");
 		JLabel labUser = new JLabel("Entrez le nom d'utilisateur:");
@@ -614,33 +491,25 @@ public class Fenetre extends JFrame {
 	 */
 	
 	public void boutonBiblio() throws SQLException{
-		JPanel panelGeneral = new JPanel();
-		JPanel panelNorth = new JPanel();
-		JPanel panel = new JPanel();
-		JPanel panelmiddle = new JPanel();
-		JPanel panelSouth = new JPanel();
+		JPanel panelGeneral = new JPanel(new BorderLayout());
+		JPanel panelNorth = new JPanel(new FlowLayout());
+		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panelmiddle = new JPanel(new FlowLayout());
+		JPanel panelSouth = new JPanel(new FlowLayout());
 		panelSouth.setBackground(new Color(236, 248, 254));
 		panelmiddle.setBackground(new Color(236, 248, 254));
 		panel.setBackground(new Color(236, 248, 254));
 		panelNorth.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		
-		panel.setLayout(new BorderLayout());
-		panelGeneral.setLayout(new BorderLayout());
-		panelNorth.setLayout(new FlowLayout());
-		panelmiddle.setLayout(new FlowLayout());
-		panelSouth.setLayout(new FlowLayout());
-		
 		JLabel label = new JLabel("Recherche par:");;
 		//Indices start at 0, so 1 specifies the search is by titre.
 		combo.setPreferredSize(new Dimension(100, 20));
-		combo.addItem("Auteur");
-		combo.addItem("Titre");
 		champBiblioSearch.setMaximumSize(new Dimension(200, 30));
 		champBiblioSearch.setMinimumSize(new Dimension(100, 30));
 		champBiblioSearch.setPreferredSize(new Dimension(200, 30));
 		JButton recherche = new JButton("Rechercher");
-		//champBiblioSearch.addActionListener(new );
+		
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
 		panelNorth.add(label);
 		panelNorth.add(combo);
@@ -650,8 +519,9 @@ public class Fenetre extends JFrame {
 		panelmiddle.add(supprimer);
 		supprimer.addActionListener(new BoutonSupprimerBiblio(this,nameBiblio, conUser, conMdp));
 		TableModel tableM=new TableModel();
-		 this.tableau = new JTable(tableM);
+		this.tableau = new JTable(tableM);
 		RowPopup pop=new RowPopup(getTable(),this,nameBiblio, conUser, conMdp);
+		recherche.addActionListener(new BoutonTri(this,tableM));
 		getTable().addMouseListener(new MouseAdapter(){
 
 			public void mouseClicked(MouseEvent e){
@@ -661,13 +531,12 @@ public class Fenetre extends JFrame {
 				}
 			}
 		});
-		 panel.add(new JScrollPane(tableau), BorderLayout.CENTER);
-		 panel.add(panelmiddle,BorderLayout.SOUTH);
-		 panelSouth.add(retour);
 		
+		panel.add(new JScrollPane(tableau), BorderLayout.CENTER);
+		panel.add(panelmiddle,BorderLayout.SOUTH);
+		panelSouth.add(retour);
 		panelGeneral.add(panelNorth, BorderLayout.NORTH);
 		panelGeneral.add(panel, BorderLayout.CENTER);
-		//panelGeneral.add(panelWest, BorderLayout.WEST);
 		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
 
 		setContentPane(panelGeneral);
@@ -680,23 +549,17 @@ public class Fenetre extends JFrame {
 	 */
 
 	public void boutonWikidata() {
-		JPanel panelGeneral = new JPanel();
-		JPanel panelNorth = new JPanel();
-		JPanel panel = new JPanel();
-		JPanel panelWest = new JPanel();
-		JPanel panelSouth = new JPanel();
+		JPanel panelGeneral = new JPanel(new BorderLayout());
+		JPanel panelNorth = new JPanel(new FlowLayout());
+		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panelWest = new JPanel(new FlowLayout());
+		JPanel panelSouth = new JPanel(new FlowLayout());
 		panelSouth.setBackground(new Color(236, 248, 254));
 		panelWest.setBackground(new Color(236, 248, 254));
 		panel.setBackground(new Color(236, 248, 254));
 		panelNorth.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		listeWikiP.setBackground(new Color(236, 248, 254));
-
-		panel.setLayout(new BorderLayout());
-		panelGeneral.setLayout(new BorderLayout());
-		panelNorth.setLayout(new FlowLayout());
-		panelWest.setLayout(new FlowLayout());
-		panelSouth.setLayout(new FlowLayout());
 
 		JLabel label = new JLabel("Entrez le nom d'un personnage:");
 		champWikiP.setMaximumSize(new Dimension(200, 30));
@@ -745,12 +608,12 @@ public class Fenetre extends JFrame {
 	}
 
 	public void boutonComics() {
-		JPanel panelGeneral = new JPanel();
-		JPanel panelNorth = new JPanel();
-		JPanel panel = new JPanel();
-		JPanel panelWest = new JPanel();
-		JPanel panelSouth = new JPanel();
-		JPanel plusmoins = new JPanel();
+		JPanel panelGeneral = new JPanel(new BorderLayout());
+		JPanel panelNorth = new JPanel(new FlowLayout());
+		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panelWest = new JPanel(new FlowLayout());
+		JPanel panelSouth = new JPanel(new FlowLayout());
+		JPanel plusmoins = new JPanel(new FlowLayout());
 		panelSouth.setBackground(new Color(236, 248, 254));
 		panelWest.setBackground(new Color(236, 248, 254));
 		panel.setBackground(new Color(236, 248, 254));
@@ -758,13 +621,6 @@ public class Fenetre extends JFrame {
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		listeComics.setBackground(new Color(236, 248, 254));
 		plusmoins.setBackground(new Color(236, 248, 254));
-
-		panel.setLayout(new BorderLayout());
-		panelGeneral.setLayout(new BorderLayout());
-		panelNorth.setLayout(new FlowLayout());
-		panelWest.setLayout(new FlowLayout());
-		panelSouth.setLayout(new FlowLayout());
-		plusmoins.setLayout(new FlowLayout());
 
 		JLabel label = new JLabel("Entrez un titre de Comics ou le seulement le début:");
 		champComics.setMaximumSize(new Dimension(200, 30));
@@ -818,21 +674,6 @@ public class Fenetre extends JFrame {
 		revalidate();
 	}
 
-
-	public JTextField getChampComics() {
-		return champComics;
-	}
-
-
-	/**
-	 * retourne le texte a afficher apres la recherche de comics
-	 * 
-	 * @return intro
-	 */
-
-	public JLabel getIntro() {
-		return intro;
-	}
 
 	/**
 	 * interface pour afficher les informations d'un comics
@@ -908,11 +749,11 @@ public class Fenetre extends JFrame {
 		JButton ajouterBiblio = new JButton("Ajouter");
 		JButton supprimerBiblio = new JButton("Supprimer");
 		
-		JPanel panelGeneral = new JPanel();
-		JPanel panel = new JPanel();
-		JPanel panelSouth = new JPanel();
-		JPanel panelWest = new JPanel();
-		JPanel panelbt = new JPanel();
+		JPanel panelGeneral = new JPanel(new BorderLayout());
+		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panelSouth = new JPanel(new FlowLayout());
+		JPanel panelWest = new JPanel(new BorderLayout());
+		JPanel panelbt = new JPanel(new FlowLayout());
 
 		listePerso.setBackground(new Color(236, 248, 254));
 		panelWest.setBackground(new Color(236, 248, 254));
@@ -921,12 +762,6 @@ public class Fenetre extends JFrame {
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		comicsText.setBackground(new Color(236, 248, 254));
 		panelbt.setBackground(new Color(236, 248, 254));
-		
-		panel.setLayout(new BorderLayout());
-		panelGeneral.setLayout(new BorderLayout());
-		panelSouth.setLayout(new FlowLayout());
-		panelWest.setLayout(new BorderLayout());
-		panelbt.setLayout(new FlowLayout());
 
 		panelWest.add(imgComics,BorderLayout.NORTH);
 		panelbt.add(supprimerBiblio);
@@ -1061,28 +896,24 @@ public class Fenetre extends JFrame {
 		website1.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		AccessWebWiki.goWebsite(website1,perso.getWiki_page());
 		
-		JPanel websites=new JPanel();
+		JPanel websites=new JPanel(new FlowLayout());
 		websites.add(website);
 		websites.add(website1);
 		websites.setPreferredSize(new Dimension(50, 50));
 		websites.setBackground(new Color(236, 248, 254));
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
 
-		JPanel panelGeneral = new JPanel();
-		JPanel panel = new JPanel();
-		JPanel panelSouth = new JPanel();
-		JPanel panelWest = new JPanel();
+		JPanel panelGeneral = new JPanel(new BorderLayout());
+		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panelSouth = new JPanel(new FlowLayout());
+		JPanel panelWest = new JPanel(new FlowLayout());
 
 		panelWest.setBackground(new Color(236, 248, 254));
 		panelSouth.setBackground(new Color(236, 248, 254));
 		panel.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		wikiText.setBackground(new Color(236, 248, 254));
-		panel.setLayout(new BorderLayout());
-		panelGeneral.setLayout(new BorderLayout());
-		panelSouth.setLayout(new FlowLayout());
-		panelWest.setLayout(new FlowLayout());
-		websites.setLayout(new FlowLayout());
+		
 		JScrollPane scrollingArea = new JScrollPane(wikiText);
 		scrollingArea.setPreferredSize(new Dimension(150, 150));
 		setLocationRelativeTo(null);
@@ -1180,7 +1011,6 @@ public class Fenetre extends JFrame {
 		}
 		plus.setVisible(true);
 		Object[] listeDefault = new Object[] { "" };
-		
 		listeComics.setListData(listeDefault);
 		listeComics.setListData(lcomics);
 		listeComics.repaint();
@@ -1191,7 +1021,6 @@ public class Fenetre extends JFrame {
 			BadLocationException, MediaWikiApiErrorException {
 
 		ArrayList<SearchWiki> listeDesc = wiki.infoWikipersonnage(str);
-
 		intro.setText(
 				"<html>Pour accèder aux informations d'un personnage, veuillez effectuer un double clique sur une description correspondante au personnage recherché. <br><br></html>");
 		Object[] lwiki = new Object[listeDesc.size()];
@@ -1209,5 +1038,100 @@ public class Fenetre extends JFrame {
 	public String getChampStartComics() {
 		return champStartComics;
 	}
+	
 
+	
+	public int getOffset() {
+		return offset;
+	}
+
+
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+
+
+	public String getNameBiblio() {
+		return nameBiblio;
+	}
+
+
+	public void setNameBiblio(String nameBiblio) {
+		this.nameBiblio = nameBiblio;
+	}
+
+	public String getConUser() {
+		return conUser;
+	}
+
+	public void setConUser(String conUser) {
+		this.conUser = conUser;
+	}
+
+	public String getConMdp() {
+		return conMdp;
+	}
+
+	public void setConMdp(String conMdp) {
+		this.conMdp = conMdp;
+	}
+
+	public JTextField getChampUser() {
+		return champUser;
+	}
+
+	public JTextField getChampMdp() {
+		return champMdp;
+	}
+
+	public JTextField getChampPerso() {
+		return champPerso;
+	}
+	public JTable getTable(){
+		return tableau;
+	}
+	public JTextField getChampComics() {
+		return champComics;
+	}
+
+
+	/**
+	 * retourne le texte a afficher apres la recherche de comics
+	 * 
+	 * @return intro
+	 */
+
+	public JLabel getIntro() {
+		return intro;
+	}
+
+	public JTextField getChampBiblioSearch() {
+		return champBiblioSearch;
+	}
+
+	public JComboBox<String> getCombo() {
+		return combo;
+	}
+	public JButton getBiblio() {
+		return biblio;
+	}
+
+
+	public void setBiblio(JButton biblio) {
+		this.biblio = biblio;
+	}
+
+
+	public JButton getConnexion() {
+		return connexion;
+	}
+	/**
+	 * retourne le champ de la recherche wikidata
+	 * 
+	 * @return champWikiP
+	 */
+	public JTextField getChampWikiP() {
+		return champWikiP;
+	}
+	
 }

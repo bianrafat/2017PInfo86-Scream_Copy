@@ -65,4 +65,30 @@ public class TableModel extends AbstractTableModel {
  
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
+    
+    public void triParTitre(String str) throws SQLException {
+    	 data=Database.getlibrary();
+    	List<String[]> datatri = new ArrayList<String[]>();
+    	for(int i=0;i<data.size();i++) {
+    		if(data.get(i)[1].indexOf(str)>=0) {
+    			datatri.add(data.get(i));
+    		}
+    	}
+    	data=datatri;
+    	
+    }
+    public void triParAuteur(String str) throws SQLException {
+	   	data=Database.getlibrary();
+	   	List<String[]> datatri = new ArrayList<String[]>();
+	   	for(int i=0;i<data.size();i++) {
+	   		if(data.get(i)[2].indexOf(str)>=0) {
+	   			datatri.add(data.get(i));
+	   		}
+	   	}
+	   	data=datatri;
+   	
+   }
+    public void resetData() throws SQLException {
+	   	data=Database.getlibrary();  	
+   }
 }
