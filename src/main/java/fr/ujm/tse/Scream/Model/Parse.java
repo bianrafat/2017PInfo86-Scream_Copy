@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import fr.ujm.tse.Scream.Controller.HttpConnect;
 
 
-//Cette classe sert à  parser les données 
+//Cette classe sert ï¿½ parser les donnï¿½es 
 
 public class Parse {
 	// Creation de champs statiques
@@ -24,6 +24,7 @@ public class Parse {
 	private static String reqlistComics = "https://gateway.marvel.com:443/v1/public/comics?characters=";
 	private static String reqTitle = "https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=";
 	private static String reqTitleId = "https://gateway.marvel.com:443/v1/public/comics/";
+	private static String reqSeries = "https://gateway.marvel.com:443/v1/public/series?comics=";
 	private static String limit = "&limit=10";
 	private static String offset = "&offset=";
 	private static String apikey = "&apikey=";
@@ -40,10 +41,13 @@ public class Parse {
 	private static String extension = "extension";
 	private static String creators = "creators";
 	private static String characters = "characters";
+	private static String books = "comics";
 	private static String items = "items";
 	private static String role = "role"; 
 	private static String total = "total";
 	private static String count = "count";
+	private static String available = "available";
+	private static String returned = "returned";
 	private static String ts=Long.toString(System.currentTimeMillis()); //generation du timstamp:
 	private static MessageDigest md5hash;
 	private static Scanner sc1;
@@ -114,12 +118,12 @@ public class Parse {
 		return pers;
 	}
 	
-	
 	// Classe pour retrouver des comics grace a la methode "StartWith"
-	// Même méthode que titleComics mais cette fois pour les Comics et non les personnages
+	// Mï¿½me mï¿½thode que titleComics mais cette fois pour les Comics et non les personnages
 	
 	/**
-	 * 
+	 * Classe pour retrouver des comics grace a la methode "StartWith"
+	 * Mï¿½me mï¿½thode que titleComics mais cette fois pour les Comics et non les personnages
 	 * @param title
 	 * @return comics
 	 * @throws IOException
@@ -153,11 +157,11 @@ public class Parse {
 		return comics;
 	}
 	
-	// Méthode qui permet d'avoir des informations sur un comics choisi par l'utilisateur.
-	// Une liste de titre de Comics lui est proposé, ensuite il fait un choix parmi cette liste.
+	
 	
 	/**
-	 * 
+	 * Mï¿½thode qui permet d'avoir des informations sur un comics choisi par l'utilisateur.
+	 *  Une liste de titre de Comics lui est proposï¿½, ensuite il fait un choix parmi cette liste.
 	 * @param title
 	 * @param num
 	 * @return comics
@@ -180,31 +184,30 @@ public class Parse {
 		JSONObject data = obj.getJSONObject(donnees);
 		JSONArray results = data.getJSONArray(tableau);
 		
-		// création d'un objet Comics
+		// crï¿½ation d'un objet Comics
 		Comics comics=new Comics();		
 		
-		//Création d'une boucle pour que l'utilisateur choisisse bien entre 1 et 10  pour chaque page(liste de comics)
+		//Crï¿½ation d'une boucle pour que l'utilisateur choisisse bien entre 1 et 10  pour chaque page(liste de comics)
 		if ( num + 10*page < 1 + 10*page || num + 10*page > 10 + 10*page) {
-			System.out.println("Veuillez entrer un nombre entre 1 et 10 / Please enter a number between 1 and 10.");
 			sc1 = new Scanner(System.in); 
 			int i = sc1.nextInt();
 			comics = Parse.infoComics(title, i, page);
 		}
 		else {
-			//Récupération de l'identifiant, du titre et de la description.
+			//Rï¿½cupï¿½ration de l'identifiant, du titre et de la description.
 			comics.setId(results.getJSONObject(num + 10*page -1).getInt(identifiant));
 			comics.setTitle(results.getJSONObject(num + 10*page -1).getString(titre));
 			
 			
-			// Récupération de la description si elle existe
+			// Rï¿½cupï¿½ration de la description si elle existe
 			if (results.getJSONObject(num + 10*page -1).isNull(description)){
 				comics.setDescription("Aucune description / No description available.");
 			}else {
 				comics.setDescription(results.getJSONObject(num + 10*page -1).getString(description));
 			}
 			
-			// Récupération des créateurs 
-			int nbCreators=results.getJSONObject(num + 10*page -1).getJSONObject(creators).getInt("available");
+			// Rï¿½cupï¿½ration des crï¿½ateurs 
+			int nbCreators=results.getJSONObject(num + 10*page -1).getJSONObject(creators).getInt(available);
 			if (nbCreators ==0) {
 				comics.setCreators("Aucune information / No information.");
 				comics.setPremierCreateur("Aucune information");
@@ -217,8 +220,8 @@ public class Parse {
 				}
 			}
 			
-			// Récupération des personnages
-			int nbCharacters=results.getJSONObject(num + 10*page -1).getJSONObject(characters).getInt("available");
+			// Rï¿½cupï¿½ration des personnages
+			int nbCharacters=results.getJSONObject(num + 10*page -1).getJSONObject(characters).getInt(available);
 			if (nbCharacters ==0) {
 				comics.setCharacters("Aucune information / No information.");
 			}
@@ -250,22 +253,22 @@ public class Parse {
 		JSONObject data = obj.getJSONObject(donnees);
 		JSONArray results = data.getJSONArray(tableau);
 		
-		// création d'un objet Comics
+		// crï¿½ation d'un objet Comics
 		Comics comics=new Comics();		
 		
-		//Récupération de l'identifiant, du titre et de la description.
+		//Rï¿½cupï¿½ration de l'identifiant, du titre et de la description.
 		comics.setId(results.getJSONObject(0).getInt(identifiant));
 		comics.setTitle(results.getJSONObject(0).getString(titre));
 		
 		
-		// Récupération de la description si elle existe
+		// Rï¿½cupï¿½ration de la description si elle existe
 		if (results.getJSONObject(0).isNull(description)){
 			comics.setDescription("Aucune description / No description available.");
 		}else {
 			comics.setDescription(results.getJSONObject(0).getString(description));
 		}
 		
-		// Récupération des créateurs 
+		// Rï¿½cupï¿½ration des crï¿½ateurs 
 		int nbCreators=results.getJSONObject(0).getJSONObject(creators).getInt("available");
 		if (nbCreators ==0) {
 			comics.setCreators("Aucune information / No information.");
@@ -279,7 +282,7 @@ public class Parse {
 			}
 		}
 		
-		// Récupération des personnages
+		// Rï¿½cupï¿½ration des personnages
 		int nbCharacters=results.getJSONObject(0).getJSONObject(characters).getInt("available");
 		if (nbCharacters ==0) {
 			comics.setCharacters("Aucune information / No information.");
@@ -295,5 +298,34 @@ public class Parse {
 		comics.setLien_image(results.getJSONObject(0).getJSONObject(thumbnail).getString(path)+"."+results.getJSONObject(0).getJSONObject(thumbnail).getString(extension));
 		
 		return comics;
+	}
+	
+	
+	
+	public static Comics series (int id) throws  IOException, JSONException, NoSuchAlgorithmException{
+		
+		// generation du md5:
+		md5hash = MessageDigest.getInstance("MD5");
+		md5hash.update(StandardCharsets.UTF_8.encode(ts + privateKey + publicKey));
+		String md5 = String.format("%032x", new BigInteger(1, md5hash.digest()));
+		
+		//on envoie la requete http
+		info = HttpConnect.readUrl(reqSeries+id+timestp+ts+apikey+publicKey+hash+md5);
+		
+		JSONObject obj = new JSONObject(info);
+		JSONObject data = obj.getJSONObject(donnees);
+		JSONArray results = data.getJSONArray(tableau);
+		
+		// crï¿½ation d'un objet Comics
+		Comics comics=new Comics();
+		
+		int size = results.getJSONObject(0).getJSONObject(books).getInt(returned);
+		for(int i=0; i<size;i++)
+		{
+			comics.setComics(results.getJSONObject(0).getJSONObject(books).getJSONArray(items).getJSONObject(i).getString(name));
+		}
+		
+		return comics;
+		
 	}
 }
