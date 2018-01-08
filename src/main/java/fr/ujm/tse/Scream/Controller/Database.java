@@ -388,7 +388,8 @@ public class Database {
 	{
 		try {
 			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
-			psUpdate.setInt(5, bookmark);
+			psUpdate.setInt(1, bookmark);
+			psUpdate.setInt(2, id);
 			psUpdate.executeUpdate(); 
 			conn.commit();
 			return true;
@@ -413,8 +414,9 @@ public class Database {
 	public static Boolean updateNote(String dbName, String userName, String pass, int id, int note)
 	{
 		try {
-			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
-			psUpdate.setInt(6, note);
+			psUpdate = conn.prepareStatement("update library set note=? where id=?");
+			psUpdate.setInt(1, note);
+			psUpdate.setInt(2, id);
 			psUpdate.executeUpdate(); 
 			conn.commit();
 			return true;
@@ -467,8 +469,9 @@ public class Database {
 	{
 		try {
 			
-			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
-			psUpdate.setString(4, etat);
+			psUpdate = conn.prepareStatement("update library set etat=? where id=?");
+			psUpdate.setString(1, etat);
+			psUpdate.setInt(2, id);
 			psUpdate.executeUpdate(); 
 			conn.commit();
 			return true;
