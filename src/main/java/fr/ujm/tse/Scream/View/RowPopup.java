@@ -88,15 +88,15 @@ public class RowPopup extends JPopupMenu{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int rowIndex=fenetre.getTable().getSelectedRow();
-				String noteGiven =(String)fenetre.getTable().getValueAt(rowIndex, 5);
-				textNote.setText(noteGiven);
+				int noteGiven =Integer.parseInt(fenetre.getTable().getValueAt(rowIndex, 5).toString());
+				textNote.setText(Integer.toString(noteGiven));
 		    	bouton1.add(ajouterNote);
 		    	panel1.add(textNote,BorderLayout.NORTH);
 				panel1.add(bouton1,BorderLayout.CENTER);
 				dialog1.setModal(true);
 				dialog1.add(panel1);
 		        dialog1.setVisible(true);
-		        ajouterNote.addActionListener(new BoutonAjouterNoteBiblio(fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0)),Integer.parseInt((String) textNote.getText())));
+		        ajouterNote.addActionListener(new BoutonAjouterNoteBiblio(fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0)),Integer.parseInt(textNote.getText())));
 				
 			}
 			
@@ -111,7 +111,7 @@ public class RowPopup extends JPopupMenu{
 		bookmark.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				int rowIndex=fenetre.getTable().getSelectedRow();
-				String bookmarkGiven =(String)fenetre.getTable().getValueAt(rowIndex, 4);
+				String bookmarkGiven =(String)fenetre.getTable().getValueAt(rowIndex,4);
 				textBookmark.setText(bookmarkGiven);
 		    	bouton2.add(ajouterBookmark);
 		    	panel2.add(textBookmark,BorderLayout.NORTH);
@@ -142,7 +142,7 @@ public class RowPopup extends JPopupMenu{
 				dialog3.setModal(true);
 				dialog3.add(panel3);
 		        dialog3.setVisible(true);
-		        ajouterBookmark.addActionListener(new BoutonAjouterEtatBiblio(fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0)),textEtat.getText()));
+		        ajouterEtat.addActionListener(new BoutonAjouterEtatBiblio(fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0)),textEtat.getText()));
 			
 			}		
 		});
