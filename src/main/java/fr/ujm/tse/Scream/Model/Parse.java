@@ -23,6 +23,7 @@ public class Parse {
 	private static String reqNom = "https://gateway.marvel.com:443/v1/public/characters?name=";
 	private static String reqlistComics = "https://gateway.marvel.com:443/v1/public/comics?characters=";
 	private static String reqTitle = "https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=";
+	private static String reqTitleId = "https://gateway.marvel.com:443/v1/public/comics/";
 	private static String limit = "&limit=10";
 	private static String offset = "&offset=";
 	private static String apikey = "&apikey=";
@@ -107,11 +108,12 @@ public class Parse {
 		
 		for(int i=0; i<size;i++)
 		{
-			pers.setComics(results.getJSONObject(i).getString(titre));
+			pers.setComics(Integer.toString(results.getJSONObject(i).getInt(identifiant)) +":"+results.getJSONObject(i).getString(titre));
 		}
 		
 		return pers;
 	}
+	
 	
 	// Classe pour retrouver des comics grace a la methode "StartWith"
 	// Même méthode que titleComics mais cette fois pour les Comics et non les personnages
@@ -230,6 +232,68 @@ public class Parse {
 			// pour avoir le lien de l'image du personnage il faut combiner path et extension
 			comics.setLien_image(results.getJSONObject(num + 10*page -1).getJSONObject(thumbnail).getString(path)+"."+results.getJSONObject(num + 10*page -1).getJSONObject(thumbnail).getString(extension));
 		}
+		return comics;
+	}
+	
+	public static Comics infoComicsId(String title) throws  IOException, JSONException, NoSuchAlgorithmException
+	{
+		
+		//generation du md5:
+		md5hash = MessageDigest.getInstance("MD5");
+		md5hash.update(StandardCharsets.UTF_8.encode(ts+privateKey+publicKey));
+		String md5=String.format("%032x", new BigInteger(1, md5hash.digest()));
+		
+		//on envoie la requete http
+		info = HttpConnect.readUrl(reqTitleId+Integer.parseInt(title)+"?"+timestp+ts+apikey+publicKey+hash+md5);
+		
+		JSONObject obj = new JSONObject(info);
+		JSONObject data = obj.getJSONObject(donnees);
+		JSONArray results = data.getJSONArray(tableau);
+		
+		// création d'un objet Comics
+		Comics comics=new Comics();		
+		
+		//Récupération de l'identifiant, du titre et de la description.
+		comics.setId(results.getJSONObject(0).getInt(identifiant));
+		comics.setTitle(results.getJSONObject(0).getString(titre));
+		
+		
+		// Récupération de la description si elle existe
+		if (results.getJSONObject(0).isNull(description)){
+			comics.setDescription("Aucune description / No description available.");
+		}else {
+			comics.setDescription(results.getJSONObject(0).getString(description));
+		}
+		
+		// Récupération des créateurs 
+		int nbCreators=results.getJSONObject(0).getJSONObject(creators).getInt("available");
+		if (nbCreators ==0) {
+			comics.setCreators("Aucune information / No information.");
+			comics.setPremierCreateur("Aucune information");
+		}
+		else{
+			comics.setPremierCreateur(results.getJSONObject(0).getJSONObject(creators).getJSONArray(items).getJSONObject(0).getString(name));
+			for (int j=0; j<nbCreators; j++)
+			{
+				comics.setCreators(results.getJSONObject(0).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(role).toUpperCase()+" : "+results.getJSONObject(0).getJSONObject(creators).getJSONArray(items).getJSONObject(j).getString(name));
+			}
+		}
+		
+		// Récupération des personnages
+		int nbCharacters=results.getJSONObject(0).getJSONObject(characters).getInt("available");
+		if (nbCharacters ==0) {
+			comics.setCharacters("Aucune information / No information.");
+		}
+		else{
+			for (int j=0; j<nbCharacters; j++)
+			{			
+				comics.setCharacters(results.getJSONObject(0).getJSONObject(characters).getJSONArray(items).getJSONObject(j).getString(name));
+			}
+		}
+		
+		// pour avoir le lien de l'image du personnage il faut combiner path et extension
+		comics.setLien_image(results.getJSONObject(0).getJSONObject(thumbnail).getString(path)+"."+results.getJSONObject(0).getJSONObject(thumbnail).getString(extension));
+		
 		return comics;
 	}
 }
