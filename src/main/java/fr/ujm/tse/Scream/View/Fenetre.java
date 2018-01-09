@@ -97,6 +97,8 @@ public class Fenetre extends JFrame {
 	private JList<Object> listeComics = new JList<Object>();
 	private JList<Object> listePerso = new JList<Object>();
 	private JList<Object> listeWikiP = new JList<Object>();
+	private JList<Object> listeseries = new JList<Object>();
+	
 	private JLabel intro = new JLabel();
 	private ParseWiki wiki = new ParseWiki();
 	private JButton biblio = new JButton("Ma Bibliothèque");
@@ -166,7 +168,6 @@ public class Fenetre extends JFrame {
 
 			panelG.add(background, BorderLayout.SOUTH);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -894,17 +895,66 @@ public class Fenetre extends JFrame {
 
 	}
 
+	public void ContentPanelRecomandation(int id) throws JSONException, NoSuchAlgorithmException, IOException {
+		Comics comics = Parse.series(id);
+		Object[] serie = new Object[comics.getComics2().size()];
+		for (int i = 0; i < comics.getComics2().size(); i++) {
+			serie[i] = comics.getComics2().get(i);
+		}
+		listeseries.setListData(serie);
+		listeseries.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				JList<?> list = (JList<?>) evt.getSource();
+				if (evt.getClickCount() == 2) {
+
+					// Double-click detected
+					
+
+				}
+			}
+		});
+		JLabel titre=new JLabel("Recommandation du Comics");
+		JButton retour = new JButton(new BoutonRetour("Retour", this));
+		Font font = new Font("Century Schoolbook", Font.BOLD, 24);
+		JPanel panelGeneral = new JPanel(new BorderLayout());
+		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panelSouth = new JPanel(new FlowLayout());
+		JPanel panelNorth = new JPanel(new FlowLayout());
+		titre.setFont(font);
+		listeseries.setBackground(new Color(236, 248, 254));
+		panelNorth.setBackground(new Color(236, 248, 254));
+		panelSouth.setBackground(new Color(236, 248, 254));
+		panel.setBackground(new Color(236, 248, 254));
+		panelGeneral.setBackground(new Color(236, 248, 254));
+		panelNorth.add(titre);
+		panelSouth.add(retour);
+		panel.add(Box.createRigidArea(new Dimension(10, 75)),BorderLayout.NORTH);
+		panel.add(listeseries, BorderLayout.CENTER);
+		panelGeneral.add(Box.createRigidArea(new Dimension(200, 75)), BorderLayout.WEST);
+		panelGeneral.add(Box.createRigidArea(new Dimension(200, 75)), BorderLayout.EAST);
+		panelGeneral.add(panel, BorderLayout.CENTER);
+		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
+		panelGeneral.add(panelNorth, BorderLayout.NORTH);
+		
+		
+
+		setContentPane(panelGeneral);
+		revalidate();
+
+	}
+	
+	
 	public void ContentPanelWikiP(int i) throws JSONException, NoSuchAlgorithmException, IOException,
 			BadLocationException, MediaWikiApiErrorException {
 
 		wiki.infoWikipersonnagetwo(i + 1);
 		JEditorPane wikiText = new JTextPane();
-		wikiText.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
+		//wikiText.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
 		wikiText.setEditable(false);
 		PersonnageWiki perso = wiki.getPersoWiki();
 
 		StyledDocument contenu = (StyledDocument) wikiText.getDocument();
-
+		contenu.remove(0, contenu.getLength());
 		Style gras = ((JTextPane) wikiText).addStyle("gras", null);
 		StyleConstants.setBold(gras, true);
 		int pos = 0;
@@ -1032,7 +1082,7 @@ public class Fenetre extends JFrame {
 
 		setContentPane(panelGeneral);
 		revalidate();
-
+		
 	}
 
 	/**
