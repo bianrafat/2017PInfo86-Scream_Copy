@@ -25,6 +25,8 @@ public class Parse {
 	private static String reqTitle = "https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=";
 	private static String reqTitleId = "https://gateway.marvel.com:443/v1/public/comics/";
 	private static String reqSeries = "https://gateway.marvel.com:443/v1/public/series?comics=";
+	private static String reqCreator = "https://gateway.marvel.com:443/v1/public/creators?nameStartsWith=";
+	private static String reqCreatorId = "https://gateway.marvel.com:443/v1/public/creators/";
 	private static String limit = "&limit=10";
 	private static String offset = "&offset=";
 	private static String apikey = "&apikey=";
@@ -328,4 +330,45 @@ public class Parse {
 		return comics;
 		
 	}
+	
+	public static int idCreator(String author) throws IOException, NoSuchAlgorithmException {
+		// generation du md5:
+		md5hash = MessageDigest.getInstance("MD5");
+		md5hash.update(StandardCharsets.UTF_8.encode(ts + privateKey + publicKey));
+		String md5 = String.format("%032x", new BigInteger(1, md5hash.digest()));
+		
+		//on envoie la requete http
+		System.out.println(reqCreator+author+timestp+ts+apikey+publicKey+hash+md5);
+		info = HttpConnect.readUrl(reqCreator+author+timestp+ts+apikey+publicKey+hash+md5);
+		
+		JSONObject obj = new JSONObject(info);
+		JSONObject data = obj.getJSONObject(donnees);
+		JSONArray results = data.getJSONArray(tableau);
+		
+		return results.getJSONObject(0).getInt(identifiant);
+	}
+	public static Comics recommandation(String author) throws NoSuchAlgorithmException, IOException {
+		// generation du md5:
+		md5hash = MessageDigest.getInstance("MD5");
+		md5hash.update(StandardCharsets.UTF_8.encode(ts + privateKey + publicKey));
+		String md5 = String.format("%032x", new BigInteger(1, md5hash.digest()));
+		
+		//on envoie la requete http
+		author=author.replace(" ", "%20");
+		int id=idCreator(author);
+		info = HttpConnect.readUrl(reqCreatorId+id+"?"+timestp+ts+apikey+publicKey+hash+md5);
+		
+		JSONObject obj = new JSONObject(info);
+		JSONObject data = obj.getJSONObject(donnees);
+		JSONArray results = data.getJSONArray(tableau);
+		
+		Comics comics=new Comics();
+		
+		for(int i=0;i<10;i++) {
+			comics.setComics(results.getJSONObject(0).getJSONObject(books).getJSONArray(items).getJSONObject(i).getString(name));
+		}
+		
+		return comics;
+	}
 }
+
