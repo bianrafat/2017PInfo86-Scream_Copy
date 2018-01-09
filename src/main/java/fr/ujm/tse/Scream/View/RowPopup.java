@@ -31,7 +31,8 @@ public class RowPopup extends JPopupMenu{
 	private JMenuItem note;
 	private JMenuItem bookmark;
 	private JMenuItem etat;
-	private JMenuItem recomandation=new JMenuItem("Recomandation pour ce comic");
+	private JMenuItem recomandationSerie=new JMenuItem("Suite de la série");
+	private JMenuItem recomandationAuteur=new JMenuItem("Recomandation par auteur");
 	private JDialog dialog;
 	private JDialog dialog1;
 	private JDialog dialog2;
@@ -151,12 +152,25 @@ public class RowPopup extends JPopupMenu{
 			
 			}		
 		});
-		recomandation.addActionListener(new ActionListener(){
+		recomandationSerie.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				int rowIndex=fenetre.getTable().getSelectedRow();
 				int id=Integer.parseInt((String)fenetre.getTable().getValueAt(rowIndex, 0));
 				try {
-					fenetre.ContentPanelRecomandation(id);
+					fenetre.ContentPanelRecomandationSerie(id);
+				} catch (JSONException | NoSuchAlgorithmException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}		
+		});
+		
+		recomandationAuteur.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				int rowIndex=fenetre.getTable().getSelectedRow();
+				String name=(String)fenetre.getTable().getValueAt(rowIndex, 2);
+				try {
+					fenetre.ContentPanelRecomandationAuteur(name);
 				} catch (JSONException | NoSuchAlgorithmException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -168,7 +182,8 @@ public class RowPopup extends JPopupMenu{
 		add(note);
 		add(bookmark);
 		add(etat);
-		add(recomandation);
+		add(recomandationSerie);
+		add(recomandationAuteur);
 	}	
 
 }
