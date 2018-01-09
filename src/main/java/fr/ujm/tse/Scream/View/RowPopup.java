@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -14,6 +16,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+
+import org.json.JSONException;
 
 import fr.ujm.tse.Scream.Controller.BoutonAjouterBookmarkBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonAjouterCommentaireBiblio;
@@ -27,6 +31,7 @@ public class RowPopup extends JPopupMenu{
 	private JMenuItem note;
 	private JMenuItem bookmark;
 	private JMenuItem etat;
+	private JMenuItem recomandation=new JMenuItem("Recomandation pour ce comic");
 	private JDialog dialog;
 	private JDialog dialog1;
 	private JDialog dialog2;
@@ -146,11 +151,24 @@ public class RowPopup extends JPopupMenu{
 			
 			}		
 		});
-			
+		recomandation.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				int rowIndex=fenetre.getTable().getSelectedRow();
+				int id=Integer.parseInt((String)fenetre.getTable().getValueAt(rowIndex, 0));
+				try {
+					fenetre.ContentPanelRecomandation(id);
+				} catch (JSONException | NoSuchAlgorithmException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}		
+		});
+		
 		add(com);
 		add(note);
 		add(bookmark);
 		add(etat);
+		add(recomandation);
 	}	
 
 }
