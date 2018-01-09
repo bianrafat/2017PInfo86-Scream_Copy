@@ -367,7 +367,6 @@ public class Parse {
 		for(int i=0;i<10;i++) {
 			comics.setComics(results.getJSONObject(0).getJSONObject(books).getJSONArray(items).getJSONObject(i).getString(name));
 		}
-		
 		return comics;
 	}
 }

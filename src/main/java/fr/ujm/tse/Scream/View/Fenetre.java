@@ -944,7 +944,6 @@ public class Fenetre extends JFrame {
 	}
 	
 	public void ContentPanelRecomandationAuteur(String auteur) throws JSONException, NoSuchAlgorithmException, IOException {
-		int identifiantAuteur = Parse.idCreator(auteur);
 		Comics comics= Parse.recommandation(auteur);
 		Object[] reco = new Object[comics.getComics2().size()];
 		for (int i = 0; i < comics.getComics2().size(); i++) {
@@ -962,9 +961,9 @@ public class Fenetre extends JFrame {
 				}
 			}
 		});
-		JLabel titre=new JLabel("Suite de la série");
+		JLabel titre=new JLabel("Voici d'autre titres du même auteur");
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
-		Font font = new Font("Century Schoolbook", Font.BOLD, 24);
+		Font font = new Font("Century Schoolbook", Font.BOLD, 20);
 		JPanel panelGeneral = new JPanel(new BorderLayout());
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel panelSouth = new JPanel(new FlowLayout());

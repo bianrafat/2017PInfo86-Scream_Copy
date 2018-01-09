@@ -34,6 +34,6 @@ public class Menu {
 				 fenetre.setVisible(true);// On la rend visible 
 				 } 
 		}); 
-		 //arse.recommandation("Peter David");
+		 //Parse.recommandation("Jason Aaron");
 	}
 }
