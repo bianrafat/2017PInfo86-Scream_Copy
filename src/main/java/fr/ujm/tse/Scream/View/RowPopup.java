@@ -25,6 +25,10 @@ import fr.ujm.tse.Scream.Controller.BoutonAjouterEtatBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonAjouterNoteBiblio;
 
 public class RowPopup extends JPopupMenu{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTable table;
 	private Fenetre fenetre;
 	private JMenuItem com;
@@ -65,6 +69,7 @@ public class RowPopup extends JPopupMenu{
 		JPanel bouton = new JPanel(new FlowLayout());
 		textCom.setPreferredSize(new Dimension(200,100));
 		ajouterCom.setPreferredSize(new Dimension(200,30));
+		RowPopup popup=this;
 		com.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		    	int rowIndex=fenetre.getTable().getSelectedRow();
@@ -73,15 +78,13 @@ public class RowPopup extends JPopupMenu{
 		    	bouton.add(ajouterCom);
 		    	panel.add(textCom,BorderLayout.NORTH);
 				panel.add(bouton,BorderLayout.CENTER);
-				dialog.setModal(true);
 				dialog.add(panel);
 		        dialog.setVisible(true);
-		        ajouterCom.addActionListener(new BoutonAjouterCommentaireBiblio(fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0)),textCom.getText()));
-		    
+		        ajouterCom.addActionListener(new BoutonAjouterCommentaireBiblio(popup,fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0))));
 		    }
     	
 		});
-		
+		  
 		dialog1 = new JDialog();
 		dialog1.setSize(new Dimension(210,200));
 		dialog1.setLocationRelativeTo(null);
@@ -99,11 +102,9 @@ public class RowPopup extends JPopupMenu{
 		    	bouton1.add(ajouterNote);
 		    	panel1.add(textNote,BorderLayout.NORTH);
 				panel1.add(bouton1,BorderLayout.CENTER);
-				dialog1.setModal(true);
 				dialog1.add(panel1);
 		        dialog1.setVisible(true);
-		        ajouterNote.addActionListener(new BoutonAjouterNoteBiblio(fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0)),Integer.parseInt(textNote.getText())));
-				
+		        ajouterNote.addActionListener(new BoutonAjouterNoteBiblio(popup,fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0))));
 			}
 			
 		});
@@ -122,10 +123,9 @@ public class RowPopup extends JPopupMenu{
 		    	bouton2.add(ajouterBookmark);
 		    	panel2.add(textBookmark,BorderLayout.NORTH);
 				panel2.add(bouton2,BorderLayout.CENTER);
-				dialog2.setModal(true);
 				dialog2.add(panel2);
 		        dialog2.setVisible(true);
-		        ajouterBookmark.addActionListener(new BoutonAjouterBookmarkBiblio(fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0)),Integer.parseInt((String) textBookmark.getText())));
+		        ajouterBookmark.addActionListener(new BoutonAjouterBookmarkBiblio(popup,fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0))));
 			
 			}		
 		});
@@ -145,10 +145,9 @@ public class RowPopup extends JPopupMenu{
 		    	bouton3.add(ajouterEtat);
 		    	panel3.add(textEtat,BorderLayout.NORTH);
 				panel3.add(bouton3,BorderLayout.CENTER);
-				dialog3.setModal(true);
 				dialog3.add(panel3);
 		        dialog3.setVisible(true);
-		        ajouterEtat.addActionListener(new BoutonAjouterEtatBiblio(fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0)),textEtat.getText()));
+		        ajouterEtat.addActionListener(new BoutonAjouterEtatBiblio(popup,fenetre, dbName,userName,pass, Integer.parseInt((String) fenetre.getTable().getValueAt(fenetre.getTable().getSelectedRow(), 0))));
 			
 			}		
 		});
@@ -184,6 +183,18 @@ public class RowPopup extends JPopupMenu{
 		add(etat);
 		add(recomandationSerie);
 		add(recomandationAuteur);
+	}
+	public JTextArea getTextNote() {
+		return textNote;
+	}
+	public JTextArea getTextBookmark() {
+		return textBookmark;
+	}
+	public JTextArea getTextEtat() {
+		return textEtat;
+	}
+	public JTextArea getTextCom() {
+		return textCom;
 	}	
 
 }

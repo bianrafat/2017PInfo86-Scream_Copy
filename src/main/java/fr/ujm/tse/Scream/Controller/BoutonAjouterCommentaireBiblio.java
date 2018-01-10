@@ -7,8 +7,10 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import fr.ujm.tse.Scream.View.Fenetre;
+import fr.ujm.tse.Scream.View.RowPopup;
 
 public class BoutonAjouterCommentaireBiblio implements ActionListener{
+	private RowPopup popup;
 	private Fenetre fenetre;
 	private String dbName;
 	private String userName;
@@ -16,23 +18,23 @@ public class BoutonAjouterCommentaireBiblio implements ActionListener{
 	private int id;
 	private String com;
 	
-	public BoutonAjouterCommentaireBiblio(Fenetre f,String dbName, String userName, String pass, int id, String com)
+	public BoutonAjouterCommentaireBiblio(RowPopup pop,Fenetre fen,String dbName, String userName, String pass, int id)
 	 {
-		
-		fenetre = f;
+		popup=pop;
+		fenetre = fen;
 		this.dbName=dbName;
 		this.userName= userName;
 		this.pass=pass;
 		this.id=id;
-		this.com=com;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		this.com=popup.getTextCom().getText();
 		if(Database.updateCom(dbName, userName, pass, id, com)) {
 			JOptionPane.showMessageDialog(null," Modifier avec succès !");
+			System.out.println(com);
 		}else {
 			JOptionPane.showMessageDialog(null," erreur!");
 		}

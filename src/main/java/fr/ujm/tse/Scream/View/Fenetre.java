@@ -955,7 +955,6 @@ public class Fenetre extends JFrame {
 				JList<?> list = (JList<?>) evt.getSource();
 				if (evt.getClickCount() == 2) {
 
-					// Double-click detected
 					
 
 				}

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import fr.ujm.tse.Scream.View.Fenetre;
+import fr.ujm.tse.Scream.View.RowPopup;
 
 public class BoutonAjouterEtatBiblio implements ActionListener {
 	private Fenetre fenetre;
@@ -15,18 +16,18 @@ public class BoutonAjouterEtatBiblio implements ActionListener {
 	private String pass;
 	private int id;
 	private String etat;
-
+	private RowPopup popup;
 	
 	
 	
-	public BoutonAjouterEtatBiblio(Fenetre fenetre, String dbName, String userName, String pass, int id, String etat) {
+	public BoutonAjouterEtatBiblio(RowPopup popup, Fenetre f, String dbName, String userName, String pass, int id) {
 		super();
-		this.fenetre = fenetre;
+		this.popup=popup;
+		this.fenetre = f;
 		this.dbName = dbName;
 		this.userName = userName;
 		this.pass = pass;
 		this.id = id;
-		this.etat = etat;
 	}
 
 
@@ -34,6 +35,7 @@ public class BoutonAjouterEtatBiblio implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		etat=popup.getTextEtat().getText();
 		if(Database.updateEtat(dbName, userName, pass, id, etat)){
 			JOptionPane.showMessageDialog(null," Modifier avec succès !");
 		}else {
@@ -43,7 +45,6 @@ public class BoutonAjouterEtatBiblio implements ActionListener {
 		try {
 			fenetre.boutonBiblio();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		fenetre.revalidate();

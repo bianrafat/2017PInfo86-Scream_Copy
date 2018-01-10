@@ -240,7 +240,7 @@ public class Parse {
 		return comics;
 	}
 	
-	public static Comics infoComicsId(String title) throws  IOException, JSONException, NoSuchAlgorithmException
+	public static Comics infoComicsId(String id) throws  IOException, JSONException, NoSuchAlgorithmException
 	{
 		
 		//generation du md5:
@@ -249,7 +249,7 @@ public class Parse {
 		String md5=String.format("%032x", new BigInteger(1, md5hash.digest()));
 		
 		//on envoie la requete http
-		info = HttpConnect.readUrl(reqTitleId+Integer.parseInt(title)+"?"+timestp+ts+apikey+publicKey+hash+md5);
+		info = HttpConnect.readUrl(reqTitleId+Integer.parseInt(id)+"?"+timestp+ts+apikey+publicKey+hash+md5);
 		
 		JSONObject obj = new JSONObject(info);
 		JSONObject data = obj.getJSONObject(donnees);
