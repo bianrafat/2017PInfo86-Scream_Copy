@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
+import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 
 import org.json.JSONException;
@@ -22,24 +23,19 @@ public class BoutonRechercherPersoWiki implements ActionListener , KeyListener{
 	}
  
 	public void actionPerformed(ActionEvent e) { 
+
 		String str = fenetre.getChampWikiP().getText();
-		
 		try {
-			fenetre.afficheListeWiki(str);
+			fenetre.afficheListeWiki(str);	
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null,"Le champ est vide! ");
 		} catch (NoSuchAlgorithmException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (BadLocationException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (MediaWikiApiErrorException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -47,19 +43,13 @@ public class BoutonRechercherPersoWiki implements ActionListener , KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void keyPressed(KeyEvent e) {		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 }

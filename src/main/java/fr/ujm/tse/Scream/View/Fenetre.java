@@ -223,6 +223,7 @@ public class Fenetre extends JFrame {
 		champUser.setText("");
 		champMdp.setText("");
 		intro.setText("");
+		wiki=new ParseWiki();
 		Object[] listeDefault = new Object[] { "" };
 		listePerso.setListData(listeDefault);
 		listeComics.setListData(listeDefault);
@@ -573,18 +574,20 @@ public class Fenetre extends JFrame {
 		JButton recherche = new JButton("Rechercher");
 		recherche.addActionListener(new BoutonRechercherPersoWiki(this));
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
-
 		listeWikiP.addMouseListener(new MouseAdapter() {
+			boolean isClique=false;
 			public void mouseClicked(MouseEvent evt) {
-				JList<?> list = (JList<?>) evt.getSource();
 				if (evt.getClickCount() == 2) {
 
 					// Double-click detected
 					try {
-						ContentPanelWikiP(list.getSelectedIndex());
+						if(!isClique) {
+							ContentPanelWikiP(listeWikiP.getSelectedIndex());
+							isClique=!isClique;
+						}
+						
 					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException
 							| MediaWikiApiErrorException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -606,7 +609,7 @@ public class Fenetre extends JFrame {
 		panelGeneral.add(panel, BorderLayout.CENTER);
 		panelGeneral.add(panelWest, BorderLayout.WEST);
 		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
-
+		
 		setContentPane(panelGeneral);
 		revalidate();
 	}
@@ -992,7 +995,7 @@ public class Fenetre extends JFrame {
 	
 	public void ContentPanelWikiP(int i) throws JSONException, NoSuchAlgorithmException, IOException,
 			BadLocationException, MediaWikiApiErrorException {
-
+	
 		wiki.infoWikipersonnagetwo(i + 1);
 		JEditorPane wikiText = new JTextPane();
 		//wikiText.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
@@ -1117,7 +1120,7 @@ public class Fenetre extends JFrame {
 		
 		JScrollPane scrollingArea = new JScrollPane(wikiText);
 		scrollingArea.setPreferredSize(new Dimension(150, 150));
-		setLocationRelativeTo(null);
+		//setLocationRelativeTo(null);
 
 		panelSouth.add(retour);
 		panel.add(websites,BorderLayout.PAGE_END);
@@ -1221,7 +1224,7 @@ public class Fenetre extends JFrame {
 
 	public void afficheListeWiki(String str) throws JSONException, NoSuchAlgorithmException, IOException,
 			BadLocationException, MediaWikiApiErrorException {
-
+		wiki=new ParseWiki();
 		ArrayList<SearchWiki> listeDesc = wiki.infoWikipersonnage(str);
 		intro.setText(
 				"<html>Pour accèder aux informations d'un personnage, veuillez effectuer un double clique sur une description correspondante au personnage recherché. <br><br></html>");
