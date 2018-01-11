@@ -37,9 +37,9 @@ public class BoutonAjouterEtatBiblio implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		etat=popup.getTextEtat().getText();
 		if(Database.updateEtat(dbName, userName, pass, id, etat)){
-			JOptionPane.showMessageDialog(null," Modifier avec succès !");
+			JOptionPane.showMessageDialog(null," Modifié avec succès !");
 		}else {
-			JOptionPane.showMessageDialog(null," erreur!");
+			JOptionPane.showMessageDialog(null," Erreur!");
 		}
 		
 		try {

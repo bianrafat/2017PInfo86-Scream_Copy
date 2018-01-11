@@ -26,7 +26,7 @@ public class BoutonValideNewBiblio extends AbstractAction {
 		userName=fenetre.getChampUser().getText();
 		password=fenetre.getChampMdp().getText();
 		if(Database.createDatabase(userName, userName, password)) {
-			JOptionPane.showMessageDialog(null, userName+ " créée avec succès !");
+			JOptionPane.showMessageDialog(null,"Bibliothèque créée avec succès !");
 			fenetre.setNameBiblio(userName);
 			fenetre.setConUser(userName);
 			fenetre.setConMdp(password);

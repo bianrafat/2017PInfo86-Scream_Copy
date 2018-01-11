@@ -33,9 +33,9 @@ public class BoutonAjouterBookmarkBiblio implements ActionListener{
 		// TODO Auto-generated method stub
 		this.bookmark=Integer.parseInt(popup.getTextBookmark().getText());
 		if(Database.updateBookmark(dbName, userName, pass, id, bookmark)) {
-			JOptionPane.showMessageDialog(null," Modifier avec succès !");
+			JOptionPane.showMessageDialog(null," Modifié avec succès !");
 		}else {
-			JOptionPane.showMessageDialog(null," erreur!");
+			JOptionPane.showMessageDialog(null," Erreur!");
 		}
 		
 		try {

@@ -41,9 +41,9 @@ public class BoutonAddComicsBiblio implements ActionListener {
 		// TODO Auto-generated method stub
 		
 		if(Database.insert(dbName, userName,pass, id, title, author, etat, bookmark, note, com)) {
-			JOptionPane.showMessageDialog(null," ajouter avec succès !");
+			JOptionPane.showMessageDialog(null," Ajouté avec succès !");
 		}else {
-			JOptionPane.showMessageDialog(null," erreur!");
+			JOptionPane.showMessageDialog(null," Erreur!");
 		}
 		fenetre.revalidate();
 		fenetre.repaint();
