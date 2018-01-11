@@ -173,7 +173,7 @@ public class RowPopup extends JPopupMenu{
 					fenetre.ContentPanelRecomandationAuteur(name);
 				} catch (JSONException | NoSuchAlgorithmException | IOException e1) {
 					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null,"Pas de recommandation par auteur disponible pour ce comic");
+					JOptionPane.showMessageDialog(null,"Pas de recommandation par auteur disponible pour ce comics");
 				}
 			}		
 		});

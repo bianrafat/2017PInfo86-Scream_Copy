@@ -796,7 +796,7 @@ public class Fenetre extends JFrame {
 		id=new ArrayList<String>();
 		if(comics.getComics2().size()==1) {
 			try {
-				JOptionPane.showMessageDialog(null,"Ce Comic n'a pas de série");
+				JOptionPane.showMessageDialog(null,"Ce Comics n'a pas de série");
 				boutonBiblio();
 				revalidate();
 			} catch (SQLException e) {
