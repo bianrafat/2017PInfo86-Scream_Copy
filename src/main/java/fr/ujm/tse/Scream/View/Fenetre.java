@@ -27,6 +27,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
@@ -396,8 +397,8 @@ public class Fenetre extends JFrame {
 		labUser.setFont(fontMenu);
 		labMdp.setFont(fontMenu);
 		
-		champUser.setPreferredSize(new Dimension(210, 30));
-		champMdp.setPreferredSize(new Dimension(210, 30));
+		champUser.setPreferredSize(new Dimension(220, 30));
+		champMdp.setPreferredSize(new Dimension(220, 30));
 		JButton conf = new JButton(new BoutonValideNewBiblio("Valider",this));
 		conf.setPreferredSize(new Dimension(130, 40));
 
@@ -459,8 +460,8 @@ public class Fenetre extends JFrame {
 		labUser.setFont(fontMenu);
 		labMdp.setFont(fontMenu);
 		
-		champUser.setPreferredSize(new Dimension(210, 30));
-		champMdp.setPreferredSize(new Dimension(210, 30));
+		champUser.setPreferredSize(new Dimension(220, 30));
+		champMdp.setPreferredSize(new Dimension(220, 30));
 		JButton conf = new JButton(new BoutonValideId("Valider",this));
 		conf.setPreferredSize(new Dimension(130, 40));
 
@@ -793,55 +794,67 @@ public class Fenetre extends JFrame {
 	public void ContentPanelRecomandationSerie(int identifiant) throws JSONException, NoSuchAlgorithmException, IOException {
 		Comics comics = Parse.series(identifiant);
 		id=new ArrayList<String>();
-		Object[] serie = new Object[comics.getComics2().size()];
-		for (int i = 0; i < comics.getComics2().size(); i++) {
-			serie[i] = (comics.getComics2().get(i)).split("@")[1];
-			id.add((comics.getComics2().get(i)).split("@")[0]);
-		}
-		listeseries.setListData(serie);
-		listeseries.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent evt) {
-				if (evt.getClickCount() == 2) {
-					
-					try {
-						ContentPanelComics(id.get(listeseries.getSelectedIndex()));
-					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					// Double-click detected
-					
-
-				}
+		if(comics.getComics2().size()==1) {
+			try {
+				JOptionPane.showMessageDialog(null,"Ce Comic n'a pas de série");
+				boutonBiblio();
+				revalidate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		});
-		JLabel titre=new JLabel("Suite de la série");
-		JButton retour = new JButton(new BoutonRetour("Retour", this));
-		Font font = new Font("Century Schoolbook", Font.BOLD, 24);
-		JPanel panelGeneral = new JPanel(new BorderLayout());
-		JPanel panel = new JPanel(new BorderLayout());
-		JPanel panelSouth = new JPanel(new FlowLayout());
-		JPanel panelNorth = new JPanel(new FlowLayout());
-		titre.setFont(font);
-		listeseries.setBackground(new Color(236, 248, 254));
-		panelNorth.setBackground(new Color(236, 248, 254));
-		panelSouth.setBackground(new Color(236, 248, 254));
-		panel.setBackground(new Color(236, 248, 254));
-		panelGeneral.setBackground(new Color(236, 248, 254));
-		panelNorth.add(titre);
-		panelSouth.add(retour);
-		panel.add(Box.createRigidArea(new Dimension(10, 75)),BorderLayout.NORTH);
-		panel.add(listeseries, BorderLayout.CENTER);
-		panelGeneral.add(Box.createRigidArea(new Dimension(200, 75)), BorderLayout.WEST);
-		panelGeneral.add(Box.createRigidArea(new Dimension(200, 75)), BorderLayout.EAST);
-		panelGeneral.add(panel, BorderLayout.CENTER);
-		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
-		panelGeneral.add(panelNorth, BorderLayout.NORTH);
-		
-		
+		}else {
+			Object[] serie = new Object[comics.getComics2().size()];
+			for (int i = 0; i < comics.getComics2().size(); i++) {
+				serie[i] = (comics.getComics2().get(i)).split("@")[1];
+				id.add((comics.getComics2().get(i)).split("@")[0]);
+			}
+			listeseries.setListData(serie);
+			listeseries.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent evt) {
+					if (evt.getClickCount() == 2) {
+						
+						try {
+							ContentPanelComics(id.get(listeseries.getSelectedIndex()));
+						} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						// Double-click detected
+						
 
-		setContentPane(panelGeneral);
-		revalidate();
+					}
+				}
+			});
+			JLabel titre=new JLabel("Suite de la série");
+			JButton retour = new JButton(new BoutonRetour("Retour", this));
+			Font font = new Font("Century Schoolbook", Font.BOLD, 24);
+			JPanel panelGeneral = new JPanel(new BorderLayout());
+			JPanel panel = new JPanel(new BorderLayout());
+			JPanel panelSouth = new JPanel(new FlowLayout());
+			JPanel panelNorth = new JPanel(new FlowLayout());
+			titre.setFont(font);
+			listeseries.setBackground(new Color(236, 248, 254));
+			panelNorth.setBackground(new Color(236, 248, 254));
+			panelSouth.setBackground(new Color(236, 248, 254));
+			panel.setBackground(new Color(236, 248, 254));
+			panelGeneral.setBackground(new Color(236, 248, 254));
+			panelNorth.add(titre);
+			panelSouth.add(retour);
+			panel.add(Box.createRigidArea(new Dimension(10, 75)),BorderLayout.NORTH);
+			panel.add(listeseries, BorderLayout.CENTER);
+			panelGeneral.add(Box.createRigidArea(new Dimension(200, 75)), BorderLayout.WEST);
+			panelGeneral.add(Box.createRigidArea(new Dimension(200, 75)), BorderLayout.EAST);
+			panelGeneral.add(panel, BorderLayout.CENTER);
+			panelGeneral.add(panelSouth, BorderLayout.SOUTH);
+			panelGeneral.add(panelNorth, BorderLayout.NORTH);
+			
+			
+
+			setContentPane(panelGeneral);
+			revalidate();
+		}
+		
 
 	}
 	

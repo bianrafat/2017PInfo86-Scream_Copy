@@ -11,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
@@ -172,7 +173,7 @@ public class RowPopup extends JPopupMenu{
 					fenetre.ContentPanelRecomandationAuteur(name);
 				} catch (JSONException | NoSuchAlgorithmException | IOException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null,"Pas de recommandation par auteur disponible pour ce comic");
 				}
 			}		
 		});
