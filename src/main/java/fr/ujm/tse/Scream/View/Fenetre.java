@@ -47,7 +47,6 @@ import fr.ujm.tse.Scream.Controller.BoutonAddComicsBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonConnexion;
 import fr.ujm.tse.Scream.Controller.BoutonDeco;
-import fr.ujm.tse.Scream.Controller.BoutonDeleteComicsBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonMenuComics;
 import fr.ujm.tse.Scream.Controller.BoutonMenuPersonnage;
 import fr.ujm.tse.Scream.Controller.BoutonPrecedent;
@@ -276,7 +275,7 @@ public class Fenetre extends JFrame {
 
 					// Double-click detected
 					try {
-						ContentPanelComics2(id.get(listeComics.getSelectedIndex()));
+						ContentPanelComics(id.get(listeComics.getSelectedIndex()));
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -644,7 +643,7 @@ public class Fenetre extends JFrame {
 
 					// Double-click detected
 					try {
-						ContentPanelComics2(id.get(listeComics.getSelectedIndex()));
+						ContentPanelComics(id.get(listeComics.getSelectedIndex()));
 					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -692,7 +691,7 @@ public class Fenetre extends JFrame {
 	 * @throws IOException
 	 * @throws BadLocationException
 	 */
-	public void ContentPanelComics2(String title)
+	public void ContentPanelComics(String title)
 		throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException {
 		Comics comics = Parse.infoComicsId(title);
 		JEditorPane comicsText = new JTextPane();
@@ -790,121 +789,26 @@ public class Fenetre extends JFrame {
 
 	}
 	
-	public void ContentPanelComics(int nb, String title)
-			throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException {
-		Comics comics = Parse.infoComics(title, nb,offset/10);
-		JEditorPane comicsText = new JTextPane();
-		comicsText.setEditable(false);
-
-		ImageIcon icon = new ImageIcon(new URL(comics.getLien_image()));
-		icon = new ImageIcon(icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH));
-		imgComics.setIcon(icon);
-
-		StyledDocument contenu = (StyledDocument) comicsText.getDocument();
-		Style gras = ((JTextPane) comicsText).addStyle("gras", null);
-		StyleConstants.setBold(gras, true);
-		int pos = 0;
-		String str = "Titre: ";
-
-		contenu.insertString(pos, str, gras);
-		pos += str.length();
-		contenu.insertString(pos, comics.getTitle() + "\n", null);
-		pos += comics.getTitle().length() + 1;
-		str = "\n" + "Description: ";
-		contenu.insertString(pos, str, gras);
-		pos += str.length();
-		contenu.insertString(pos, comics.getDescription() + "\n", null);
-		pos += comics.getDescription().length() + 1;
-		str = "\n" + "Createurs: \n";
-		contenu.insertString(pos, str, gras);
-		pos += str.length();
-		for (int i = 0; i < comics.getCreators2().size(); i++) {
-			contenu.insertString(pos, comics.getCreators2().get(i) + "\n", null);
-			pos += comics.getCreators2().get(i).length() + 1;
-		}
-		str = "\n" + "Personnages Marvel: \n";
-		contenu.insertString(pos, str, gras);
-		pos += str.length();
-		Object[] lperso = new Object[comics.getCharacters2().size()];
-		for (int i = 0; i < comics.getCharacters2().size(); i++) {
-			lperso[i] = comics.getCharacters2().get(i);
-		}
-		listePerso.setListData(lperso);
-		listePerso.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent evt) {
-				JList<?> list = (JList<?>) evt.getSource();
-				if (evt.getClickCount() == 2) {
-
-					// Double-click detected
-					try {
-						affichePerso((String) list.getSelectedValue());
-						champPerso.setText((String) list.getSelectedValue());
-						boutonPerso();
-					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-				}
-			}
-		});
-
-		JButton retour = new JButton(new BoutonRetour("Retour", this));
-		JButton ajouterBiblio = new JButton("Ajouter");
-		JButton supprimerBiblio = new JButton("Supprimer");
-		
-		JPanel panelGeneral = new JPanel(new BorderLayout());
-		JPanel panel = new JPanel(new BorderLayout());
-		JPanel panelSouth = new JPanel(new FlowLayout());
-		JPanel panelWest = new JPanel(new BorderLayout());
-		JPanel panelbt = new JPanel(new FlowLayout());
-
-		listePerso.setBackground(new Color(236, 248, 254));
-		panelWest.setBackground(new Color(236, 248, 254));
-		panelSouth.setBackground(new Color(236, 248, 254));
-		panel.setBackground(new Color(236, 248, 254));
-		panelGeneral.setBackground(new Color(236, 248, 254));
-		comicsText.setBackground(new Color(236, 248, 254));
-		panelbt.setBackground(new Color(236, 248, 254));
-
-		panelWest.add(imgComics,BorderLayout.NORTH);
-		panelbt.add(supprimerBiblio);
-		panelbt.add(ajouterBiblio);
-		panelSouth.add(retour);
-		panel.add(comicsText, BorderLayout.NORTH);
-		panel.add(listePerso, BorderLayout.CENTER);
-		panelGeneral.add(panel, BorderLayout.CENTER);
-		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
-		panelGeneral.add(panelWest, BorderLayout.WEST);
-		
-		if(conUser==null) {
-			ajouterBiblio.setVisible(false);
-			supprimerBiblio.setVisible(false);
-		}else {
-			
-			supprimerBiblio.addActionListener(new BoutonDeleteComicsBiblio(this, comics.getId(), nameBiblio, conUser, conMdp));
-			ajouterBiblio.addActionListener(new BoutonAddComicsBiblio(this, nameBiblio, conUser, conMdp, comics.getId(),comics.getTitle() , comics.getPremierCreateur(), "En cours", 0, 10, "pas de commentaire"));
-
-			panelWest.add(panelbt,BorderLayout.CENTER);
-		}
-
-		setContentPane(panelGeneral);
-		revalidate();
-
-	}
-
-	public void ContentPanelRecomandationSerie(int id) throws JSONException, NoSuchAlgorithmException, IOException {
-		Comics comics = Parse.series(id);
+	
+	public void ContentPanelRecomandationSerie(int identifiant) throws JSONException, NoSuchAlgorithmException, IOException {
+		Comics comics = Parse.series(identifiant);
+		id=new ArrayList<String>();
 		Object[] serie = new Object[comics.getComics2().size()];
 		for (int i = 0; i < comics.getComics2().size(); i++) {
-			serie[i] = comics.getComics2().get(i);
+			serie[i] = (comics.getComics2().get(i)).split("@")[1];
+			id.add((comics.getComics2().get(i)).split("@")[0]);
 		}
 		listeseries.setListData(serie);
 		listeseries.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				JList<?> list = (JList<?>) evt.getSource();
 				if (evt.getClickCount() == 2) {
-
+					
+					try {
+						ContentPanelComics(id.get(listeseries.getSelectedIndex()));
+					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					// Double-click detected
 					
 
@@ -943,17 +847,23 @@ public class Fenetre extends JFrame {
 	
 	public void ContentPanelRecomandationAuteur(String auteur) throws JSONException, NoSuchAlgorithmException, IOException {
 		Comics comics= Parse.recommandation(auteur);
+		id=new ArrayList<String>();
 		Object[] reco = new Object[comics.getComics2().size()];
 		for (int i = 0; i < comics.getComics2().size(); i++) {
-			reco[i] = comics.getComics2().get(i);
+			reco[i] = (comics.getComics2().get(i)).split("@")[1];
+			id.add((comics.getComics2().get(i)).split("@")[0]);
 		}
 		listeByAuthor.setListData(reco);
 		listeByAuthor.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				JList<?> list = (JList<?>) evt.getSource();
 				if (evt.getClickCount() == 2) {
 
-					
+					try {
+						ContentPanelComics(id.get(listeByAuthor.getSelectedIndex()));
+					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 				}
 			}

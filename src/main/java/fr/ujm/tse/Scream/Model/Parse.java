@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.json.JSONArray;
@@ -320,16 +321,21 @@ public class Parse {
 		
 		// cr�ation d'un objet Comics
 		Comics comics=new Comics();
-		
+		String[] tab=null;
+		int identifiant;
 		int size = results.getJSONObject(0).getJSONObject(books).getInt(returned);
 		for(int i=0; i<size;i++)
 		{
-			comics.setComics(results.getJSONObject(0).getJSONObject(books).getJSONArray(items).getJSONObject(i).getString(name));
+			tab=(results.getJSONObject(0).getJSONObject(books).getJSONArray(items).getJSONObject(i).getString("resourceURI")).split("/");
+			identifiant=Integer.parseInt(tab[tab.length-1]);
+			comics.setComics(identifiant+"@"+results.getJSONObject(0).getJSONObject(books).getJSONArray(items).getJSONObject(i).getString(name));
 		}
-		
 		return comics;
 		
 	}
+	
+	
+	
 	
 	public static int idCreator(String author) throws IOException, NoSuchAlgorithmException {
 		// generation du md5:
@@ -363,9 +369,12 @@ public class Parse {
 		JSONArray results = data.getJSONArray(tableau);
 		
 		Comics comics=new Comics();
-		
+		String[] tab=null;
+		int identifiant;
 		for(int i=0;i<10;i++) {
-			comics.setComics(results.getJSONObject(0).getJSONObject(books).getJSONArray(items).getJSONObject(i).getString(name));
+			tab=(results.getJSONObject(0).getJSONObject(books).getJSONArray(items).getJSONObject(i).getString("resourceURI")).split("/");
+			identifiant=Integer.parseInt(tab[tab.length-1]);
+			comics.setComics(identifiant+"@"+results.getJSONObject(0).getJSONObject(books).getJSONArray(items).getJSONObject(i).getString(name));
 		}
 		return comics;
 	}
