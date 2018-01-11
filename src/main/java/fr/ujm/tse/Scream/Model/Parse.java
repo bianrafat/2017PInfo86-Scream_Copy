@@ -114,7 +114,7 @@ public class Parse {
 		
 		for(int i=0; i<size;i++)
 		{
-			pers.setComics(Integer.toString(results.getJSONObject(i).getInt(identifiant)) +":"+results.getJSONObject(i).getString(titre));
+			pers.setComics(Integer.toString(results.getJSONObject(i).getInt(identifiant)) +"@"+results.getJSONObject(i).getString(titre));
 		}
 		
 		return pers;
@@ -153,7 +153,7 @@ public class Parse {
 		comics.setTotal(data.getInt(total));
 		for(int i=0; i<size;i++)
 		{
-			comics.setComics(results.getJSONObject(i).getString(titre));
+			comics.setComics(Integer.toString(results.getJSONObject(i).getInt(identifiant)) +"@"+results.getJSONObject(i).getString(titre));
 			comics.setLien_image(results.getJSONObject(i).getJSONObject(thumbnail).getString(path)+"."+results.getJSONObject(i).getJSONObject(thumbnail).getString(extension));
 		}
 		return comics;

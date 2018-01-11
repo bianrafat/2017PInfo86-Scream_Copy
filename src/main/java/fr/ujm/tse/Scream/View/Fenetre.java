@@ -644,7 +644,7 @@ public class Fenetre extends JFrame {
 
 					// Double-click detected
 					try {
-						ContentPanelComics(listeComics.getSelectedIndex() + 1, champStartComics);
+						ContentPanelComics2(id.get(listeComics.getSelectedIndex()));
 					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -1179,10 +1179,10 @@ public class Fenetre extends JFrame {
 		ph = "\n" + "Comics: \n";
 		sDoc.insertString(pos, ph, gras);
 		pos += ph.length();
-
+		id=new ArrayList<String>();
 		for (int i = 0; i < perso.getComics2().size(); i++) {
-			lcomics[i] = perso.getComics2().get(i).split(":")[1];
-			id.add(perso.getComics2().get(i).split(":")[0]);
+			lcomics[i] = perso.getComics2().get(i).split("@")[1];
+			id.add(perso.getComics2().get(i).split("@")[0]);
 		}
 		listeComics.setListData(lcomics);
 		ImageIcon icon = new ImageIcon(new URL(perso.getLien_image()));
@@ -1206,8 +1206,10 @@ public class Fenetre extends JFrame {
 		intro.setText("<html>Pour accèder à la page d'un comics, veuillez effectuer un double clique sur le comics choisi.<br><br>Pour cette recherche il y a "
 				+ comics.getTotal() + " comics disponibles.<br><br></html>");
 		Object[] lcomics = new Object[comics.getComics2().size()];
+		id=new ArrayList<String>();
 		for (int i = 0; i < comics.getComics2().size(); i++) {
-			lcomics[i] = comics.getComics2().get(i);
+			lcomics[i] = comics.getComics2().get(i).split("@")[1];
+			id.add(comics.getComics2().get(i).split("@")[0]);
 		}
 		if(offset==0) {
 			moins.setVisible(false);
