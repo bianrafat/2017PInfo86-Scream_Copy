@@ -33,9 +33,9 @@ public class BoutonAjouterNoteBiblio implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		this.note=Integer.parseInt(popup.getTextNote().getText());
 		if(Database.updateNote(dbName, userName, pass, id, note)){
-			JOptionPane.showMessageDialog(null," Modifier avec succès !");
+			JOptionPane.showMessageDialog(null," Modifié avec succès !");
 		}else {
-			JOptionPane.showMessageDialog(null," erreur!");
+			JOptionPane.showMessageDialog(null," Erreur!");
 		}
 		try {
 			fenetre.boutonBiblio();

@@ -33,9 +33,9 @@ public class BoutonSupprimerBiblio implements ActionListener {
 		int id = Integer.parseInt((String)fenetre.getTable().getValueAt(rowIndex, 0));
 		
 		if(Database.deleteLigne(id, dbName, userName, pass)){
-			JOptionPane.showMessageDialog(null," supprimer avec succès !");
+			JOptionPane.showMessageDialog(null," Supprimé avec succès !");
 		}else {
-			JOptionPane.showMessageDialog(null," erreur!");
+			JOptionPane.showMessageDialog(null," Erreur!");
 		}
 		((AbstractTableModel) fenetre.getTable().getModel()).fireTableDataChanged();
 		//fenetre.getTable().repaint();

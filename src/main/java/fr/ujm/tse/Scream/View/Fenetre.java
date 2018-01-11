@@ -753,7 +753,6 @@ public class Fenetre extends JFrame {
 
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
 		JButton ajouterBiblio = new JButton("Ajouter");
-		JButton supprimerBiblio = new JButton("Supprimer");
 		
 		JPanel panelGeneral = new JPanel(new BorderLayout());
 		JPanel panel = new JPanel(new BorderLayout());
@@ -770,7 +769,6 @@ public class Fenetre extends JFrame {
 		panelbt.setBackground(new Color(236, 248, 254));
 
 		panelWest.add(imgComics,BorderLayout.NORTH);
-		panelbt.add(supprimerBiblio);
 		panelbt.add(ajouterBiblio);
 		panelSouth.add(retour);
 		panel.add(comicsText, BorderLayout.NORTH);
@@ -781,10 +779,7 @@ public class Fenetre extends JFrame {
 		
 		if(conUser==null) {
 			ajouterBiblio.setVisible(false);
-			supprimerBiblio.setVisible(false);
 		}else {
-			
-			supprimerBiblio.addActionListener(new BoutonDeleteComicsBiblio(this, comics.getId(), nameBiblio, conUser, conMdp));
 			ajouterBiblio.addActionListener(new BoutonAddComicsBiblio(this, nameBiblio, conUser, conMdp, comics.getId(),comics.getTitle() , comics.getPremierCreateur(), "En cours", 0, 10, "pas de commentaire"));
 
 			panelWest.add(panelbt,BorderLayout.CENTER);

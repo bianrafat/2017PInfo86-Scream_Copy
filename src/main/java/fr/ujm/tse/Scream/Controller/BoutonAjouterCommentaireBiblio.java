@@ -33,10 +33,10 @@ public class BoutonAjouterCommentaireBiblio implements ActionListener{
 		// TODO Auto-generated method stub
 		this.com=popup.getTextCom().getText();
 		if(Database.updateCom(dbName, userName, pass, id, com)) {
-			JOptionPane.showMessageDialog(null," Modifier avec succès !");
+			JOptionPane.showMessageDialog(null," Modifié avec succès !");
 			System.out.println(com);
 		}else {
-			JOptionPane.showMessageDialog(null," erreur!");
+			JOptionPane.showMessageDialog(null," Erreur!");
 		}
 		
 		try {

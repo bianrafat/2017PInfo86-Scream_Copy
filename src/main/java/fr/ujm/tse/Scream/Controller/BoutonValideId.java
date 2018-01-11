@@ -26,7 +26,7 @@ public class BoutonValideId extends AbstractAction {
 		userName=fenetre.getChampUser().getText();
 		password=fenetre.getChampMdp().getText();
 		if(Database.connectDatabase(userName,userName,password)) {
-			JOptionPane.showMessageDialog(null, "Connexion à " + userName+ " réussie");
+			JOptionPane.showMessageDialog(null, "Connexion réussie");
 			fenetre.setNameBiblio(userName);
 			fenetre.setConUser(userName);
 			fenetre.setConMdp(password);

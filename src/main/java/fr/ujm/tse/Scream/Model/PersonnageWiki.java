@@ -201,7 +201,7 @@ public class PersonnageWiki {
 		this.getPerformers();
 		this.getSuperhumain_ability();
 		System.out.println("Pour plus d'information, consultez la page wikidata du personnage:"+this.getWikidata_page());
-		System.out.println("lien de la page wikipedia:"+this.getWiki_page());
+		System.out.println("Lien de la page wikipedia:"+this.getWiki_page());
 	} 
 
 

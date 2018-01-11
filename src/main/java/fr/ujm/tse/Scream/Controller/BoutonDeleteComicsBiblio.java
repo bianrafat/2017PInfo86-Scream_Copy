@@ -26,9 +26,9 @@ public class BoutonDeleteComicsBiblio implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(Database.deleteLigne(id,dbName,userName,pass)) {
-			JOptionPane.showMessageDialog(null," supprimer avec succès !");
+			JOptionPane.showMessageDialog(null," Supprimé avec succès !");
 		}else {
-			JOptionPane.showMessageDialog(null," erreur!");
+			JOptionPane.showMessageDialog(null," Erreur!");
 		}
 		fenetre.revalidate();
 		fenetre.repaint();
