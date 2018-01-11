@@ -120,7 +120,7 @@ public class Fenetre extends JFrame {
 		setTitle("Marvel"); // On donne un titre à l'application
 		setSize(800, 600); // On donne une taille à notre fenêtre
 		setLocationRelativeTo(null); // On centre la fenêtre sur l'écran
-		// setResizable(false);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // On dit à l'application de se fermer lors du clic sur la croix
 		//ImageIcon icon = new ImageIcon(ImageIO.read(new File("src\\main\\resources\\logo.jpg")));
 		ImageIcon icon = new ImageIcon(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("logo.jpg")));
