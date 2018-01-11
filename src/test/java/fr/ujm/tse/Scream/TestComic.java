@@ -28,7 +28,7 @@ public class TestComic {
 		
 		Comics comic=new Comics();
 		 try {
-			comic=Parse.infoComics("amazing", 1, 0);
+			comic=Parse.infoComicsId("21171");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
