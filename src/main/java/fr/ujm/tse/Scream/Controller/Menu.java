@@ -12,7 +12,6 @@ import javax.swing.text.BadLocationException;
 import org.json.JSONException;
 //import fr.ujm.tse.Scream.Model.ParseWiki;
 
-import fr.ujm.tse.Scream.Model.Parse;
 /*import fr.ujm.tse.Scream.Model.Comics;
 import fr.ujm.tse.Scream.Model.Parse;
 import fr.ujm.tse.Scream.Model.Personnage;*/

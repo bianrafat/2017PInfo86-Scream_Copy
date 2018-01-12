@@ -14,7 +14,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 
@@ -30,21 +29,13 @@ public class RowPopup extends JPopupMenu{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTable table;
 	private Fenetre fenetre;
-	private JMenuItem com;
-	private JMenuItem note;
-	private JMenuItem bookmark;
-	private JMenuItem etat;
 	private JMenuItem recomandationSerie=new JMenuItem("Suite de la série");
 	private JMenuItem recomandationAuteur=new JMenuItem("Recomandation par auteur");
 	private JDialog dialog;
 	private JDialog dialog1;
 	private JDialog dialog2;
 	private JDialog dialog3;
-	private String dbName;
-	private String userName;
-	private String pass;
 	private JButton ajouterCom=new JButton("Ajouter le commentaire");
 	private JButton ajouterNote=new JButton("Ajouter un note");
 	private JButton ajouterBookmark=new JButton("Ajouter un bookmark");
@@ -54,11 +45,7 @@ public class RowPopup extends JPopupMenu{
 	private JTextArea textBookmark= new JTextArea();
 	private JTextArea textEtat= new JTextArea();
 	public RowPopup(JTable table,Fenetre f,String dbName, String userName, String pass){
-		this.table=table;
 		fenetre = f;
-		this.dbName=dbName;
-		this.userName=userName;
-		this.pass=pass;
 		JMenuItem com=new JMenuItem("Ajouter un commentaire");
 		JMenuItem note=new JMenuItem("Ajouter une note");
 		JMenuItem bookmark=new JMenuItem("Ajouter un bookmark");

@@ -26,15 +26,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/derby.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/wdtk-wikibaseapi-0.8.0-SNAPSHOT.jar"/>
-	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="src/main/resources"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
