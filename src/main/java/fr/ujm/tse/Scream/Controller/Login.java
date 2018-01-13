@@ -3,6 +3,12 @@ import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
+
+/**
+ *  Classe permettant de mettre les log messages dû aux requêtes fait à l'api wikidata-toolkit dans un fichier
+ * @author Scream
+ *
+ */
 public class Login {
 
 
