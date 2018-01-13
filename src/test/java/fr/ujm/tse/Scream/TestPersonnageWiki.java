@@ -10,13 +10,10 @@ import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import fr.ujm.tse.Scream.Model.ParseWiki;
 import fr.ujm.tse.Scream.Model.PersonnageWiki;
-import fr.ujm.tse.Scream.Model.SearchWiki;
 
 public class TestPersonnageWiki {
 	@Test
 	public void testInfoPersonnageWiki() throws IOException, MediaWikiApiErrorException{
-		String nameExpected="Thor";
-		String descriptionExpected="personnage de bande dessinée";
 		ArrayList<String> nicknamesExpected = new ArrayList<String>();
 		nicknamesExpected.add("Donald Blake");
 		nicknamesExpected.add("The Mighty Thor");
@@ -59,16 +56,13 @@ public class TestPersonnageWiki {
 		String wikidata_pageExpected="https://www.wikidata.org/wiki/Q717588";
 		String wiki_pageExpected="https://fr.wikipedia.org/wiki/Thor_%28comics%29";
 		
-		PersonnageWiki persWiki=new PersonnageWiki();
+		new PersonnageWiki();
 		ParseWiki wiki = new ParseWiki();
-		ArrayList<SearchWiki> search=wiki.infoWikipersonnage("thor");
+		wiki.infoWikipersonnage("thor");
 		wiki.infoWikipersonnagetwo(4);
 		PersonnageWiki perso = wiki.getPersoWiki();
 
 		
-		String nameObtenu=perso.getName();
-		String descriptionObtenu=perso.getDescription();
-		ArrayList<String> nicknamesObtenu=perso.getNicknames2();
 		String genderObtenu=perso.getGender();
 		String countryObtenu=perso.getCountry();
 		String fatherObtenu=perso.getFather();
@@ -82,10 +76,7 @@ public class TestPersonnageWiki {
 		String wikidata_pageObtenu=perso.getWikidata_page();
 		String wiki_pageObtenu=perso.getWiki_page();
 		
-		//assertEquals(nameObtenu,nameExpected);
-				
-		//assertEquals(descriptionObtenu,descriptionExpected);
-		//assertEquals(nicknamesObtenu,nicknamesExpected);
+		
 		assertEquals(genderObtenu,genderExpected);
 		assertEquals(countryObtenu,countryExpected);
 		assertEquals(fatherObtenu,fatherExpected);
