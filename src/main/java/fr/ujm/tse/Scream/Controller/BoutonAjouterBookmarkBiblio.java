@@ -8,7 +8,11 @@ import javax.swing.JOptionPane;
 
 import fr.ujm.tse.Scream.View.Fenetre;
 import fr.ujm.tse.Scream.View.RowPopup;
-
+/**
+ * Bouton qui modifie le Bookmark d'un comics dans la bibliothèque
+ * @author Scream
+ *
+ */
 public class BoutonAjouterBookmarkBiblio implements ActionListener{
 	private Fenetre fenetre;
 	private RowPopup popup;
@@ -30,7 +34,6 @@ public class BoutonAjouterBookmarkBiblio implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		this.bookmark=Integer.parseInt(popup.getTextBookmark().getText());
 		if(Database.updateBookmark(dbName, userName, pass, id, bookmark)) {
 			JOptionPane.showMessageDialog(null," Modifié avec succès !");
@@ -41,7 +44,6 @@ public class BoutonAjouterBookmarkBiblio implements ActionListener{
 		try {
 			fenetre.boutonBiblio();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		fenetre.revalidate();

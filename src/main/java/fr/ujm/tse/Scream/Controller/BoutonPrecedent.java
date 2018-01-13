@@ -10,7 +10,11 @@ import javax.swing.text.BadLocationException;
 import org.json.JSONException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ * Bouton dans l'affichage de la liste des comics affiche les precedents 
+ * @author Scream
+ *
+ */
 public class BoutonPrecedent implements ActionListener {
 	private Fenetre fenetre;
 	private int offset;

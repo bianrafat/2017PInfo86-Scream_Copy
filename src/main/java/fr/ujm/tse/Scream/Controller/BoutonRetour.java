@@ -6,11 +6,13 @@ import javax.swing.AbstractAction;
 import javax.swing.text.BadLocationException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ * Bouton qui revient au menu principal 
+ * @author Scream
+ *
+ */
 public class BoutonRetour extends AbstractAction {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private Fenetre fenetre;
 	public BoutonRetour(String texte, Fenetre f){
@@ -23,7 +25,6 @@ public class BoutonRetour extends AbstractAction {
 		try {
 			fenetre.setContentPane(fenetre.buildContentPane());
 		} catch (BadLocationException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		fenetre.revalidate();

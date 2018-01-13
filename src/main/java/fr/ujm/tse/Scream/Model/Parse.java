@@ -12,8 +12,11 @@ import org.json.JSONObject;
 
 import fr.ujm.tse.Scream.Controller.HttpConnect;
 
-
-//Cette classe sert ï¿½ parser les donnï¿½es 
+/**
+ * Classe qui récupérer les données de l'API Marvel  en fonction de la  requête 
+ * @author Scream
+ *
+ */
 
 public class Parse {
 	// Creation de champs statiques
@@ -56,7 +59,7 @@ public class Parse {
 	
 	
 	/**
-	 * 
+	 * Récupérer les informations d'un personnage
 	 * @param nom
 	 * @return pers
 	 * @throws IOException
@@ -89,7 +92,7 @@ public class Parse {
 	}
 	
 	/**
-	 * 
+	 *  Récupère la liste des comics où le personnage apparaît 
 	 * @param pers
 	 * @return pers
 	 * @throws IOException
@@ -119,13 +122,9 @@ public class Parse {
 		
 		return pers;
 	}
-	
-	// Classe pour retrouver des comics grace a la methode "StartWith"
-	// Mï¿½me mï¿½thode que titleComics mais cette fois pour les Comics et non les personnages
-	
 	/**
-	 * Classe pour retrouver des comics grace a la methode "StartWith"
-	 * Mï¿½me mï¿½thode que titleComics mais cette fois pour les Comics et non les personnages
+	 * Classe pour retrouver des comics grace à la methode "StartWith"
+	 * Meme methode que titleComics mais cette fois pour les Comics et non les personnages
 	 * @param title
 	 * @return comics
 	 * @throws IOException
@@ -162,8 +161,8 @@ public class Parse {
 	
 	
 	/**
-	 * Mï¿½thode qui permet d'avoir des informations sur un comics choisi par l'utilisateur.
-	 *  Une liste de titre de Comics lui est proposï¿½, ensuite il fait un choix parmi cette liste.
+	 * Methode qui permet d'avoir des informations sur un comics choisi par l'utilisateur.
+	 *  Une liste de titre de Comics lui est propose, ensuite il fait un choix parmi cette liste.
 	 * @param title
 	 * @param num
 	 * @return comics
@@ -186,29 +185,29 @@ public class Parse {
 		JSONObject data = obj.getJSONObject(donnees);
 		JSONArray results = data.getJSONArray(tableau);
 		
-		// crï¿½ation d'un objet Comics
+		// creation d'un objet Comics
 		Comics comics=new Comics();		
 		
-		//Crï¿½ation d'une boucle pour que l'utilisateur choisisse bien entre 1 et 10  pour chaque page(liste de comics)
+		//Creation d'une boucle pour que l'utilisateur choisisse bien entre 1 et 10  pour chaque page(liste de comics)
 		if ( num + 10*page < 1 + 10*page || num + 10*page > 10 + 10*page) {
 			sc1 = new Scanner(System.in); 
 			int i = sc1.nextInt();
 			comics = Parse.infoComics(title, i, page);
 		}
 		else {
-			//Rï¿½cupï¿½ration de l'identifiant, du titre et de la description.
+			//Recuperation de l'identifiant, du titre et de la description.
 			comics.setId(results.getJSONObject(num + 10*page -1).getInt(identifiant));
 			comics.setTitle(results.getJSONObject(num + 10*page -1).getString(titre));
 			
 			
-			// Rï¿½cupï¿½ration de la description si elle existe
+			// Recuperation de la description si elle existe
 			if (results.getJSONObject(num + 10*page -1).isNull(description)){
 				comics.setDescription("Aucune description / No description available.");
 			}else {
 				comics.setDescription(results.getJSONObject(num + 10*page -1).getString(description));
 			}
 			
-			// Rï¿½cupï¿½ration des crï¿½ateurs 
+			// Recuperation des createurs 
 			int nbCreators=results.getJSONObject(num + 10*page -1).getJSONObject(creators).getInt(available);
 			if (nbCreators ==0) {
 				comics.setCreators("Aucune information / No information.");
@@ -222,7 +221,7 @@ public class Parse {
 				}
 			}
 			
-			// Rï¿½cupï¿½ration des personnages
+			// Recuperation des personnages
 			int nbCharacters=results.getJSONObject(num + 10*page -1).getJSONObject(characters).getInt(available);
 			if (nbCharacters ==0) {
 				comics.setCharacters("Aucune information / No information.");
@@ -239,7 +238,14 @@ public class Parse {
 		}
 		return comics;
 	}
-	
+	/**
+	 * Recupere les informations d'un comics en fonction de l'identifiant
+	 * @param id
+	 * @return
+	 * @throws IOException
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public static Comics infoComicsId(String id) throws  IOException, JSONException, NoSuchAlgorithmException
 	{
 		
@@ -255,22 +261,22 @@ public class Parse {
 		JSONObject data = obj.getJSONObject(donnees);
 		JSONArray results = data.getJSONArray(tableau);
 		
-		// crï¿½ation d'un objet Comics
+		// creation d'un objet Comics
 		Comics comics=new Comics();		
 		
-		//Rï¿½cupï¿½ration de l'identifiant, du titre et de la description.
+		//Recuperation de l'identifiant, du titre et de la description.
 		comics.setId(results.getJSONObject(0).getInt(identifiant));
 		comics.setTitle(results.getJSONObject(0).getString(titre));
 		
 		
-		// Rï¿½cupï¿½ration de la description si elle existe
+		// Recuperation de la description si elle existe
 		if (results.getJSONObject(0).isNull(description)){
 			comics.setDescription("Aucune description / No description available.");
 		}else {
 			comics.setDescription(results.getJSONObject(0).getString(description));
 		}
 		
-		// Rï¿½cupï¿½ration des crï¿½ateurs 
+		// Recuperation des createurs 
 		int nbCreators=results.getJSONObject(0).getJSONObject(creators).getInt("available");
 		if (nbCreators ==0) {
 			comics.setCreators("Aucune information / No information.");
@@ -284,7 +290,7 @@ public class Parse {
 			}
 		}
 		
-		// Rï¿½cupï¿½ration des personnages
+		// Recuperation des personnages
 		int nbCharacters=results.getJSONObject(0).getJSONObject(characters).getInt("available");
 		if (nbCharacters ==0) {
 			comics.setCharacters("Aucune information / No information.");
@@ -302,8 +308,14 @@ public class Parse {
 		return comics;
 	}
 	
-	
-	
+	/**
+	 * Recupere la liste des serie en fonction de l'identifiant d'un comics
+	 * @param id
+	 * @return
+	 * @throws IOException
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public static Comics series (int id) throws  IOException, JSONException, NoSuchAlgorithmException{
 		
 		// generation du md5:
@@ -318,7 +330,7 @@ public class Parse {
 		JSONObject data = obj.getJSONObject(donnees);
 		JSONArray results = data.getJSONArray(tableau);
 		
-		// crï¿½ation d'un objet Comics
+		// creation d'un objet Comics
 		Comics comics=new Comics();
 		String[] tab=null;
 		int identifiant;
@@ -333,9 +345,13 @@ public class Parse {
 		
 	}
 	
-	
-	
-	
+	/**
+	 * Recupere l'identifiant d'un auteur en fonction du nom de l'auteur 
+	 * @param author
+	 * @return
+	 * @throws IOException
+	 * @throws NoSuchAlgorithmException
+	 */
 	public static int idCreator(String author) throws IOException, NoSuchAlgorithmException {
 		// generation du md5:
 		md5hash = MessageDigest.getInstance("MD5");
@@ -352,6 +368,13 @@ public class Parse {
 		
 		return results.getJSONObject(0).getInt(identifiant);
 	}
+	/**
+	 * Récupere la liste des comics en fonction de l'identifiant d'un auteur
+	 * @param author
+	 * @return
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 */
 	public static Comics recommandation(String author) throws NoSuchAlgorithmException, IOException {
 		// generation du md5:
 		md5hash = MessageDigest.getInstance("MD5");

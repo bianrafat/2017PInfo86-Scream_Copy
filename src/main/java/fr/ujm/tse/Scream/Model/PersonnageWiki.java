@@ -24,6 +24,7 @@ public class PersonnageWiki {
 	private ArrayList<String> superhumain_ability= new ArrayList<String>();
 	private String wikidata_page;
 	private String wiki_page;
+	
 	public PersonnageWiki(String name, String description,String gender, String country,
 			String father, String mother, String stepparent, ArrayList<String> siblings, String birth_name,
 			String wiki_page,String wikidata_page) {

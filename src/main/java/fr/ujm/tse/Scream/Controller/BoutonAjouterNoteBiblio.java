@@ -8,7 +8,11 @@ import javax.swing.JOptionPane;
 
 import fr.ujm.tse.Scream.View.Fenetre;
 import fr.ujm.tse.Scream.View.RowPopup;
-
+/**
+ * Bouton qui modifie la note d'un comics dans la bibliothèque
+ * @author Scream
+ *
+ */
 public class BoutonAjouterNoteBiblio implements ActionListener {
 	private Fenetre fenetre;
 	private RowPopup popup;

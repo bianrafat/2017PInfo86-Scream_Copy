@@ -1,7 +1,11 @@
 package fr.ujm.tse.Scream.Model;
 
 import java.util.ArrayList;
-
+/**
+ * Classe qui représente un comics Marvel
+ * @author Scream
+ *
+ */
 public class Comics {
 	private int id;
 	private String title;

@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
-
+/**
+ * creation du tableau qui sera notre bibliotheque
+ * @author Scream
+ *
+ */
 public class TableModel extends AbstractTableModel {
     /**
 	 * 

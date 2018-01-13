@@ -8,7 +8,11 @@ import javax.swing.JOptionPane;
 
 import fr.ujm.tse.Scream.View.Fenetre;
 import fr.ujm.tse.Scream.View.RowPopup;
-
+/**
+ * Bouton qui change l'etat d'un comics dans la bibliothèque
+ * @author Scream
+ *
+ */
 public class BoutonAjouterEtatBiblio implements ActionListener {
 	private Fenetre fenetre;
 	private String dbName;

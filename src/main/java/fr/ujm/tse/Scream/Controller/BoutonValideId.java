@@ -7,11 +7,13 @@ import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ * Bouton qui valide la connexion 
+ * @author Scream
+ *
+ */
 public class BoutonValideId extends AbstractAction {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private Fenetre fenetre;
 	private String userName;
@@ -34,7 +36,6 @@ public class BoutonValideId extends AbstractAction {
 				fenetre.setContentPane(fenetre.buildContentPane());
 				fenetre.revalidate();
 			} catch (BadLocationException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}else {

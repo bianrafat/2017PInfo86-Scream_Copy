@@ -8,7 +8,11 @@ import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ *Bouton qui supprime un comics dans la bibliotheque de l'utilisateur 
+ * @author Scream
+ *
+ */
 public class BoutonSupprimerBiblio implements ActionListener {
 	private Fenetre fenetre;
 	private String dbName;
@@ -16,7 +20,6 @@ public class BoutonSupprimerBiblio implements ActionListener {
 	private String pass;
 
 	public BoutonSupprimerBiblio(Fenetre f,String dbName, String userName, String pass) {
-		// TODO Auto-generated constructor stub
 		this.dbName=dbName;
 		this.userName=userName;
 		this.pass=pass;
@@ -28,7 +31,6 @@ public class BoutonSupprimerBiblio implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		int rowIndex=fenetre.getTable().getSelectedRow();
 		int id = Integer.parseInt((String)fenetre.getTable().getValueAt(rowIndex, 0));
 		
@@ -38,11 +40,10 @@ public class BoutonSupprimerBiblio implements ActionListener {
 			JOptionPane.showMessageDialog(null," Erreur!");
 		}
 		((AbstractTableModel) fenetre.getTable().getModel()).fireTableDataChanged();
-		//fenetre.getTable().repaint();
+
 		try {
 			fenetre.boutonBiblio();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		fenetre.revalidate();

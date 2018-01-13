@@ -10,7 +10,11 @@ import javax.swing.text.BadLocationException;
 import org.json.JSONException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ * Bouton dans l'affichage de la liste des comics affiche les suivants
+ * @author Scream
+ *
+ */
 public class BoutonSuivant implements ActionListener {
 	private Fenetre fenetre;
 	private int offset;
@@ -34,16 +38,12 @@ public class BoutonSuivant implements ActionListener {
 		try {
 			fenetre.afficheListeComics(str,fenetre.getOffset());
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (NoSuchAlgorithmException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (BadLocationException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		

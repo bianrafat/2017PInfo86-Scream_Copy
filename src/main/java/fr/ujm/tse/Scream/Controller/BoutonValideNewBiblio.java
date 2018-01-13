@@ -7,11 +7,12 @@ import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ * Bouton qui valide la creation de la bibliotheque 
+ * @author Scream
+ *
+ */
 public class BoutonValideNewBiblio extends AbstractAction {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Fenetre fenetre;
 	private String userName;
@@ -34,7 +35,6 @@ public class BoutonValideNewBiblio extends AbstractAction {
 				fenetre.setContentPane(fenetre.buildContentPane());
 				fenetre.revalidate();
 			} catch (BadLocationException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}else {

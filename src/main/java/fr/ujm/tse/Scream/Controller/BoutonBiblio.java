@@ -5,7 +5,11 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ * bouton qui permet de passer dans l'affichage de la bibliothèque 
+ * @author Scream
+ *
+ */
 public class BoutonBiblio implements ActionListener {
 	private Fenetre fenetre;
 

@@ -6,7 +6,11 @@ import java.awt.event.ActionListener;
 import javax.swing.text.BadLocationException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ * Bouton qui deconnecte l'utilisateur de la bibliothèque 
+ * @author Scream
+ *
+ */
 public class BoutonDeco implements ActionListener {
 	private Fenetre fenetre;
 	public BoutonDeco(Fenetre f){

@@ -5,7 +5,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ * Bouton qui affiche le formulaire pour rechercher un comics 
+ * @author Scream
+ *
+ */
 public class BoutonMenuComics extends AbstractAction {
 	/**
 	 * 

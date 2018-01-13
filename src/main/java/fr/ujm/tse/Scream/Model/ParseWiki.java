@@ -21,7 +21,11 @@ import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import fr.ujm.tse.Scream.Controller.HttpConnect;
 import fr.ujm.tse.Scream.Controller.Login;
-
+/**
+ * Classe permettant de récupérer les informations de wikidata 
+ * @author Scream
+ *
+ */
 public class ParseWiki implements Runnable{
 
 
@@ -91,9 +95,6 @@ public class ParseWiki implements Runnable{
 	 * @throws IOException
 	 * @throws MediaWikiApiErrorException
 	 */
-
-	
-
 	public ArrayList<SearchWiki>infoWikipersonnage(String nom) throws IOException, MediaWikiApiErrorException {
 		nom=nom.replace(" ","+");
 		info = HttpConnect.readUrl(reqWikidata+nom+languageformat);

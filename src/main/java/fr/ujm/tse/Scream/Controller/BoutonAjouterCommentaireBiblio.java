@@ -8,7 +8,11 @@ import javax.swing.JOptionPane;
 
 import fr.ujm.tse.Scream.View.Fenetre;
 import fr.ujm.tse.Scream.View.RowPopup;
-
+/**
+ * Bouton qui modifie le commentaire d'un comics dans la bibliothèque
+ * @author Scream
+ *
+ */
 public class BoutonAjouterCommentaireBiblio implements ActionListener{
 	private RowPopup popup;
 	private Fenetre fenetre;

@@ -24,10 +24,12 @@ import fr.ujm.tse.Scream.Controller.BoutonAjouterCommentaireBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonAjouterEtatBiblio;
 import fr.ujm.tse.Scream.Controller.BoutonAjouterNoteBiblio;
 
+/**
+ * Classe permettant l'affichage d'un clique droit dans la bibliothèque.
+ * @author Scream
+ *
+ */
 public class RowPopup extends JPopupMenu{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Fenetre fenetre;
 	private JMenuItem recomandationSerie=new JMenuItem("Suite de la série");
@@ -175,6 +177,7 @@ public class RowPopup extends JPopupMenu{
 	public JTextArea getTextNote() {
 		return textNote;
 	}
+	
 	public JTextArea getTextBookmark() {
 		return textBookmark;
 	}

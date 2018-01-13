@@ -5,7 +5,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ * Bouton qui lance l'affichage de recherche d'un personnage 
+ * @author Scream
+ *
+ */
 public class BoutonMenuPersonnage extends AbstractAction {
 	/**
 	 * 

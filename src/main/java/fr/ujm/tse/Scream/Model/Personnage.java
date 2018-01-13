@@ -2,7 +2,11 @@ package fr.ujm.tse.Scream.Model;
 
 import java.util.ArrayList;
 
-
+/**
+ * Classe qui représente un personnage Marvel
+ * @author Scream
+ *
+ */
 public class Personnage {
 	private int id;
 	private String name;
@@ -18,7 +22,6 @@ public class Personnage {
 		
 	}
 	public Personnage() {
-		// TODO Auto-generated constructor stub
 	}
 	public int getId() {
 		return id;

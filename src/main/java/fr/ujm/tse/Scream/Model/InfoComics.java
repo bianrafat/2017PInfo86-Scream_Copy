@@ -13,7 +13,11 @@ import org.json.JSONObject;
 import fr.ujm.tse.Scream.Controller.HttpConnect;
 
 
- 
+ /**
+  * Cette classe sert à parser les données  d'un comics
+  * @autho Scream 
+  *
+  */
 
 public class InfoComics {
 	// Creation de champs statiques

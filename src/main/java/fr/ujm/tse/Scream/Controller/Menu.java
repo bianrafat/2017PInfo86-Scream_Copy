@@ -16,23 +16,25 @@ import org.json.JSONException;
 import fr.ujm.tse.Scream.Model.Parse;
 import fr.ujm.tse.Scream.Model.Personnage;*/
 import fr.ujm.tse.Scream.View.Fenetre; 
-
+/**
+ * Classe qui lance l'application
+ * @author Scream
+ *
+ */
 public class Menu {
 	public static void main(String[] args) throws IOException, JSONException, NoSuchAlgorithmException {
 		
 		 SwingUtilities.invokeLater(new Runnable() { 
 			public void run() {
-				 // On crï¿½e une nouvelle instance de notre JDialog 
+				 // On crée une nouvelle instance de notre JDialog 
 				 Fenetre fenetre = new Fenetre(); 
 				 try {
 					 fenetre.run(); 
 				} catch (BadLocationException | IOException e) { 
-					// TODO Auto-generated catch block
 					 e.printStackTrace(); 
 				} 
 				 fenetre.setVisible(true);// On la rend visible 
 				 } 
 		}); 
-		 //Parse.recommandation("Jason Aaron");
 	}
 }

@@ -71,62 +71,93 @@ import fr.ujm.tse.Scream.Model.Personnage;
 import fr.ujm.tse.Scream.Model.PersonnageWiki;
 import fr.ujm.tse.Scream.Model.SearchWiki;
 
+/**
+ * Classe qui gère tous les affichages de l'application
+ * 
+ * @author Scream
+ *
+ */
 public class Fenetre extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+
+	// Champ de saisie
 	private JTextField champPerso = new JTextField();
 	private JTextField champComics = new JTextField();
 	private JTextField champWikiP = new JTextField();
-	private JTextField champUser= new JTextField();
-	private JTextField champBiblioSearch= new JTextField();
-	private JPasswordField  champMdp= new JPasswordField();
+	private JTextField champUser = new JTextField();
+	private JTextField champBiblioSearch = new JTextField();
+	private JPasswordField champMdp = new JPasswordField();
+
+	// variable pour la bibliothèque
 	private JTable tableau;
-	private String[] comboTypes = { "Tout","Auteur", "Titre"};
+	private String[] comboTypes = { "Tout", "Auteur", "Titre" };
 	private JComboBox<String> combo = new JComboBox<String>(comboTypes);
-	private String nameBiblio=null;
-	private String conUser=null;
-	private String conMdp=null;
+
+	// variable de connexion
+	private String nameBiblio = null;
+	private String conUser = null;
+	private String conMdp = null;
+
+	// Document pour l'affichage des informations des personnages
 	private JEditorPane reponsePerso = new JTextPane();
 	private StyledDocument sDoc = (StyledDocument) reponsePerso.getDocument();
+
+	// variable pour les images de l'aplication
 	private JLabel img = new JLabel();
 	private JLabel imgComics = new JLabel();
-	private String champStartComics;
+
+	// listes des comics
 	private JList<Object> listeComics = new JList<Object>();
 	private JList<Object> listePerso = new JList<Object>();
 	private JList<Object> listeWikiP = new JList<Object>();
 	private JList<Object> listeseries = new JList<Object>();
 	private JList<Object> listeByAuthor = new JList<Object>();
-	private JLabel intro = new JLabel();
-	private ParseWiki wiki = new ParseWiki();
+
+	// Les boutons
 	private JButton biblio = new JButton("Ma Bibliothèque");
 	private JButton deconnexion = new JButton("Déconnexion");
 	private JButton connexion = new JButton("Connexion");
 	private JButton plus = new JButton("Suivant");
 	private JButton moins = new JButton("Précédent");
+
+	// Variables pour garder des informations en mémoire
+	private String champStartComics;
 	private int offset;
 	private List<String> id = new ArrayList<String>();
-	
+	private JLabel intro = new JLabel();
+	private ParseWiki wiki = new ParseWiki();
+
 	public Fenetre() {
 		super();
 	}
 
+	/**
+	 * Permet de lancer l'affichage
+	 * 
+	 * @throws BadLocationException
+	 * @throws IOException
+	 */
 	public void run() throws BadLocationException, IOException {
 		this.build();// On initialise notre fenêtre
 	}
 
+	/**
+	 * Initialise le paramètre de la fenêtre principale
+	 * 
+	 * @throws BadLocationException
+	 * @throws IOException
+	 */
 	private void build() throws BadLocationException, IOException {
 		setTitle("Marvel"); // On donne un titre à l'application
 		setSize(800, 600); // On donne une taille à notre fenêtre
 		setLocationRelativeTo(null); // On centre la fenêtre sur l'écran
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // On dit à l'application de se fermer lors du clic sur la croix
-		//ImageIcon icon = new ImageIcon(ImageIO.read(new File("src\\main\\resources\\logo.jpg")));
+		// ImageIcon icon = new ImageIcon(ImageIO.read(new
+		// File("src\\main\\resources\\logo.jpg")));
 		ImageIcon icon = new ImageIcon(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("logo.jpg")));
-		
-	
+
 		setIconImage(icon.getImage());
 		setContentPane(buildContentPane());
 	}
@@ -137,7 +168,6 @@ public class Fenetre extends JFrame {
 	 * @throws BadLocationException
 	 * 
 	 */
-
 	public JPanel buildContentPane() throws BadLocationException {
 
 		GridLayout param = new GridLayout(3, 2);
@@ -148,22 +178,23 @@ public class Fenetre extends JFrame {
 		JPanel panelG = new JPanel(new BorderLayout());
 		JPanel north = new JPanel(new BorderLayout());
 		JPanel center = new JPanel(param);
-		JPanel labelP= new JPanel(new FlowLayout());
+		JPanel labelP = new JPanel(new FlowLayout());
 		center.setBackground(new Color(236, 248, 254));
 		north.setBackground(new Color(236, 248, 254));
 		panel2.setBackground(new Color(236, 248, 254));
 		panelG.setBackground(new Color(236, 248, 254));
 		labelP.setBackground(new Color(236, 248, 254));
-		
-		
+
 		JLabel label = new JLabel("Bienvenue");
 		Font font = new Font("Century Schoolbook", Font.BOLD, 24);
 		Font fontMenu = new Font("Century Schoolbook", Font.BOLD, 15);
 		try {
 			JLabel background = new JLabel();
-			//ImageIcon icon = new ImageIcon(ImageIO.read(new File("src/main/resources/Marvel.png")));
-			ImageIcon icon = new ImageIcon(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("Marvel.png")));
-			
+			// ImageIcon icon = new ImageIcon(ImageIO.read(new
+			// File("src/main/resources/Marvel.png")));
+			ImageIcon icon = new ImageIcon(
+					ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("Marvel.png")));
+
 			background.setIcon(icon);
 
 			panelG.add(background, BorderLayout.SOUTH);
@@ -175,7 +206,7 @@ public class Fenetre extends JFrame {
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 		labelP.add(label);
 		north.add(Box.createRigidArea(new Dimension(150, 40)), BorderLayout.WEST);
-		north.add(labelP,BorderLayout.CENTER);
+		north.add(labelP, BorderLayout.CENTER);
 		panelG.add(north, BorderLayout.NORTH);
 		JButton boutonPersonnage = new JButton(new BoutonMenuPersonnage("Rechercher un personnage", this));
 		boutonPersonnage.setFont(fontMenu);
@@ -190,21 +221,20 @@ public class Fenetre extends JFrame {
 		connexion.setFont(fontMenu);
 		deconnexion.setFont(fontMenu);
 		biblio.setFont(fontMenu);
-		if(nameBiblio==null) {
+		if (nameBiblio == null) {
 			biblio.setVisible(false);
 			deconnexion.setVisible(false);
 			connexion.setVisible(true);
-			north.add(connexion,BorderLayout.EAST);
+			north.add(connexion, BorderLayout.EAST);
 			connexion.addActionListener(new BoutonConnexion(this));
-		}else {
+		} else {
 			biblio.setVisible(true);
 			deconnexion.setVisible(true);
 			connexion.setVisible(false);
 			deconnexion.addActionListener(new BoutonDeco(this));
 			biblio.addActionListener(new BoutonBiblio(this));
-			north.add(deconnexion,BorderLayout.EAST);
-			
-			
+			north.add(deconnexion, BorderLayout.EAST);
+
 		}
 		center.add(biblio);
 		panel2.add(Box.createRigidArea(new Dimension(0, 50)), BorderLayout.NORTH);
@@ -223,21 +253,19 @@ public class Fenetre extends JFrame {
 		champUser.setText("");
 		champMdp.setText("");
 		intro.setText("");
-		wiki=new ParseWiki();
+		wiki = new ParseWiki();
 		Object[] listeDefault = new Object[] { "" };
 		listePerso.setListData(listeDefault);
 		listeComics.setListData(listeDefault);
 		listeWikiP.setListData(listeDefault);
-		offset=0;
+		offset = 0;
 		return panelG;
 	}
 
-	
 	/**
 	 * 
 	 * interface affichée quand on clique sur le bouton "Recherche un personnage"
 	 */
-
 	public void boutonPerso() {
 		JPanel panelGeneral = new JPanel(new BorderLayout());
 		JPanel panelNorth = new JPanel(new FlowLayout());
@@ -278,16 +306,12 @@ public class Fenetre extends JFrame {
 					try {
 						ContentPanelComics(id.get(listeComics.getSelectedIndex()));
 					} catch (JSONException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (NoSuchAlgorithmException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (BadLocationException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
@@ -317,7 +341,6 @@ public class Fenetre extends JFrame {
 	/**
 	 * fonction utilisée quand nous cliquons dans le menu principal sur "connexion"
 	 */
-
 	public void boutonConnexion() {
 		JPanel panelGeneral = new JPanel(new BorderLayout());
 		JPanel panelNorth = new JPanel(new FlowLayout());
@@ -342,9 +365,9 @@ public class Fenetre extends JFrame {
 		JLabel question = new JLabel("Êtes vous déjà inscrit ?");
 		label.setFont(font);
 		question.setFont(fontMenu);
-		JButton repOui = new JButton(new BoutonRepOui("Oui",this));
+		JButton repOui = new JButton(new BoutonRepOui("Oui", this));
 		repOui.setPreferredSize(new Dimension(120, 40));
-		JButton repNon = new JButton(new BoutonRepNon("Non",this));
+		JButton repNon = new JButton(new BoutonRepNon("Non", this));
 		repNon.setPreferredSize(new Dimension(120, 40));
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
 
@@ -396,14 +419,12 @@ public class Fenetre extends JFrame {
 		label.setFont(font);
 		labUser.setFont(fontMenu);
 		labMdp.setFont(fontMenu);
-		
+
 		champUser.setPreferredSize(new Dimension(220, 30));
 		champMdp.setPreferredSize(new Dimension(220, 30));
-		JButton conf = new JButton(new BoutonValideNewBiblio("Valider",this));
+		JButton conf = new JButton(new BoutonValideNewBiblio("Valider", this));
 		conf.setPreferredSize(new Dimension(130, 40));
 
-		// champPerso.addActionListener(new BoutonRechercherPerso(this));
-		// recherche.addActionListener(new BoutonRechercherPerso(this));
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
 		retour.setPreferredSize(new Dimension(130, 40));
 
@@ -427,8 +448,6 @@ public class Fenetre extends JFrame {
 		setContentPane(panelGeneral);
 		revalidate();
 	}
-
-	
 
 	/**
 	 * fonction quand l'utilisateur veux accéder à sa biblioteque
@@ -459,14 +478,12 @@ public class Fenetre extends JFrame {
 		label.setFont(font);
 		labUser.setFont(fontMenu);
 		labMdp.setFont(fontMenu);
-		
+
 		champUser.setPreferredSize(new Dimension(220, 30));
 		champMdp.setPreferredSize(new Dimension(220, 30));
-		JButton conf = new JButton(new BoutonValideId("Valider",this));
+		JButton conf = new JButton(new BoutonValideId("Valider", this));
 		conf.setPreferredSize(new Dimension(130, 40));
 
-		// champPerso.addActionListener(new BoutonRechercherPerso(this));
-		// recherche.addActionListener(new BoutonRechercherPerso(this));
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
 		retour.setPreferredSize(new Dimension(130, 40));
 
@@ -490,12 +507,13 @@ public class Fenetre extends JFrame {
 		setContentPane(panelGeneral);
 		revalidate();
 	}
+
 	/**
 	 * interface lorsqu'on clique sur le bouton "Ma bibliothéque"
-	 * @throws SQLException 
+	 * 
+	 * @throws SQLException
 	 */
-	
-	public void boutonBiblio() throws SQLException{
+	public void boutonBiblio() throws SQLException {
 		JPanel panelGeneral = new JPanel(new BorderLayout());
 		JPanel panelNorth = new JPanel(new FlowLayout());
 		JPanel panel = new JPanel(new BorderLayout());
@@ -506,15 +524,14 @@ public class Fenetre extends JFrame {
 		panel.setBackground(new Color(236, 248, 254));
 		panelNorth.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
-		
-		JLabel label = new JLabel("Recherche par:");;
-		//Indices start at 0, so 1 specifies the search is by titre.
+
+		JLabel label = new JLabel("Recherche par:");
 		combo.setPreferredSize(new Dimension(100, 20));
 		champBiblioSearch.setMaximumSize(new Dimension(200, 30));
 		champBiblioSearch.setMinimumSize(new Dimension(100, 30));
 		champBiblioSearch.setPreferredSize(new Dimension(200, 30));
 		JButton recherche = new JButton("Rechercher");
-		
+
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
 		panelNorth.add(label);
 		panelNorth.add(combo);
@@ -522,23 +539,21 @@ public class Fenetre extends JFrame {
 		panelNorth.add(recherche);
 		JButton supprimer = new JButton("Supprimer");
 		panelmiddle.add(supprimer);
-		supprimer.addActionListener(new BoutonSupprimerBiblio(this,nameBiblio, conUser, conMdp));
-		TableModel tableM=new TableModel();
+		supprimer.addActionListener(new BoutonSupprimerBiblio(this, nameBiblio, conUser, conMdp));
+		TableModel tableM = new TableModel();
 		this.tableau = new JTable(tableM);
-		RowPopup pop=new RowPopup(getTable(),this,nameBiblio, conUser, conMdp);
-		recherche.addActionListener(new BoutonTri(this,tableM));
-		getTable().addMouseListener(new MouseAdapter(){
-
-			public void mouseClicked(MouseEvent e){
-
-				if(SwingUtilities.isRightMouseButton(e)){
-					 pop.show(e.getComponent(),e.getX(),e.getY());
+		RowPopup pop = new RowPopup(getTable(), this, nameBiblio, conUser, conMdp);
+		recherche.addActionListener(new BoutonTri(this, tableM));
+		getTable().addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (SwingUtilities.isRightMouseButton(e)) {
+					pop.show(e.getComponent(), e.getX(), e.getY());
 				}
 			}
 		});
-		
+
 		panel.add(new JScrollPane(tableau), BorderLayout.CENTER);
-		panel.add(panelmiddle,BorderLayout.SOUTH);
+		panel.add(panelmiddle, BorderLayout.SOUTH);
 		panelSouth.add(retour);
 		panelGeneral.add(panelNorth, BorderLayout.NORTH);
 		panelGeneral.add(panel, BorderLayout.CENTER);
@@ -546,13 +561,11 @@ public class Fenetre extends JFrame {
 
 		setContentPane(panelGeneral);
 		revalidate();
-}
+	}
 
-	
 	/**
-	 * interface lorsqu'on clique sur le bouton " recherche Wikidata"
+	 * interface lorsqu'on clique sur le bouton " recherche avancée"
 	 */
-
 	public void boutonWikidata() {
 		JPanel panelGeneral = new JPanel(new BorderLayout());
 		JPanel panelNorth = new JPanel(new FlowLayout());
@@ -575,17 +588,16 @@ public class Fenetre extends JFrame {
 		recherche.addActionListener(new BoutonRechercherPersoWiki(this));
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
 		listeWikiP.addMouseListener(new MouseAdapter() {
-			boolean isClique=false;
+			boolean isClique = false;
+
 			public void mouseClicked(MouseEvent evt) {
 				if (evt.getClickCount() == 2) {
-
 					// Double-click detected
 					try {
-						if(!isClique) {
+						if (!isClique) {
 							ContentPanelWikiP(listeWikiP.getSelectedIndex());
-							isClique=!isClique;
+							isClique = !isClique;
 						}
-						
 					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException
 							| MediaWikiApiErrorException e) {
 						e.printStackTrace();
@@ -609,11 +621,14 @@ public class Fenetre extends JFrame {
 		panelGeneral.add(panel, BorderLayout.CENTER);
 		panelGeneral.add(panelWest, BorderLayout.WEST);
 		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
-		
+
 		setContentPane(panelGeneral);
 		revalidate();
 	}
 
+	/**
+	 * Affichage du formulaire pour rechercher un comcis
+	 */
 	public void boutonComics() {
 		JPanel panelGeneral = new JPanel(new BorderLayout());
 		JPanel panelNorth = new JPanel(new FlowLayout());
@@ -637,30 +652,28 @@ public class Fenetre extends JFrame {
 		JButton recherche = new JButton("Rechercher");
 		recherche.addActionListener(new BoutonRechercherComics(this));
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
-		
+
 		listeComics.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				if (evt.getClickCount() == 2) {
-
 					// Double-click detected
 					try {
 						ContentPanelComics(id.get(listeComics.getSelectedIndex()));
 					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
 				}
 			}
 		});
-		
+
 		intro.setAlignmentX(Component.LEFT_ALIGNMENT);
 		plus.addActionListener(new BoutonSuivant(this));
 		moins.addActionListener(new BoutonPrecedent(this));
 		plusmoins.add(moins);
 		plusmoins.add(plus);
-		plusmoins.setPreferredSize(new Dimension(300,250));
-		
+		plusmoins.setPreferredSize(new Dimension(300, 250));
+
 		panelNorth.add(label);
 		panelNorth.add(champComics);
 		panelNorth.add(recherche);
@@ -671,7 +684,7 @@ public class Fenetre extends JFrame {
 		panel.add(Box.createRigidArea(new Dimension(200, 20)), BorderLayout.WEST);
 		panel.add(listeComics, BorderLayout.CENTER);
 		panel.add(plusmoins, BorderLayout.SOUTH);
-		
+
 		panelGeneral.add(panelNorth, BorderLayout.NORTH);
 		panelGeneral.add(panel, BorderLayout.CENTER);
 		panelGeneral.add(panelWest, BorderLayout.WEST);
@@ -681,11 +694,9 @@ public class Fenetre extends JFrame {
 		revalidate();
 	}
 
-
 	/**
 	 * interface pour afficher les informations d'un comics
 	 * 
-	 * @param nb
 	 * @param title
 	 * @throws JSONException
 	 * @throws NoSuchAlgorithmException
@@ -693,7 +704,7 @@ public class Fenetre extends JFrame {
 	 * @throws BadLocationException
 	 */
 	public void ContentPanelComics(String title)
-		throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException {
+			throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException {
 		Comics comics = Parse.infoComicsId(title);
 		JEditorPane comicsText = new JTextPane();
 		comicsText.setEditable(false);
@@ -736,14 +747,12 @@ public class Fenetre extends JFrame {
 			public void mouseClicked(MouseEvent evt) {
 				JList<?> list = (JList<?>) evt.getSource();
 				if (evt.getClickCount() == 2) {
-
 					// Double-click detected
 					try {
 						affichePerso((String) list.getSelectedValue());
 						champPerso.setText((String) list.getSelectedValue());
 						boutonPerso();
 					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
@@ -753,7 +762,7 @@ public class Fenetre extends JFrame {
 
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
 		JButton ajouterBiblio = new JButton("Ajouter");
-		
+
 		JPanel panelGeneral = new JPanel(new BorderLayout());
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel panelSouth = new JPanel(new FlowLayout());
@@ -768,7 +777,7 @@ public class Fenetre extends JFrame {
 		comicsText.setBackground(new Color(236, 248, 254));
 		panelbt.setBackground(new Color(236, 248, 254));
 
-		panelWest.add(imgComics,BorderLayout.NORTH);
+		panelWest.add(imgComics, BorderLayout.NORTH);
 		panelbt.add(ajouterBiblio);
 		panelSouth.add(retour);
 		panel.add(comicsText, BorderLayout.NORTH);
@@ -776,34 +785,42 @@ public class Fenetre extends JFrame {
 		panelGeneral.add(panel, BorderLayout.CENTER);
 		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
 		panelGeneral.add(panelWest, BorderLayout.WEST);
-		
-		if(conUser==null) {
-			ajouterBiblio.setVisible(false);
-		}else {
-			ajouterBiblio.addActionListener(new BoutonAddComicsBiblio(this, nameBiblio, conUser, conMdp, comics.getId(),comics.getTitle() , comics.getPremierCreateur(), "En cours", 0, 10, "pas de commentaire"));
 
-			panelWest.add(panelbt,BorderLayout.CENTER);
+		if (conUser == null) {
+			ajouterBiblio.setVisible(false);
+		} else {
+			ajouterBiblio.addActionListener(new BoutonAddComicsBiblio(this, nameBiblio, conUser, conMdp, comics.getId(),
+					comics.getTitle(), comics.getPremierCreateur(), "En cours", 0, 10, "pas de commentaire"));
+			panelWest.add(panelbt, BorderLayout.CENTER);
 		}
 
 		setContentPane(panelGeneral);
 		revalidate();
 
 	}
-	
-	
-	public void ContentPanelRecomandationSerie(int identifiant) throws JSONException, NoSuchAlgorithmException, IOException {
+
+	/**
+	 * Affichage de la liste des série en fonction du comics que nous avons choisi
+	 * dans la bibliothèque
+	 * 
+	 * @param identifiant
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 */
+	public void ContentPanelRecomandationSerie(int identifiant)
+			throws JSONException, NoSuchAlgorithmException, IOException {
 		Comics comics = Parse.series(identifiant);
-		id=new ArrayList<String>();
-		if(comics.getComics2().size()==1) {
+		id = new ArrayList<String>();
+		if (comics.getComics2().size() == 1) {
 			try {
-				JOptionPane.showMessageDialog(null,"Ce Comics n'a pas de série");
+				JOptionPane.showMessageDialog(null, "Ce Comics n'a pas de série");
 				boutonBiblio();
 				revalidate();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else {
+		} else {
 			Object[] serie = new Object[comics.getComics2().size()];
 			for (int i = 0; i < comics.getComics2().size(); i++) {
 				serie[i] = (comics.getComics2().get(i)).split("@")[1];
@@ -813,20 +830,16 @@ public class Fenetre extends JFrame {
 			listeseries.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent evt) {
 					if (evt.getClickCount() == 2) {
-						
+						// Double-click detected
 						try {
 							ContentPanelComics(id.get(listeseries.getSelectedIndex()));
 						} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						// Double-click detected
-						
-
 					}
 				}
 			});
-			JLabel titre=new JLabel("Suite de la série");
+			JLabel titre = new JLabel("Suite de la série");
 			JButton retour = new JButton(new BoutonRetour("Retour", this));
 			Font font = new Font("Century Schoolbook", Font.BOLD, 24);
 			JPanel panelGeneral = new JPanel(new BorderLayout());
@@ -841,26 +854,33 @@ public class Fenetre extends JFrame {
 			panelGeneral.setBackground(new Color(236, 248, 254));
 			panelNorth.add(titre);
 			panelSouth.add(retour);
-			panel.add(Box.createRigidArea(new Dimension(10, 75)),BorderLayout.NORTH);
+			panel.add(Box.createRigidArea(new Dimension(10, 75)), BorderLayout.NORTH);
 			panel.add(listeseries, BorderLayout.CENTER);
 			panelGeneral.add(Box.createRigidArea(new Dimension(200, 75)), BorderLayout.WEST);
 			panelGeneral.add(Box.createRigidArea(new Dimension(200, 75)), BorderLayout.EAST);
 			panelGeneral.add(panel, BorderLayout.CENTER);
 			panelGeneral.add(panelSouth, BorderLayout.SOUTH);
 			panelGeneral.add(panelNorth, BorderLayout.NORTH);
-			
-			
 
 			setContentPane(panelGeneral);
 			revalidate();
 		}
-		
 
 	}
-	
-	public void ContentPanelRecomandationAuteur(String auteur) throws JSONException, NoSuchAlgorithmException, IOException {
-		Comics comics= Parse.recommandation(auteur);
-		id=new ArrayList<String>();
+
+	/**
+	 * Affichage de la liste de comics en fonction de l'auteur que nous avons choisi
+	 * dans la bibliothèque
+	 * 
+	 * @param auteur
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 */
+	public void ContentPanelRecomandationAuteur(String auteur)
+			throws JSONException, NoSuchAlgorithmException, IOException {
+		Comics comics = Parse.recommandation(auteur);
+		id = new ArrayList<String>();
 		Object[] reco = new Object[comics.getComics2().size()];
 		for (int i = 0; i < comics.getComics2().size(); i++) {
 			reco[i] = (comics.getComics2().get(i)).split("@")[1];
@@ -874,14 +894,13 @@ public class Fenetre extends JFrame {
 					try {
 						ContentPanelComics(id.get(listeByAuthor.getSelectedIndex()));
 					} catch (JSONException | NoSuchAlgorithmException | IOException | BadLocationException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
 				}
 			}
 		});
-		JLabel titre=new JLabel("Voici d'autre titres du même auteur");
+		JLabel titre = new JLabel("Voici d'autre titres du même auteur");
 		JButton retour = new JButton(new BoutonRetour("Retour", this));
 		Font font = new Font("Century Schoolbook", Font.BOLD, 20);
 		JPanel panelGeneral = new JPanel(new BorderLayout());
@@ -896,27 +915,34 @@ public class Fenetre extends JFrame {
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		panelNorth.add(titre);
 		panelSouth.add(retour);
-		panel.add(Box.createRigidArea(new Dimension(10, 75)),BorderLayout.NORTH);
+		panel.add(Box.createRigidArea(new Dimension(10, 75)), BorderLayout.NORTH);
 		panel.add(listeByAuthor, BorderLayout.CENTER);
 		panelGeneral.add(Box.createRigidArea(new Dimension(200, 75)), BorderLayout.WEST);
 		panelGeneral.add(Box.createRigidArea(new Dimension(200, 75)), BorderLayout.EAST);
 		panelGeneral.add(panel, BorderLayout.CENTER);
 		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
 		panelGeneral.add(panelNorth, BorderLayout.NORTH);
-		
-		
 
 		setContentPane(panelGeneral);
 		revalidate();
 
 	}
-	
+
+	/**
+	 * Affichage des informations de "Recherche Avancée" + les lien vers wikipedia et wikidata
+	 * @param i
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 * @throws BadLocationException
+	 * @throws MediaWikiApiErrorException
+	 */
 	public void ContentPanelWikiP(int i) throws JSONException, NoSuchAlgorithmException, IOException,
 			BadLocationException, MediaWikiApiErrorException {
-	
+
 		wiki.infoWikipersonnagetwo(i + 1);
 		JEditorPane wikiText = new JTextPane();
-		//wikiText.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
+		// wikiText.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
 		wikiText.setEditable(false);
 		PersonnageWiki perso = wiki.getPersoWiki();
 
@@ -1002,23 +1028,16 @@ public class Fenetre extends JFrame {
 			pos += perso.getSuperhumain_ability2().get(i1).length() + 1;
 		}
 		JLabel website = new JLabel();
-		//website.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
-		//website.setEditable(false);
-		//website.setPreferredSize(new Dimension(20, 20));
-		website.setText("<html>Pour plus d'information, consultez la page wikidata du personnage : <a href=\"\">"+perso.getWikidata_page()+"</a></html>");
+		website.setText("<html>Pour plus d'information, consultez la page wikidata du personnage : <a href=\"\">"
+				+ perso.getWikidata_page() + "</a></html>");
 		website.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		AccessWebWiki.goWebsite(website,perso.getWikidata_page());
-		//website.setVisible(true);
-		
+		AccessWebWiki.goWebsite(website, perso.getWikidata_page());
 		JLabel website1 = new JLabel();
-		//website.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
-		//website.setEditable(false);
-		//website1.setPreferredSize(new Dimension(20, 20));
-		website1.setText("<html> lien de la page wikipedia: : <a href=\"\">"+perso.getWiki_page()+"</a></html>");
+		website1.setText("<html> lien de la page wikipedia: : <a href=\"\">" + perso.getWiki_page() + "</a></html>");
 		website1.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		AccessWebWiki.goWebsite(website1,perso.getWiki_page());
-		
-		JPanel websites=new JPanel(new FlowLayout());
+		AccessWebWiki.goWebsite(website1, perso.getWiki_page());
+
+		JPanel websites = new JPanel(new FlowLayout());
 		websites.add(website);
 		websites.add(website1);
 		websites.setPreferredSize(new Dimension(50, 50));
@@ -1035,13 +1054,12 @@ public class Fenetre extends JFrame {
 		panel.setBackground(new Color(236, 248, 254));
 		panelGeneral.setBackground(new Color(236, 248, 254));
 		wikiText.setBackground(new Color(236, 248, 254));
-		
+
 		JScrollPane scrollingArea = new JScrollPane(wikiText);
 		scrollingArea.setPreferredSize(new Dimension(150, 150));
-		//setLocationRelativeTo(null);
-
+		
 		panelSouth.add(retour);
-		panel.add(websites,BorderLayout.PAGE_END);
+		panel.add(websites, BorderLayout.PAGE_END);
 		panel.add(scrollingArea, BorderLayout.CENTER);
 		panelGeneral.add(panel, BorderLayout.CENTER);
 		panelGeneral.add(panelSouth, BorderLayout.SOUTH);
@@ -1049,7 +1067,7 @@ public class Fenetre extends JFrame {
 
 		setContentPane(panelGeneral);
 		revalidate();
-		
+
 	}
 
 	/**
@@ -1063,16 +1081,8 @@ public class Fenetre extends JFrame {
 	 */
 	public void affichePerso(String str)
 			throws IOException, JSONException, NoSuchAlgorithmException, BadLocationException {
-		/*
-		 * C'est le morceau du code qui s'affiche sur console mais qui donne
-		 * l'impression que ça va plus vite (pour rechercher personnage)
-		 */
-		/*
-		 * Personnage perso=InfoPerso.infoPersonnage(str); perso.afficher();
-		 * InfoComics.titleComics(perso).afficheComics();
-		 */
 		Personnage perso = Parse.infoPersonnage(str);
-		perso =Parse.titleComics(perso);
+		perso = Parse.titleComics(perso);
 		sDoc.remove(0, sDoc.getLength());
 		String ph = "Nom du personnage: ";
 		int pos = 0;
@@ -1097,7 +1107,7 @@ public class Fenetre extends JFrame {
 		ph = "\n" + "Comics: \n";
 		sDoc.insertString(pos, ph, gras);
 		pos += ph.length();
-		id=new ArrayList<String>();
+		id = new ArrayList<String>();
 		for (int i = 0; i < perso.getComics2().size(); i++) {
 			lcomics[i] = perso.getComics2().get(i).split("@")[1];
 			id.add(perso.getComics2().get(i).split("@")[0]);
@@ -1110,7 +1120,7 @@ public class Fenetre extends JFrame {
 	}
 
 	/**
-	 * interface affiche la liste des comics disponibles avec le String str
+	 * interface qui affiche la liste des comics disponibles avec le String str
 	 * 
 	 * @param str
 	 * @throws JSONException
@@ -1118,20 +1128,21 @@ public class Fenetre extends JFrame {
 	 * @throws IOException
 	 * @throws BadLocationException
 	 */
-	public void afficheListeComics(String str,int nb)
+	public void afficheListeComics(String str, int nb)
 			throws JSONException, NoSuchAlgorithmException, IOException, BadLocationException {
-		Comics comics = Parse.listeComics(str,nb);
-		intro.setText("<html>Pour accèder à la page d'un comics, veuillez effectuer un double clique sur le comics choisi.<br><br>Pour cette recherche il y a "
-				+ comics.getTotal() + " comics disponibles.<br><br></html>");
+		Comics comics = Parse.listeComics(str, nb);
+		intro.setText(
+				"<html>Pour accèder à la page d'un comics, veuillez effectuer un double clique sur le comics choisi.<br><br>Pour cette recherche il y a "
+						+ comics.getTotal() + " comics disponibles.<br><br></html>");
 		Object[] lcomics = new Object[comics.getComics2().size()];
-		id=new ArrayList<String>();
+		id = new ArrayList<String>();
 		for (int i = 0; i < comics.getComics2().size(); i++) {
 			lcomics[i] = comics.getComics2().get(i).split("@")[1];
 			id.add(comics.getComics2().get(i).split("@")[0]);
 		}
-		if(offset==0) {
+		if (offset == 0) {
 			moins.setVisible(false);
-		}else {
+		} else {
 			moins.setVisible(true);
 		}
 		plus.setVisible(true);
@@ -1141,10 +1152,18 @@ public class Fenetre extends JFrame {
 		listeComics.repaint();
 		listeComics.revalidate();
 	}
-
+	/**
+	 * interface qui affiche la liste de choix de wikidata 
+	 * @param str
+	 * @throws JSONException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 * @throws BadLocationException
+	 * @throws MediaWikiApiErrorException
+	 */
 	public void afficheListeWiki(String str) throws JSONException, NoSuchAlgorithmException, IOException,
 			BadLocationException, MediaWikiApiErrorException {
-		wiki=new ParseWiki();
+		wiki = new ParseWiki();
 		ArrayList<SearchWiki> listeDesc = wiki.infoWikipersonnage(str);
 		intro.setText(
 				"<html>Pour accèder aux informations d'un personnage, veuillez effectuer un double clique sur une description correspondante au personnage recherché. <br><br></html>");
@@ -1163,23 +1182,18 @@ public class Fenetre extends JFrame {
 	public String getChampStartComics() {
 		return champStartComics;
 	}
-	
 
-	
 	public int getOffset() {
 		return offset;
 	}
-
 
 	public void setOffset(int offset) {
 		this.offset = offset;
 	}
 
-
 	public String getNameBiblio() {
 		return nameBiblio;
 	}
-
 
 	public void setNameBiblio(String nameBiblio) {
 		this.nameBiblio = nameBiblio;
@@ -1212,19 +1226,14 @@ public class Fenetre extends JFrame {
 	public JTextField getChampPerso() {
 		return champPerso;
 	}
-	public JTable getTable(){
+
+	public JTable getTable() {
 		return tableau;
 	}
+
 	public JTextField getChampComics() {
 		return champComics;
 	}
-
-
-	/**
-	 * retourne le texte a afficher apres la recherche de comics
-	 * 
-	 * @return intro
-	 */
 
 	public JLabel getIntro() {
 		return intro;
@@ -1237,26 +1246,20 @@ public class Fenetre extends JFrame {
 	public JComboBox<String> getCombo() {
 		return combo;
 	}
+
 	public JButton getBiblio() {
 		return biblio;
 	}
-
 
 	public void setBiblio(JButton biblio) {
 		this.biblio = biblio;
 	}
 
-
 	public JButton getConnexion() {
 		return connexion;
 	}
-	/**
-	 * retourne le champ de la recherche wikidata
-	 * 
-	 * @return champWikiP
-	 */
 	public JTextField getChampWikiP() {
 		return champWikiP;
 	}
-	
+
 }

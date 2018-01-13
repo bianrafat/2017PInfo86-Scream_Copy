@@ -6,7 +6,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ * Bouton qui permet d'ajouter un comics a la bibliothèque 
+ * @author Scream
+ *
+ */
 public class BoutonAddComicsBiblio implements ActionListener {
 	private Fenetre fenetre;
 	private String dbName;

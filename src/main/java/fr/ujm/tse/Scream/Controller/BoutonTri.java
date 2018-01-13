@@ -5,7 +5,12 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ * Bouton qui permet de lance le tri de la bibliotheque par titre ou auteur 
+ * 
+ * @author Scream
+ *
+ */
 public class BoutonTri  implements ActionListener{
 
 	
@@ -21,7 +26,6 @@ public class BoutonTri  implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
 		triStr=fenetre.getChampBiblioSearch().getText();
 		if(fenetre.getCombo().getSelectedItem()=="Titre") {
@@ -37,7 +41,7 @@ public class BoutonTri  implements ActionListener{
 			try {
 				tabtri.triParAuteur(triStr);
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
+			
 				e1.printStackTrace();
 			}
 			fenetre.getTable().removeAll();
@@ -47,7 +51,6 @@ public class BoutonTri  implements ActionListener{
 			try {
 				tabtri.resetData();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			fenetre.getTable().removeAll();

@@ -14,7 +14,11 @@ import org.json.JSONException;
 import org.wikidata.wdtk.wikibaseapi.apierrors.MediaWikiApiErrorException;
 
 import fr.ujm.tse.Scream.View.Fenetre;
-
+/**
+ * bouton qui affiche les informations de wikidata 
+ * @author UTILISATEUR
+ *
+ */
 public class BoutonRechercherPersoWiki implements ActionListener , KeyListener{
 	private Fenetre fenetre;
 	public BoutonRechercherPersoWiki(Fenetre f){

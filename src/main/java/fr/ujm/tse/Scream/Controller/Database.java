@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
+ * classe qui gere toute la base de donnée donc la bibliotheque
  * 
  * @author Scream
  *
@@ -34,7 +35,9 @@ public class Database {
 	private static Statement s;
 	private static ResultSet rs;
 
-
+	/**
+	 * Test de la classe 
+	 */
 	public static void databse() {
 		System.out.println("Êtes vous déjà inscrit ? (o/n)");
 		sc1 = new Scanner(System.in);
@@ -74,9 +77,10 @@ public class Database {
 									// redemande)
 
 	}
-	
+
 	/**
 	 * Méthode permettant de créer une base de données
+	 * 
 	 * @param dbName
 	 * @param userName
 	 * @param pass
@@ -98,8 +102,8 @@ public class Database {
 			// default in JDBC.
 			conn.setAutoCommit(false);
 			/*
-			 * Creating a statement object that we can use for running various
-			 * SQL statements commands against the database.
+			 * Creating a statement object that we can use for running various SQL
+			 * statements commands against the database.
 			 */
 			s = conn.createStatement();
 			statements.add(s);
@@ -108,22 +112,22 @@ public class Database {
 			s.execute("create table library(id int primary key not null," + " titre varchar(100),"
 					+ " auteur varchar(100)," + "etat varchar(100)," + " bookmark int," + " note int,"
 					+ " commentaire varchar(500))");
-			
+
 			/*
-			 * We commit the transaction. Any changes will be persisted to the
-			 * database now.
+			 * We commit the transaction. Any changes will be persisted to the database now.
 			 */
 			conn.commit();
 			return true;
 		} catch (SQLException sqle) {
 			printSQLException(sqle);
-		} 
+		}
 		return false;
 
 	}
 
 	/**
 	 * Méthode permettant de se connecter à la base de données
+	 * 
 	 * @param dbName
 	 * @param userName
 	 * @param pass
@@ -148,8 +152,8 @@ public class Database {
 	}
 
 	/**
-	 * Prints details of an SQLException chain to <code>System.err</code>.
-	 * Details included are SQL State, Error code, Exception message.
+	 * Prints details of an SQLException chain to <code>System.err</code>. Details
+	 * included are SQL State, Error code, Exception message.
 	 *
 	 * @param e
 	 *            the SQLException from which to print details.
@@ -206,10 +210,10 @@ public class Database {
 			printSQLException(sqle);
 		}
 	}
-	
-	
+
 	/**
 	 * Méthode permettant de trouver toutes les informations concernant un comics
+	 * 
 	 * @param title
 	 * @param dbName
 	 * @param userName
@@ -219,84 +223,64 @@ public class Database {
 	public static Boolean selectByTitle(String title) {
 		try {
 			/*
-			 * Creating a statement object that we can use for running various
-			 * SQL statements commands against the database.
+			 * Creating a statement object that we can use for running various SQL
+			 * statements commands against the database.
 			 */
-			// Commande de SELECT qui affiche une ligne 
+			// Commande de SELECT qui affiche une ligne
 			s = conn.createStatement();
 			statements.add(s);
-			rs = s.executeQuery(
-			        "SELECT COUNT(*) FROM library where title = ?");
-			while(rs.next()){
-				System.out.println(rs.getInt(1)+
-						" "+rs.getString(2)+
-						" "+rs.getString(3)+
-						" "+rs.getInt(4)+
-						" "+rs.getString(5)+
-						" "+rs.getInt(6)+
-						" "+rs.getInt(7)+
-						" "+rs.getString(8));
+			rs = s.executeQuery("SELECT COUNT(*) FROM library where title = ?");
+			while (rs.next()) {
+				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getInt(4)
+						+ " " + rs.getString(5) + " " + rs.getInt(6) + " " + rs.getInt(7) + " " + rs.getString(8));
 			}
 			conn.commit();
 			return true;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			return false;
-			//e.printStackTrace();
-		
-		} 
-		
-	
-		
+			// e.printStackTrace();
+
+		}
+
 	}
-	
-	
-	
-	
+
 	/**
 	 * Permet de selectionner une ligne
+	 * 
 	 * @param id
 	 * @param dbName
 	 * @param userName
 	 * @param pass
 	 * @return
 	 */
-	public static Boolean selectLigne(int id, String dbName, String userName, String pass)
-	{
+	public static Boolean selectLigne(int id, String dbName, String userName, String pass) {
 		try {
-		
+
 			/*
-			 * Creating a statement object that we can use for running various
-			 * SQL statements commands against the database.
+			 * Creating a statement object that we can use for running various SQL
+			 * statements commands against the database.
 			 */
-			// Commande de SELECT qui affiche une ligne 
+			// Commande de SELECT qui affiche une ligne
 			s = conn.createStatement();
 			statements.add(s);
-			rs = s.executeQuery(
-			        "SELECT * FROM library where id = ?");
-			while(rs.next()){
-				System.out.println(rs.getInt(1)+
-						" "+rs.getString(2)+
-						" "+rs.getString(3)+
-						" "+rs.getInt(4)+
-						" "+rs.getString(5)+
-						" "+rs.getInt(6)+
-						" "+rs.getInt(7)+
-						" "+rs.getString(8));
+			rs = s.executeQuery("SELECT * FROM library where id = ?");
+			while (rs.next()) {
+				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getInt(4)
+						+ " " + rs.getString(5) + " " + rs.getInt(6) + " " + rs.getInt(7) + " " + rs.getString(8));
 			}
 			conn.commit();
 			return true;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		return false;
 		}
-	
+		return false;
+	}
+
 	/**
 	 * Méthode permettant de trouver toutes les informations suivant un auteur donné
+	 * 
 	 * @param author
 	 * @param userNames
 	 * @param pass
@@ -305,36 +289,28 @@ public class Database {
 	public static Boolean selectByAuthor(String author, String userNames, String pass) {
 		try {
 			/*
-			 * Creating a statement object that we can use for running various
-			 * SQL statements commands against the database.
+			 * Creating a statement object that we can use for running various SQL
+			 * statements commands against the database.
 			 */
-			// Commande de SELECT qui affiche une ligne 
+			// Commande de SELECT qui affiche une ligne
 			s = conn.createStatement();
 			statements.add(s);
-			rs = s.executeQuery(
-			        "SELECT * FROM library where author = ?");
-			while(rs.next()){
-				System.out.println(rs.getInt(1)+
-						" "+rs.getString(2)+
-						" "+rs.getString(3)+
-						" "+rs.getInt(4)+
-						" "+rs.getString(5)+
-						" "+rs.getInt(6)+
-						" "+rs.getInt(7)+
-						" "+rs.getString(8));
+			rs = s.executeQuery("SELECT * FROM library where author = ?");
+			while (rs.next()) {
+				System.out.println(rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getInt(4)
+						+ " " + rs.getString(5) + " " + rs.getInt(6) + " " + rs.getInt(7) + " " + rs.getString(8));
 			}
 			conn.commit();
 			return true;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	/**
-	 * 
+	 *  permet d'inserer une ligne dans la bibliotheque 
 	 * @param dbName
 	 * @param userName
 	 * @param pass
@@ -348,8 +324,8 @@ public class Database {
 	 * @param com
 	 * @return
 	 */
-	public static Boolean insert(String dbName, String userName, String pass, int id, String title, String author, String etat, int bookmark, int note, String com)
-	{
+	public static Boolean insert(String dbName, String userName, String pass, int id, String title, String author,
+			String etat, int bookmark, int note, String com) {
 		try {
 			// Commande pour insérer des valeurs
 			psInsert = conn.prepareStatement("insert into library values (?, ?, ?, ?, ?, ?, ?)");
@@ -362,21 +338,20 @@ public class Database {
 			psInsert.setInt(5, bookmark);
 			psInsert.setInt(6, note);
 			psInsert.setString(7, com);
-			
+
 			psInsert.executeUpdate();
 			conn.commit();
 			return true;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		return false;
-		
+
 	}
-	
+
 	/**
-	 * 
+	 *  mettre a jour le champ bookmark selon l'identifiant 
 	 * @param dbName
 	 * @param userName
 	 * @param pass
@@ -384,26 +359,23 @@ public class Database {
 	 * @param bookmark
 	 * @return
 	 */
-	public static Boolean updateBookmark(String dbName, String userName, String pass, int id, int bookmark)
-	{
+	public static Boolean updateBookmark(String dbName, String userName, String pass, int id, int bookmark) {
 		try {
 			psUpdate = conn.prepareStatement("update library set bookmark=? where id=?");
 			psUpdate.setInt(1, bookmark);
 			psUpdate.setInt(2, id);
-			psUpdate.executeUpdate(); 
+			psUpdate.executeUpdate();
 			conn.commit();
 			return true;
-		}
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 		return false;
-		
+
 	}
-	
+
 	/**
-	 * 
+	 * mettre a jour le champ note selon l'identifiant 
 	 * @param dbName
 	 * @param userName
 	 * @param pass
@@ -411,26 +383,23 @@ public class Database {
 	 * @param note
 	 * @return
 	 */
-	public static Boolean updateNote(String dbName, String userName, String pass, int id, int note)
-	{
+	public static Boolean updateNote(String dbName, String userName, String pass, int id, int note) {
 		try {
 			psUpdate = conn.prepareStatement("update library set note=? where id=?");
 			psUpdate.setInt(1, note);
 			psUpdate.setInt(2, id);
-			psUpdate.executeUpdate(); 
+			psUpdate.executeUpdate();
 			conn.commit();
 			return true;
-		}
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 		return false;
-		
+
 	}
-	
+
 	/**
-	 * 
+	 * mettre a jour le champ commentaire selon l'identifiant 
 	 * @param dbName
 	 * @param userName
 	 * @param pass
@@ -438,26 +407,23 @@ public class Database {
 	 * @param com
 	 * @return
 	 */
-	public static Boolean updateCom(String dbName, String userName, String pass, int id, String com)
-	{
+	public static Boolean updateCom(String dbName, String userName, String pass, int id, String com) {
 		try {
 			psUpdate = conn.prepareStatement("update library set commentaire=? where id=?");
 			psUpdate.setString(1, com);
 			psUpdate.setInt(2, id);
-			psUpdate.executeUpdate(); 
+			psUpdate.executeUpdate();
 			conn.commit();
 			return true;
-		}
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 		return false;
-		
+
 	}
-	
+
 	/**
-	 * 
+	 * mettre a jour le champ etat selon l'identifiant 
 	 * @param dbName
 	 * @param userName
 	 * @param pass
@@ -465,71 +431,65 @@ public class Database {
 	 * @param etat
 	 * @return
 	 */
-	public static Boolean updateEtat(String dbName, String userName, String pass, int id, String etat)
-	{
+	public static Boolean updateEtat(String dbName, String userName, String pass, int id, String etat) {
 		try {
-			
+
 			psUpdate = conn.prepareStatement("update library set etat=? where id=?");
 			psUpdate.setString(1, etat);
 			psUpdate.setInt(2, id);
-			psUpdate.executeUpdate(); 
+			psUpdate.executeUpdate();
 			conn.commit();
 			return true;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		return false;
-		
+
 	}
-	
+
 	/**
-	 * 
+	 *  supprime une ligne de la bibliotheque
 	 * @param id
 	 * @param dbName
 	 * @param userName
 	 * @param pass
 	 * @return
 	 */
-	public static Boolean deleteLigne(int id, String dbName, String userName, String pass)
-	{
+	public static Boolean deleteLigne(int id, String dbName, String userName, String pass) {
 		try {
 			psUpdate = conn.prepareStatement("delete from library where id=?");
 			psUpdate.setInt(1, id);
-			psUpdate.executeUpdate(); 
+			psUpdate.executeUpdate();
 			conn.commit();
 			return true;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		return false;
-		
-	}
-	
 
+	}
+
+	/**
+	 * permet de recupérer toute la bibliotheque 
+	 * @return List<String[]>
+	 * @throws SQLException
+	 */
 	public static List<String[]> getlibrary() throws SQLException {
-		List<String[]>data= new ArrayList<String[]>(); 
+		List<String[]> data = new ArrayList<String[]>();
 		s = conn.createStatement();
 		statements.add(s);
-		
-		rs = s.executeQuery(
-		        "SELECT * FROM library");
-		while(rs.next()){
-			String[] info= {Integer.toString(rs.getInt(1))
-							,rs.getString(2)
-							,rs.getString(3)
-							,rs.getString(4)
-							,Integer.toString(rs.getInt(5))
-							,Integer.toString(rs.getInt(6))
-							,rs.getString(7)};
+
+		rs = s.executeQuery("SELECT * FROM library");
+		while (rs.next()) {
+			String[] info = { Integer.toString(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getString(4),
+					Integer.toString(rs.getInt(5)), Integer.toString(rs.getInt(6)), rs.getString(7) };
 			data.add(info);
-			
+
 		}
 		conn.commit();
-		
+
 		return data;
 	}
 
